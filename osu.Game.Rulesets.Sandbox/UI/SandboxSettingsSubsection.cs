@@ -3,8 +3,8 @@ using osu.Framework.Graphics;
 using osu.Game.Overlays;
 using osu.Game.Overlays.Notifications;
 using osu.Game.Overlays.Settings;
-using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Rulesets.Sandbox.Extensions;
+using osu.Game.Rulesets.Sandbox.Screens;
 using osu.Game.Screens.Menu;
 
 namespace osu.Game.Rulesets.Sandbox.UI
@@ -27,8 +27,6 @@ namespace osu.Game.Rulesets.Sandbox.UI
         [BackgroundDependencyLoader]
         private void load()
         {
-            var config = (SandboxRulesetConfigManager)Config;
-
             Children = new Drawable[]
             {
                 new SettingsButton
@@ -49,7 +47,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                             }
 
                             var settingOverlay = game.GetSettingsOverlay();
-                            //screenStack?.Push(new VisualizerScreen());
+                            screenStack?.Push(new MainRulesetScreen());
                             settingOverlay?.Hide();
                         }
                         catch
