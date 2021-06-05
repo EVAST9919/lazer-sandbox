@@ -21,6 +21,19 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
         public int Power { get; private set; }
 
+        public int NumericValue
+        {
+            get
+            {
+                int result = 2;
+
+                for (int i = 1; i < Power; i++)
+                    result *= 2;
+
+                return result;
+            }
+        }
+
         public bool IsBlocked;
 
         private readonly Box background;
@@ -54,7 +67,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         Font = OsuFont.GetFont(size: 40, weight: FontWeight.Bold),
-                        Text = getPoweredString(),
+                        Text = NumericValue.ToString(),
                         Colour = startPower == 3 ? Color4.White : new Color4(119, 110, 101, 255),
                         Shadow = false,
                     },
@@ -77,7 +90,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             content.ScaleTo(1, 200, Easing.OutQuint);
         }
 
-        public void IncreaseValue(int animationDelay = 0)
+        public void Increment(int animationDelay = 0)
         {
             Scheduler.Update();
 
@@ -91,8 +104,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
             Scheduler.AddDelayed(animate, animationDelay);
         }
-
-        public int GetValue() => (int)Math.Round(Math.Pow(2, Power));
 
         protected override void OnNewBeat(int beatIndex, TimingControlPoint timingPoint, EffectControlPoint effectPoint, ChannelAmplitudes amplitudes)
         {
@@ -111,13 +122,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
         {
             this.ScaleTo(1.2f, 20, Easing.OutQuint).Then().ScaleTo(1, 160, Easing.OutQuint);
             background.FadeColour(getPowerColour(Power), 180, Easing.OutQuint);
-            text.Text = getPoweredString();
+            text.Text = NumericValue.ToString();
 
             if (Power == 3)
                 text.Colour = Color4.White;
         }
-
-        private string getPoweredString() => GetValue().ToString();
 
         private Color4 getPowerColour(int newPower)
         {

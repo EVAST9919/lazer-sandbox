@@ -474,9 +474,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             setNewIndex(horizontal, getNumberIndex(horizontal, target), current, true);
 
             target.IsBlocked = true;
-            target.IncreaseValue(move_duration);
+            target.Increment(move_duration);
 
-            Score.Value += target.GetValue();
+            Score.Value += target.NumericValue;
 
             return true;
         }
