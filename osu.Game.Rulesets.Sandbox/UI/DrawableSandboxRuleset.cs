@@ -29,8 +29,6 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
         protected override ReplayInputHandler CreateReplayInputHandler(Replay replay) => new SandboxFramedReplayInputHandler(replay);
 
-        public override bool AllowGameplayOverlays => false;
-
         public override DrawableHitObject<SandboxHitObject> CreateDrawableRepresentation(SandboxHitObject h)
         {
             switch (h)
