@@ -14,10 +14,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
     public class NumbersScreen : SandboxScreen
     {
         private readonly NumbersPlayfield playfield;
-        private readonly ScoreContainer currentScore;
+        private readonly Container scoresContainer;
 
         public NumbersScreen()
         {
+            ScoreContainer currentScore;
+
             AddRangeInternal(new Drawable[]
             {
                 new OsuClickableContainer
@@ -48,11 +50,50 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
                         }
                     }
                 },
-                currentScore = new ScoreContainer
+                scoresContainer = new Container
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.BottomCentre,
+                    AutoSizeAxes = Axes.Y,
                     Margin = new MarginPadding { Bottom = 240 },
+                    Child = new GridContainer
+                    {
+                        RelativeSizeAxes = Axes.X,
+                        AutoSizeAxes = Axes.Y,
+                        ColumnDimensions = new[]
+                        {
+                            new Dimension(GridSizeMode.Relative, size: 0.5f),
+                            new Dimension()
+                        },
+                        RowDimensions = new[]
+                        {
+                            new Dimension(GridSizeMode.AutoSize)
+                        },
+                        Content = new[]
+                        {
+                            new Drawable[]
+                            {
+                                new Container
+                                {
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Padding = new MarginPadding { Right = 10 },
+                                    Child = currentScore = new ScoreContainer("Current Score"),
+                                },
+                                new Container
+                                {
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Padding = new MarginPadding { Left = 10 },
+                                    Child = new ScoreContainer("Best Score")
+                                    {
+                                        Anchor = Anchor.TopRight,
+                                        Origin = Anchor.TopRight
+                                    }
+                                }
+                            }
+                        }
+                    }
                 },
                 playfield = new NumbersPlayfield
                 {
@@ -64,15 +105,22 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
             currentScore.Score.BindTo(playfield.Score);
         }
 
+        protected override void Update()
+        {
+            base.Update();
+            scoresContainer.Width = playfield.DrawWidth;
+        }
+
         private class ScoreContainer : CompositeDrawable
         {
             public readonly BindableInt Score = new BindableInt();
 
             private readonly OsuSpriteText spriteText;
 
-            public ScoreContainer()
+            public ScoreContainer(string header)
             {
-                Size = new Vector2(200, 60);
+                RelativeSizeAxes = Axes.X;
+                Height = 60;
                 CornerRadius = 6;
                 Masking = true;
                 InternalChildren = new Drawable[]
@@ -86,9 +134,20 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
+                        Y = 5,
                         Font = OsuFont.GetFont(size: 40, weight: FontWeight.Bold),
                         Colour = new Color4(119, 110, 101, 255),
                         Shadow = false
+                    },
+                    new OsuSpriteText
+                    {
+                        Margin = new MarginPadding { Top = 5 },
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Font = OsuFont.GetFont(size: 15, weight: FontWeight.Bold),
+                        Colour = new Color4(119, 110, 101, 255),
+                        Shadow = false,
+                        Text = header
                     }
                 };
             }
