@@ -1,20 +1,26 @@
-﻿using osu.Framework.Bindables;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Rulesets.Sandbox.Configuration;
+using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers.Components;
-using osuTK;
 using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
 {
     public class NumbersScreen : SandboxScreen
     {
+        private readonly BindableInt bestScore = new BindableInt();
+
         private readonly NumbersPlayfield playfield;
         private readonly Container scoresContainer;
+
+        private SandboxRulesetConfigManager config;
 
         public NumbersScreen()
         {
@@ -88,7 +94,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
                                     Child = new ScoreContainer("Best Score")
                                     {
                                         Anchor = Anchor.TopRight,
-                                        Origin = Anchor.TopRight
+                                        Origin = Anchor.TopRight,
+                                        Score = { BindTarget = bestScore }
                                     }
                                 }
                             }
@@ -103,6 +110,37 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
             });
 
             currentScore.Score.BindTo(playfield.Score);
+        }
+
+        private DependencyContainer dependencies;
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
+        {
+            dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+            var ruleset = dependencies.GetRuleset();
+
+            config = dependencies.Get<RulesetConfigCache>().GetConfigFor(ruleset) as SandboxRulesetConfigManager;
+            if (config != null)
+                dependencies.Cache(config);
+
+            return dependencies;
+        }
+
+        [BackgroundDependencyLoader]
+        private void load()
+        {
+            config?.BindWith(SandboxRulesetSetting.NumbersGameBestScore, bestScore);
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            playfield.Score.BindValueChanged(score =>
+            {
+                if (score.NewValue > bestScore.Value)
+                    bestScore.Value = score.NewValue;
+            }, true);
         }
 
         protected override void Update()

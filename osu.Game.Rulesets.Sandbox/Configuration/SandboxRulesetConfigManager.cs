@@ -9,9 +9,16 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             : base(settings, ruleset, variant)
         {
         }
+
+        protected override void InitialiseDefaults()
+        {
+            base.InitialiseDefaults();
+            SetDefault(SandboxRulesetSetting.NumbersGameBestScore, 0);
+        }
     }
 
     public enum SandboxRulesetSetting
     {
+        NumbersGameBestScore
     }
 }
