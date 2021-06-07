@@ -68,7 +68,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         {
             TweenEdgeEffectTo(new EdgeEffectParameters
             {
-                Radius = 10,
+                Radius = 15,
                 Colour = colours.Yellow,
                 Hollow = true,
                 Type = EdgeEffectType.Glow
