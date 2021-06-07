@@ -1,4 +1,5 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -7,7 +8,6 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Sandbox.Configuration;
-using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers.Components;
 using osuTK.Graphics;
 
@@ -19,8 +19,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
 
         private readonly NumbersPlayfield playfield;
         private readonly Container scoresContainer;
-
-        private SandboxRulesetConfigManager config;
 
         public NumbersScreen()
         {
@@ -112,22 +110,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
             currentScore.Score.BindTo(playfield.Score);
         }
 
-        private DependencyContainer dependencies;
-
-        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
-        {
-            dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
-            var ruleset = dependencies.GetRuleset();
-
-            config = dependencies.Get<RulesetConfigCache>().GetConfigFor(ruleset) as SandboxRulesetConfigManager;
-            if (config != null)
-                dependencies.Cache(config);
-
-            return dependencies;
-        }
-
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(SandboxRulesetConfigManager config)
         {
             config?.BindWith(SandboxRulesetSetting.NumbersGameBestScore, bestScore);
         }
@@ -136,11 +120,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
         {
             base.LoadComplete();
 
-            playfield.Score.BindValueChanged(score =>
-            {
-                if (score.NewValue > bestScore.Value)
-                    bestScore.Value = score.NewValue;
-            }, true);
+            playfield.Score.BindValueChanged(score => bestScore.Value = Math.Max(score.NewValue, bestScore.Value), true);
         }
 
         protected override void Update()
