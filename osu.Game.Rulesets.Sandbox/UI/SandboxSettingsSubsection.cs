@@ -4,7 +4,7 @@ using osu.Game.Overlays;
 using osu.Game.Overlays.Notifications;
 using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Sandbox.Extensions;
-using osu.Game.Rulesets.Sandbox.Screens;
+using osu.Game.Rulesets.Sandbox.Screens.Main;
 using osu.Game.Screens.Menu;
 
 namespace osu.Game.Rulesets.Sandbox.UI
