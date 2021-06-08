@@ -1,7 +1,10 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics.Textures;
+using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
 using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Rulesets.Sandbox.Extensions;
+using osu.Game.Rulesets.Sandbox.Screens.FlappyDon;
 using osu.Game.Rulesets.Sandbox.Screens.Main.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers;
 
@@ -15,7 +18,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
             {
                 Buttons = new[]
                 {
-                    new SandboxSelectionButton("2048") { Action = () => this.Push(new NumbersScreen()) }
+                    new SandboxSelectionButton("2048") { Action = () => this.Push(new NumbersScreen()) },
+                    new SandboxSelectionButton("FlappyDon") { Action = () => this.Push(new FlappyDonScreen()) } // by https://github.com/TimOliver
                 }
             };
         }
@@ -28,7 +32,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
             dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
             var ruleset = dependencies.GetRuleset();
 
-            // Cache ruleset's config
+            // Add ruleset textures to game texture store.
+            dependencies.Get<TextureStore>().AddStore(new TextureLoaderStore(new NamespacedResourceStore<byte[]>(ruleset.CreateResourceStore(), @"Textures")));
+
+            // Cache ruleset's config.
             config = dependencies.Get<RulesetConfigCache>().GetConfigFor(ruleset) as SandboxRulesetConfigManager;
             if (config != null)
                 dependencies.Cache(config);
