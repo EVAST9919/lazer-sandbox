@@ -7,23 +7,28 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
-    public class BackgroundSprite : Sprite
+    public class GroundSprite : Sprite
     {
         private Vector2 textureSize;
+
+        public GroundSprite()
+        {
+            Anchor = Anchor.BottomLeft;
+            Origin = Anchor.BottomLeft;
+        }
 
         [BackgroundDependencyLoader]
         private void load(TextureStore textures)
         {
-            Texture = textures.Get("FlappyDon/bg", WrapMode.ClampToBorder, WrapMode.ClampToBorder);
+            Texture = textures.Get("FlappyDon/ground", WrapMode.ClampToBorder, WrapMode.ClampToBorder);
             textureSize = Texture.Size;
-            RelativeSizeAxes = Axes.Y;
-            Height = 1.0f;
+            Height = 100;
         }
 
         protected override void Update()
         {
             base.Update();
-            Width = DrawHeight * textureSize.X / textureSize.Y;
+            Width = Height * textureSize.X / textureSize.Y;
         }
     }
 }

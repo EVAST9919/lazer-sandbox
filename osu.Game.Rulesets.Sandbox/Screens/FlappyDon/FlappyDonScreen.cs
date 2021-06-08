@@ -7,20 +7,24 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon
     public class FlappyDonScreen : SandboxScreen
     {
         private Backdrop background;
+        private Backdrop ground;
 
         [BackgroundDependencyLoader]
         private void load()
         {
             AddRangeInternal(new Drawable[]
             {
-                background = new Backdrop(() => new BackgroundSprite(), 20000.0f)
+                background = new Backdrop(() => new BackgroundSprite(), 20000),
+                ground = new Backdrop(() => new GroundSprite(), 2250)
             });
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
             background.Start();
+            ground.Start();
         }
     }
 }
