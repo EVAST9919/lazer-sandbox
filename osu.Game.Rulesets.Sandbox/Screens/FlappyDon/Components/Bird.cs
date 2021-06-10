@@ -13,9 +13,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
     public class Bird : CompositeDrawable
     {
-        /// <summary>
-        /// In the relative space, the absolute position of the ground that when crossed will register as a collision.
-        /// </summary>
         public float GroundY = 0.0f;
 
         /// <summary>
@@ -127,30 +124,22 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         protected override void Update()
         {
+            base.Update();
+
             if (isIdle)
-            {
-                base.Update();
                 return;
-            }
+
+            if (IsTouchingGround)
+                return;
 
             currentVelocity -= (float)Clock.ElapsedFrameTime * 0.22f;
             Y -= currentVelocity * (float)Clock.ElapsedFrameTime * 0.01f;
 
-            float groundPlane;
-            if (GroundY > 0.0f)
-                groundPlane = GroundY / 2.0f;
-            else
-                groundPlane = Parent.DrawHeight - DrawHeight;
-
-            Y = Math.Min(Y, groundPlane);
-
-            if (Y >= groundPlane)
+            if (Y >= GroundY - FlappyDonGame.SIZE.Y / 2)
             {
                 IsTouchingGround = true;
                 ClearTransforms();
             }
-
-            base.Update();
         }
     }
 }

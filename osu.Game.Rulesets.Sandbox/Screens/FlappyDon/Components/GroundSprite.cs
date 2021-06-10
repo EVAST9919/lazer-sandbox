@@ -22,13 +22,13 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         {
             Texture = textures.Get("FlappyDon/ground", WrapMode.ClampToBorder, WrapMode.ClampToBorder);
             textureSize = Texture.Size;
-            Height = 100;
+            Height = FlappyDonGame.GROUND_HEIGHT;
         }
 
         protected override void Update()
         {
             base.Update();
-            Width = Height * textureSize.X / textureSize.Y;
+            Width = DrawHeight * textureSize.X / textureSize.Y;
         }
     }
 }

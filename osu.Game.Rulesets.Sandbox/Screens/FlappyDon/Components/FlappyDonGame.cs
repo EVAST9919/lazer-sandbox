@@ -2,11 +2,15 @@
 using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osu.Framework.Bindables;
+using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
     public class FlappyDonGame : CompositeDrawable
     {
+        public static readonly Vector2 SIZE = new Vector2(1920, 1080);
+        public static readonly int GROUND_HEIGHT = 200;
+
         private readonly Bindable<GameState> gameState = new Bindable<GameState>();
 
         private readonly Backdrop background;
@@ -16,14 +20,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         public FlappyDonGame()
         {
             RelativeSizeAxes = Axes.Both;
-            InternalChildren = new Drawable[]
+            InternalChild = new FlappyDonScalingContainer(SIZE)
             {
-                background = new Backdrop(() => new BackgroundSprite(), 20000),
-                ground = new Backdrop(() => new GroundSprite(), 2250),
-                bird = new Bird()
+                Children = new Drawable[]
+                {
+                    background = new Backdrop(() => new BackgroundSprite(), 20000),
+                    ground = new Backdrop(() => new GroundSprite(), 2250),
+                    bird = new Bird()
+                }
             };
 
-            bird.GroundY = 525;
+            bird.GroundY = SIZE.Y - GROUND_HEIGHT;
         }
 
         protected override void LoadComplete()
