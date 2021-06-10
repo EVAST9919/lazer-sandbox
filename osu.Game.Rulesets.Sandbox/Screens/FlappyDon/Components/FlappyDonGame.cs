@@ -5,6 +5,8 @@ using osu.Framework.Bindables;
 using osuTK;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
+using osu.Framework.Allocation;
+using osu.Framework.Audio.Sample;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -21,6 +23,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         private readonly Bird bird;
         private readonly Obstacles obstacles;
         private readonly OsuSpriteText drawableScore;
+        private Sample pointSample;
 
         public FlappyDonGame()
         {
@@ -49,7 +52,14 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             obstacles.ThresholdCrossed += _ =>
             {
                 score.Value++;
+                pointSample?.Play();
             };
+        }
+
+        [BackgroundDependencyLoader]
+        private void load(ISampleStore samples)
+        {
+            pointSample = samples.Get("point");
         }
 
         protected override void LoadComplete()
