@@ -1,12 +1,11 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Graphics.Textures;
-using osu.Framework.IO.Stores;
 using osu.Framework.Screens;
-using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.FlappyDon;
 using osu.Game.Rulesets.Sandbox.Screens.Main.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers;
+using osu.Game.Rulesets.UI;
+using osu.Game.Screens;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Main
 {
@@ -24,21 +23,14 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
             };
         }
 
-        private DependencyContainer dependencies;
-        private SandboxRulesetConfigManager config;
-
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
-            dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
-            var ruleset = dependencies.GetRuleset();
+            var baseDependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
-            // Add ruleset textures to game texture store.
-            dependencies.Get<TextureStore>().AddStore(new TextureLoaderStore(new NamespacedResourceStore<byte[]>(ruleset.CreateResourceStore(), @"Textures")));
+            var ruleset = baseDependencies.GetRuleset();
 
-            // Cache ruleset's config.
-            config = dependencies.Get<RulesetConfigCache>().GetConfigFor(ruleset) as SandboxRulesetConfigManager;
-            if (config != null)
-                dependencies.Cache(config);
+            baseDependencies = new DrawableRulesetDependencies(ruleset, baseDependencies);
+            var dependencies = new OsuScreenDependencies(false, baseDependencies);
 
             return dependencies;
         }
