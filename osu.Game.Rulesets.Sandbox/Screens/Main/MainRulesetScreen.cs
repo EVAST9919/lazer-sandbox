@@ -27,12 +27,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
         {
             var baseDependencies = new DependencyContainer(base.CreateChildDependencies(parent));
 
-            var ruleset = baseDependencies.GetRuleset();
-
-            baseDependencies = new DrawableRulesetDependencies(ruleset, baseDependencies);
-            var dependencies = new OsuScreenDependencies(false, baseDependencies);
-
-            return dependencies;
+            return new OsuScreenDependencies(false, new DrawableRulesetDependencies(baseDependencies.GetRuleset(), baseDependencies));
         }
     }
 }
