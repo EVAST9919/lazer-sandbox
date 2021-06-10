@@ -3,6 +3,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osu.Framework.Bindables;
 using osuTK;
+using osu.Game.Graphics;
+using osu.Game.Graphics.Sprites;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -12,10 +14,13 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         public static readonly int GROUND_HEIGHT = 200;
 
         private readonly Bindable<GameState> gameState = new Bindable<GameState>();
+        private readonly BindableInt score = new BindableInt();
 
         private readonly Backdrop background;
         private readonly Backdrop ground;
         private readonly Bird bird;
+        private readonly Obstacles obstacles;
+        private readonly OsuSpriteText drawableScore;
 
         public FlappyDonGame()
         {
@@ -25,17 +30,33 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
                 Children = new Drawable[]
                 {
                     background = new Backdrop(() => new BackgroundSprite(), 20000),
+                    obstacles = new Obstacles(),
+                    bird = new Bird(),
                     ground = new Backdrop(() => new GroundSprite(), 2250),
-                    bird = new Bird()
+                    drawableScore = new OsuSpriteText
+                    {
+                        Anchor = Anchor.TopCentre,
+                        Origin = Anchor.TopCentre,
+                        Y = 150,
+                        Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                    }
                 }
             };
 
             bird.GroundY = SIZE.Y - GROUND_HEIGHT;
+            obstacles.BirdThreshold = bird.X;
+
+            obstacles.ThresholdCrossed += _ =>
+            {
+                score.Value++;
+            };
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            score.BindValueChanged(score => drawableScore.Text = score.NewValue.ToString(), true);
 
             gameState.BindValueChanged(state =>
             {
@@ -63,7 +84,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             if (gameState.Value != GameState.Playing)
                 return;
 
-            if (!bird.IsTouchingGround)
+            if (!bird.IsTouchingGround && !obstacles.CheckForCollision(bird.CollisionQuad))
                 return;
 
             gameState.Value = GameState.GameOver;
@@ -94,17 +115,22 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             background.Start();
             ground.Start();
 
+            score.Value = 0;
             bird.Reset();
+            obstacles.Reset();
         }
 
         private void play()
         {
+            obstacles.Start();
             bird.FlyUp();
         }
 
         private void fail()
         {
             bird.FallDown();
+
+            obstacles.Freeze();
             background.Freeze();
             ground.Freeze();
         }
