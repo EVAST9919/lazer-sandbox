@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Input.Events;
 using osu.Game.Graphics;
+using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osuTK.Graphics;
 
@@ -21,10 +22,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         private OsuColour colours { get; set; }
 
         private readonly string name;
+        private readonly Creator creator;
 
-        public SandboxSelectionButton(string name)
+        public SandboxSelectionButton(string name, Creator creator = null)
         {
             this.name = name;
+            this.creator = creator;
         }
 
         [BackgroundDependencyLoader]
@@ -62,6 +65,25 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                     Font = OsuFont.GetFont(size: 40, weight: FontWeight.SemiBold)
                 }
             };
+
+            if (creator != null)
+            {
+                var linkFlow = new LinkFlowContainer(t =>
+                {
+                    t.Font = OsuFont.GetFont(size: 20);
+                })
+                {
+                    AutoSizeAxes = Axes.Both,
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+                    Margin = new MarginPadding { Bottom = 50 }
+                };
+
+                linkFlow.AddText("Created by ");
+                linkFlow.AddLink(creator.Name, creator.URL);
+
+                AddInternal(linkFlow);
+            }
         }
 
         protected override bool OnHover(HoverEvent e)
@@ -91,6 +113,19 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         {
             Action?.Invoke();
             return true;
+        }
+    }
+
+    public class Creator
+    {
+        public string URL { get; private set; }
+
+        public string Name { get; private set; }
+
+        public Creator(string url, string name)
+        {
+            URL = url;
+            Name = name;
         }
     }
 }

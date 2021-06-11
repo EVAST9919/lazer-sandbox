@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
                 Buttons = new[]
                 {
                     new SandboxSelectionButton("2048") { Action = () => this.Push(new NumbersScreen()) },
-                    new SandboxSelectionButton("FlappyDon") { Action = () => this.Push(new FlappyDonScreen()) } // by https://github.com/TimOliver
+                    new SandboxSelectionButton("FlappyDon", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) }
                 }
             };
         }
