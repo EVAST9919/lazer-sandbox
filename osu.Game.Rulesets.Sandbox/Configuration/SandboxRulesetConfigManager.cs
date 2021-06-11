@@ -14,11 +14,13 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         {
             base.InitialiseDefaults();
             SetDefault(SandboxRulesetSetting.NumbersGameBestScore, 0);
+            SetDefault(SandboxRulesetSetting.FlappyDonGameBestScore, 0);
         }
     }
 
     public enum SandboxRulesetSetting
     {
-        NumbersGameBestScore
+        NumbersGameBestScore,
+        FlappyDonGameBestScore
     }
 }

@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Shapes;
 using osuTK.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Game.Rulesets.Sandbox.Configuration;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -21,12 +22,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         private readonly Bindable<GameState> gameState = new Bindable<GameState>();
         private readonly BindableInt score = new BindableInt();
+        private readonly BindableInt highScore = new BindableInt();
+
+        [Resolved(canBeNull: true)]
+        private SandboxRulesetConfigManager config { get; set; }
 
         private readonly Backdrop background;
         private readonly Backdrop ground;
         private readonly Bird bird;
         private readonly Obstacles obstacles;
         private readonly OsuSpriteText drawableScore;
+        private readonly OsuSpriteText drawableHighScore;
         private readonly Box flash;
         private readonly Sprite readySprite;
         private readonly Sprite gameOverSprite;
@@ -48,12 +54,42 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
                     obstacles = new Obstacles(),
                     bird = new Bird(),
                     ground = new Backdrop(() => new GroundSprite(), 2250),
-                    drawableScore = new OsuSpriteText
+                    new Container
                     {
                         Anchor = Anchor.TopCentre,
                         Origin = Anchor.TopCentre,
                         Y = 150,
-                        Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                        AutoSizeAxes = Axes.Y,
+                        Width = 300,
+                        Children = new Drawable[]
+                        {
+                            new Container
+                            {
+                                RelativeSizeAxes = Axes.X,
+                                AutoSizeAxes = Axes.Y,
+                                Width = 0.5f,
+                                Child = drawableScore = new OsuSpriteText
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                                }
+                            },
+                            new Container
+                            {
+                                Anchor = Anchor.TopRight,
+                                Origin = Anchor.TopRight,
+                                RelativeSizeAxes = Axes.X,
+                                AutoSizeAxes = Axes.Y,
+                                Width = 0.5f,
+                                Child = drawableHighScore = new OsuSpriteText
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                                }
+                            },
+                        }
                     },
                     flash = new Box
                     {
@@ -100,13 +136,23 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             readySprite.Size = readyTexture.Size;
             gameOverSprite.Texture = gameOverTexture;
             gameOverSprite.Size = gameOverTexture.Size;
+
+            config?.BindWith(SandboxRulesetSetting.FlappyDonGameBestScore, highScore);
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            score.BindValueChanged(score => drawableScore.Text = score.NewValue.ToString(), true);
+            highScore.BindValueChanged(h => drawableHighScore.Text = h.NewValue.ToString(), true);
+
+            score.BindValueChanged(score =>
+            {
+                drawableScore.Text = score.NewValue.ToString();
+
+                if (score.NewValue > highScore.Value)
+                    highScore.Value = score.NewValue;
+            }, true);
 
             gameState.BindValueChanged(state =>
             {
