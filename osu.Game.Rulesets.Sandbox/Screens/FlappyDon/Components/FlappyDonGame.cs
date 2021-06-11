@@ -35,6 +35,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         private Sample punchSample;
         private Sample deathSample;
 
+        private bool clickIsBlocked;
+
         public FlappyDonGame()
         {
             RelativeSizeAxes = Axes.Both;
@@ -140,6 +142,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         protected override bool OnClick(ClickEvent e)
         {
+            if (clickIsBlocked)
+                return true;
+
             switch(gameState.Value)
             {
                 case GameState.GameOver:
@@ -184,6 +189,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         private void fail()
         {
+            clickIsBlocked = true;
+            Scheduler.AddDelayed(() => clickIsBlocked = false, 300);
+
             bird.FallDown();
             gameOverSprite.FadeIn(250, Easing.OutQuint);
 
