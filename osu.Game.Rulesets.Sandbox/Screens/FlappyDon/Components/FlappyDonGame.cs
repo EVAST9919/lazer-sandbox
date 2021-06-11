@@ -7,6 +7,10 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Graphics.Shapes;
+using osuTK.Graphics;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -23,7 +27,13 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         private readonly Bird bird;
         private readonly Obstacles obstacles;
         private readonly OsuSpriteText drawableScore;
+        private readonly Box flash;
+        private readonly Sprite readySprite;
+        private readonly Sprite gameOverSprite;
+
         private Sample pointSample;
+        private Sample punchSample;
+        private Sample deathSample;
 
         public FlappyDonGame()
         {
@@ -42,6 +52,24 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
                         Origin = Anchor.TopCentre,
                         Y = 150,
                         Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                    },
+                    flash = new Box
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = Color4.White,
+                        Alpha = 0
+                    },
+                    readySprite = new Sprite
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Alpha = 0
+                    },
+                    gameOverSprite = new Sprite
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Alpha = 0
                     }
                 }
             };
@@ -57,9 +85,19 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         }
 
         [BackgroundDependencyLoader]
-        private void load(ISampleStore samples)
+        private void load(ISampleStore samples, TextureStore textures)
         {
             pointSample = samples.Get("point");
+            punchSample = samples.Get("hit");
+            deathSample = samples.Get("die");
+
+            var readyTexture = textures.Get("FlappyDon/message");
+            var gameOverTexture = textures.Get("FlappyDon/gameover");
+
+            readySprite.Texture = readyTexture;
+            readySprite.Size = readyTexture.Size;
+            gameOverSprite.Texture = gameOverTexture;
+            gameOverSprite.Size = gameOverTexture.Size;
         }
 
         protected override void LoadComplete()
@@ -122,6 +160,13 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         private void ready()
         {
+            gameOverSprite.ClearTransforms();
+            gameOverSprite.Hide();
+
+            readySprite.Show();
+            Scheduler.CancelDelayedTasks();
+
+            flash.FinishTransforms();
             background.Start();
             ground.Start();
 
@@ -132,6 +177,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         private void play()
         {
+            readySprite.Hide();
             obstacles.Start();
             bird.FlyUp();
         }
@@ -139,10 +185,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         private void fail()
         {
             bird.FallDown();
+            gameOverSprite.FadeIn(250, Easing.OutQuint);
+
+            // Play the punch sound, and then the 'fall' sound slightly after
+            punchSample.Play();
+            Scheduler.AddDelayed(() => deathSample.Play(), 100);
 
             obstacles.Freeze();
             background.Freeze();
             ground.Freeze();
+
+            flash.FadeIn(20, Easing.OutQuint).Then().FadeOut(750, Easing.Out);
         }
 
         private enum GameState
