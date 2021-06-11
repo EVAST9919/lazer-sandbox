@@ -41,7 +41,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
         [Resolved]
         private TextureStore textures { get; set; }
 
-        //private DrawableSample flapSound;
+        private Sample flapSound;
 
         private bool isIdle;
 
@@ -65,7 +65,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             animation.AddFrame(textures.Get("FlappyDon/redbird-midflap"), 200.0f);
 
             AddInternal(animation);
-            //AddInternal(flapSound = new DrawableSample(samples.Get("wing.ogg")));
+            flapSound = samples.Get("flap");
 
             Size = animation.Size;
             Scale = new Vector2(0.45f);
@@ -119,7 +119,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
             currentVelocity = 70.0f;
             this.RotateTo(-45.0f).Then(350.0f).RotateTo(90.0f, 500.0f);
-            //flapSound.Play();
+            flapSound.Play();
         }
 
         protected override void Update()
