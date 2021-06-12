@@ -5,7 +5,7 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osuTK;
 
-namespace osu.Game.Rulesets.Sandbox.UI.Settings.Sections
+namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
     public abstract class SandboxSettingsSection : Container
     {

@@ -3,7 +3,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
 using osu.Framework.Utils;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
-using osu.Game.Rulesets.Sandbox.UI.Settings.Sections;
 
 namespace osu.Game.Rulesets.Sandbox.Screens
 {

@@ -10,7 +10,6 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Containers;
 using osuTK;
-using osu.Game.Rulesets.Sandbox.UI.Settings.Sections;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {

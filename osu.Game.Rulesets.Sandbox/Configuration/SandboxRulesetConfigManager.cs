@@ -13,14 +13,22 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         protected override void InitialiseDefaults()
         {
             base.InitialiseDefaults();
+
+            // Best scores
             SetDefault(SandboxRulesetSetting.NumbersGameBestScore, 0);
             SetDefault(SandboxRulesetSetting.FlappyDonGameBestScore, 0);
+
+            // Visualizer
+            SetDefault(SandboxRulesetSetting.ShowParticles, true);
+            SetDefault(SandboxRulesetSetting.ParticleCount, 500, 50, 1000);
         }
     }
 
     public enum SandboxRulesetSetting
     {
         NumbersGameBestScore,
-        FlappyDonGameBestScore
+        FlappyDonGameBestScore,
+        ShowParticles,
+        ParticleCount
     }
 }
