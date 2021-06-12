@@ -21,6 +21,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             // Visualizer
             SetDefault(SandboxRulesetSetting.ShowParticles, true);
             SetDefault(SandboxRulesetSetting.ParticleCount, 500, 50, 1000);
+            SetDefault(SandboxRulesetSetting.ShowStoryboard, false);
         }
     }
 
@@ -29,6 +30,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         NumbersGameBestScore,
         FlappyDonGameBestScore,
         ShowParticles,
-        ParticleCount
+        ParticleCount,
+        ShowStoryboard
     }
 }

@@ -17,6 +17,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
             {
                 new SettingsCheckbox
                 {
+                    LabelText = "Show storyboard (if available)",
+                    Current = config.GetBindable<bool>(SandboxRulesetSetting.ShowStoryboard)
+                },
+                new SettingsCheckbox
+                {
                     LabelText = "Show particles",
                     Current = config.GetBindable<bool>(SandboxRulesetSetting.ShowParticles)
                 },

@@ -13,6 +13,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
             RelativeSizeAxes = Axes.Both,
             Children = new Drawable[]
             {
+                new StoryboardContainer(),
                 new Particles()
             }
         };
