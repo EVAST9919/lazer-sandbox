@@ -12,6 +12,8 @@ using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Backgrounds;
 using osu.Game.Storyboards.Drawables;
 using osu.Framework.Timing;
+using osu.Game.Storyboards;
+using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 {
@@ -80,7 +82,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                 Children = new Drawable[]
                 {
                     layer,
-                    new DrawableStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(beatmap.Track) }
+                    new LocalStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(beatmap.Track) }
                 }
             }, loaded =>
             {
@@ -90,5 +92,21 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
         }
 
         private void updateStoryboardDim(float newDim) => Colour = new Color4(1 - newDim, 1 - newDim, 1 - newDim, 1);
+
+        private class LocalStoryboard : DrawableStoryboard
+        {
+            protected override Vector2 DrawScale => Scale;
+
+            public LocalStoryboard(Storyboard storyboard)
+                : base(storyboard)
+            {
+            }
+
+            protected override void Update()
+            {
+                base.Update();
+                Scale = DrawWidth / DrawHeight > Parent.DrawWidth / Parent.DrawHeight ? new Vector2(Parent.DrawHeight / Height) : new Vector2(Parent.DrawWidth / Width);
+            }
+        }
     }
 }
