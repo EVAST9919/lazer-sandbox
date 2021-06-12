@@ -19,8 +19,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
 
         protected override Drawable CreateMovingContent() => Empty();
 
-        protected override SandboxSettingsSection[] CreateSettingsSections() => new[]
+        protected override SandboxSettingsSection[] CreateSettingsSections() => new SandboxSettingsSection[]
         {
+            new TrackSection(),
             new VisualizerSection()
         };
     }
