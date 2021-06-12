@@ -22,7 +22,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
         protected override SandboxSettingsSection[] CreateSettingsSections() => new SandboxSettingsSection[]
         {
             new TrackSection(),
-            new VisualizerSection()
+            new VisualizerSection(),
+            new BackgroundSection()
         };
     }
 }
