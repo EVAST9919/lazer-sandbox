@@ -36,7 +36,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                 {
                     LabelText = "Layout type",
                     Current = config.GetBindable<VisualizerLayout>(SandboxRulesetSetting.VisualizerLayout)
-                }
+                },
+                new LayoutSettingsSubsection()
             });
         }
     }

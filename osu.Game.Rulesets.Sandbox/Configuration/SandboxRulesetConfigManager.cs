@@ -24,6 +24,9 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.ParticleCount, 500, 50, 1000);
             SetDefault(SandboxRulesetSetting.ShowStoryboard, false);
             SetDefault(SandboxRulesetSetting.VisualizerLayout, VisualizerLayout.TypeA);
+
+            // TypeA settings
+            SetDefault(SandboxRulesetSetting.Radius, 350, 200, 500);
         }
     }
 
@@ -34,7 +37,10 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         ShowParticles,
         ParticleCount,
         ShowStoryboard,
-        VisualizerLayout
+        VisualizerLayout,
+
+        // TypeA settings
+        Radius
     }
 
     public enum VisualizerLayout
