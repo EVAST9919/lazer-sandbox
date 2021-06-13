@@ -1,4 +1,5 @@
-﻿using osu.Game.Configuration;
+﻿using System.ComponentModel;
+using osu.Game.Configuration;
 using osu.Game.Rulesets.Configuration;
 
 namespace osu.Game.Rulesets.Sandbox.Configuration
@@ -22,6 +23,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.ShowParticles, true);
             SetDefault(SandboxRulesetSetting.ParticleCount, 500, 50, 1000);
             SetDefault(SandboxRulesetSetting.ShowStoryboard, false);
+            SetDefault(SandboxRulesetSetting.VisualizerLayout, VisualizerLayout.TypeA);
         }
     }
 
@@ -31,6 +33,16 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         FlappyDonGameBestScore,
         ShowParticles,
         ParticleCount,
-        ShowStoryboard
+        ShowStoryboard,
+        VisualizerLayout
+    }
+
+    public enum VisualizerLayout
+    {
+        [Description("Type A")]
+        TypeA,
+
+        [Description("Type B")]
+        TypeB
     }
 }

@@ -34,7 +34,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens
                             new Container
                             {
                                 RelativeSizeAxes = Axes.Both,
-                                Child = CreateMovingContent()
+                                Child = CreateContent()
                             },
                             settings = new SandboxSettings
                             {
@@ -46,7 +46,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens
             });
         }
 
-        protected abstract Drawable CreateMovingContent();
+        protected abstract Drawable CreateContent();
 
         protected new abstract Drawable CreateBackground();
 

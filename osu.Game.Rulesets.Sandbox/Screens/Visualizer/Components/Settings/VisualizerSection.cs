@@ -31,6 +31,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                     Current = config.GetBindable<int>(SandboxRulesetSetting.ParticleCount),
                     KeyboardStep = 1,
                     TransferValueOnCommit = true
+                },
+                new SettingsEnumDropdown<VisualizerLayout>
+                {
+                    LabelText = "Layout type",
+                    Current = config.GetBindable<VisualizerLayout>(SandboxRulesetSetting.VisualizerLayout)
                 }
             });
         }

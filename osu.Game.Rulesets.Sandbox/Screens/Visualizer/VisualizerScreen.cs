@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
             }
         };
 
-        protected override Drawable CreateMovingContent() => Empty();
+        protected override Drawable CreateContent() => new LayoutController();
 
         protected override SandboxSettingsSection[] CreateSettingsSections() => new SandboxSettingsSection[]
         {
