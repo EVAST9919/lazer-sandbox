@@ -11,7 +11,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
     {
         private readonly Bindable<int> radius = new Bindable<int>(350);
 
-        private CircularBeatmapLogo logo;
         private CircularVisualizerController visualizerController;
 
         [BackgroundDependencyLoader]
@@ -23,9 +22,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
                 {
                     Position = new Vector2(0.5f),
                 },
-                logo = new CircularBeatmapLogo
+                new CircularBeatmapLogo
                 {
-                    Position = new Vector2(0.5f)
+                    Position = new Vector2(0.5f),
+                    Size = { BindTarget = radius }
                 }
             };
 
@@ -39,7 +39,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
             radius.BindValueChanged(r =>
             {
                 visualizerController.Size = new Vector2(r.NewValue - 2);
-                logo.Size.Value = r.NewValue;
             }, true);
         }
     }

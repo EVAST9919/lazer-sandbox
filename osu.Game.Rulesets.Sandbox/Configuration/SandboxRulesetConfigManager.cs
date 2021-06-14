@@ -36,6 +36,13 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.BarWidthA, 3.0, 1, 20);
             SetDefault(SandboxRulesetSetting.BarsPerVisual, 120, 10, 3500);
             SetDefault(SandboxRulesetSetting.VisualizerAmount, 3, 1, 10);
+
+            // TypeB settings
+            SetDefault(SandboxRulesetSetting.DecayB, 200, 100, 500);
+            SetDefault(SandboxRulesetSetting.MultiplierB, 400, 200, 500);
+            SetDefault(SandboxRulesetSetting.SmoothnessB, 1, 0, 50);
+            SetDefault(SandboxRulesetSetting.BarWidthB, 3.0, 1, 20);
+            SetDefault(SandboxRulesetSetting.BarCountB, 120, 10, 3500);
         }
     }
 
@@ -58,7 +65,14 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         SmoothnessA,
         BarWidthA,
         BarsPerVisual,
-        VisualizerAmount
+        VisualizerAmount,
+
+        // TypeB settings
+        DecayB,
+        MultiplierB,
+        SmoothnessB,
+        BarWidthB,
+        BarCountB
     }
 
     public enum VisualizerLayout

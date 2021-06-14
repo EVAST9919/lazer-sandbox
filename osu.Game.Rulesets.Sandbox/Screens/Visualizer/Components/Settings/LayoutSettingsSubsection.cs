@@ -131,7 +131,43 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 
         private class TypeBSubsection : Subsection
         {
-
+            [BackgroundDependencyLoader]
+            private void load(SandboxRulesetConfigManager config)
+            {
+                AddRange(new Drawable[]
+                {
+                    new SettingsSlider<double>
+                    {
+                        LabelText = "Bar width",
+                        Current = config.GetBindable<double>(SandboxRulesetSetting.BarWidthB),
+                        KeyboardStep = 0.1f
+                    },
+                    new SettingsSlider<int>
+                    {
+                        LabelText = "Total bar count",
+                        Current = config.GetBindable<int>(SandboxRulesetSetting.BarCountB),
+                        KeyboardStep = 1
+                    },
+                    new SettingsSlider<int>
+                    {
+                        LabelText = "Decay",
+                        Current = config.GetBindable<int>(SandboxRulesetSetting.DecayB),
+                        KeyboardStep = 1
+                    },
+                    new SettingsSlider<int>
+                    {
+                        LabelText = "Height Multiplier",
+                        Current = config.GetBindable<int>(SandboxRulesetSetting.MultiplierB),
+                        KeyboardStep = 1
+                    },
+                    new SettingsSlider<int>
+                    {
+                        LabelText = "Smoothness",
+                        Current = config.GetBindable<int>(SandboxRulesetSetting.SmoothnessB),
+                        KeyboardStep = 1
+                    }
+                });
+            }
         }
     }
 }
