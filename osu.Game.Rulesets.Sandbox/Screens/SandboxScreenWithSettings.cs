@@ -1,7 +1,6 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
-using osu.Framework.Utils;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens
@@ -61,7 +60,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens
 
             var cursorPosition = ToLocalSpace(e.CurrentState.Mouse.Position);
 
-            if (Precision.AlmostEquals(cursorPosition.X, DrawWidth, 1))
+            if (cursorPosition.X > DrawWidth - 5)
             {
                 settings.IsVisible.Value = true;
                 return true;
