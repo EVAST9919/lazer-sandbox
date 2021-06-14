@@ -27,6 +27,15 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
 
             // TypeA settings
             SetDefault(SandboxRulesetSetting.Radius, 350, 200, 500);
+            SetDefault(SandboxRulesetSetting.CircularBarType, CircularBarType.Basic);
+            SetDefault(SandboxRulesetSetting.Rotation, 0, 0, 360);
+            SetDefault(SandboxRulesetSetting.DecayA, 200, 100, 500);
+            SetDefault(SandboxRulesetSetting.MultiplierA, 400, 200, 500);
+            SetDefault(SandboxRulesetSetting.Symmetry, false);
+            SetDefault(SandboxRulesetSetting.SmoothnessA, 1, 0, 50);
+            SetDefault(SandboxRulesetSetting.BarWidthA, 3.0, 1, 20);
+            SetDefault(SandboxRulesetSetting.BarsPerVisual, 120, 10, 3500);
+            SetDefault(SandboxRulesetSetting.VisualizerAmount, 3, 1, 10);
         }
     }
 
@@ -40,7 +49,16 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         VisualizerLayout,
 
         // TypeA settings
-        Radius
+        Radius,
+        CircularBarType,
+        Rotation,
+        DecayA,
+        MultiplierA,
+        Symmetry,
+        SmoothnessA,
+        BarWidthA,
+        BarsPerVisual,
+        VisualizerAmount
     }
 
     public enum VisualizerLayout
@@ -50,5 +68,13 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
 
         [Description("Type B")]
         TypeB
+    }
+
+    public enum CircularBarType
+    {
+        Basic,
+        Rounded,
+        Fall,
+        Dots
     }
 }
