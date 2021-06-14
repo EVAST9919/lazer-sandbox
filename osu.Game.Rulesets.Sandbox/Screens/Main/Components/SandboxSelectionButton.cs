@@ -4,6 +4,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
@@ -22,17 +24,23 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         private OsuColour colours { get; set; }
 
         private readonly string name;
+        private readonly string textureName;
         private readonly Creator creator;
 
-        public SandboxSelectionButton(string name, Creator creator = null)
+        public SandboxSelectionButton(string name, string textureName = "", Creator creator = null)
         {
             this.name = name;
+            this.textureName = textureName;
             this.creator = creator;
         }
 
+        private Sprite texture;
+
         [BackgroundDependencyLoader]
-        private void load()
+        private void load(TextureStore textures)
         {
+            Container spriteHolder;
+
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
             RelativeSizeAxes = Axes.Y;
@@ -56,6 +64,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                     Colour = Color4.Black,
                     Alpha = 0.5f
                 },
+                spriteHolder = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                },
                 new OsuSpriteText
                 {
                     Anchor = Anchor.Centre,
@@ -76,7 +88,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                     AutoSizeAxes = Axes.Both,
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
-                    Margin = new MarginPadding { Bottom = 50 }
+                    Margin = new MarginPadding { Bottom = 25 }
                 };
 
                 linkFlow.AddText("Created by ");
@@ -84,10 +96,26 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 
                 AddInternal(linkFlow);
             }
+
+            if (!string.IsNullOrEmpty(textureName))
+            {
+                spriteHolder.Add(texture = new Sprite
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    FillMode = FillMode.Fill,
+                    Texture = textures.Get(textureName),
+                    Colour = Color4.Gray
+                });
+            }
         }
 
         protected override bool OnHover(HoverEvent e)
         {
+            if (texture != null)
+                texture.FadeColour(Color4.DarkGray, 250, Easing.OutQuint);
+
             TweenEdgeEffectTo(new EdgeEffectParameters
             {
                 Radius = 15,
@@ -100,6 +128,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
+            if (texture != null)
+                texture.FadeColour(Color4.Gray, 250, Easing.OutQuint);
+
             TweenEdgeEffectTo(new EdgeEffectParameters
             {
                 Radius = 1,
