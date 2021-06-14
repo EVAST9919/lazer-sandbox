@@ -9,7 +9,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 {
     public class TrackSection : SandboxSettingsSection
     {
-        protected override string HeaderName => "Track Settings";
+        protected override string HeaderName => "Track";
 
         [Resolved]
         private Bindable<WorkingBeatmap> working { get; set; }
