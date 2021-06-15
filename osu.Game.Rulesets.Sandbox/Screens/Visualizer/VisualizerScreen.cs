@@ -1,13 +1,20 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Input.Bindings;
+using osu.Framework.Screens;
+using osu.Game.Input.Bindings;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
 {
-    public class VisualizerScreen : SandboxScreenWithSettings
+    public class VisualizerScreen : SandboxScreenWithSettings, IKeyBindingHandler<GlobalAction>
     {
+        public override bool AllowBackButton => false;
+
+        public override bool HideOverlaysOnEnter => true;
+
         protected override Drawable CreateBackground() => new Container
         {
             RelativeSizeAxes = Axes.Both,
@@ -26,5 +33,21 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
             new BackgroundSection(),
             new VisualizerSection()
         };
+
+        public bool OnPressed(GlobalAction action)
+        {
+            switch (action)
+            {
+                case GlobalAction.Back:
+                    this.Exit();
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void OnReleased(GlobalAction action)
+        {
+        }
     }
 }
