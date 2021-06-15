@@ -32,11 +32,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
             {
                 default:
                 case VisualizerLayout.TypeA:
-                    l = new CircularLayout();
+                    l = new TypeALayout();
                     break;
 
                 case VisualizerLayout.TypeB:
-                    l = new HorizontalLayout();
+                    l = new TypeBLayout();
                     break;
 
                 case VisualizerLayout.Empty:

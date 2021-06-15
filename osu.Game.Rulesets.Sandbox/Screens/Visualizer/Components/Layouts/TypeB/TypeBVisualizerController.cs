@@ -10,9 +10,9 @@ using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers;
 using osuTK.Graphics;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Horizontal
+namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
 {
-    public class HorizontalVisualizerController : MusicAmplitudesProvider
+    public class TypeBVisualizerController : MusicAmplitudesProvider
     {
         private readonly Bindable<double> barWidth = new Bindable<double>();
         private readonly Bindable<int> barCount = new Bindable<int>();

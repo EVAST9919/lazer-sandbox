@@ -2,23 +2,23 @@
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Game.Rulesets.Sandbox.Configuration;
-using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Circular;
+using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA;
 using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
 {
-    public class CircularLayout : DrawableVisualizerLayout
+    public class TypeALayout : DrawableVisualizerLayout
     {
         private readonly Bindable<int> radius = new Bindable<int>(350);
 
-        private CircularVisualizerController visualizerController;
+        private TypeAVisualizerController visualizerController;
 
         [BackgroundDependencyLoader]
         private void load(SandboxRulesetConfigManager config)
         {
             InternalChildren = new Drawable[]
             {
-                visualizerController = new CircularVisualizerController
+                visualizerController = new TypeAVisualizerController
                 {
                     Position = new Vector2(0.5f),
                 },

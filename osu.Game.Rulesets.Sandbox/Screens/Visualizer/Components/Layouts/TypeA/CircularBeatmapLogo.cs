@@ -8,7 +8,7 @@ using osu.Game.Screens.Ranking.Expanded.Accuracy;
 using osuTK;
 using osuTK.Graphics;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Circular
+namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 {
     public class CircularBeatmapLogo : CurrentBeatmapProvider
     {

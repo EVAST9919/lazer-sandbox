@@ -8,9 +8,9 @@ using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Circular;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Circular
+namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 {
-    public class CircularVisualizerController : MusicAmplitudesProvider
+    public class TypeAVisualizerController : MusicAmplitudesProvider
     {
         [Resolved(canBeNull: true)]
         private SandboxRulesetConfigManager config { get; set; }

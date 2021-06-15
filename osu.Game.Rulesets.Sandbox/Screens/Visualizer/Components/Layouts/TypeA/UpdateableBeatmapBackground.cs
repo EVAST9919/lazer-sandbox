@@ -13,7 +13,7 @@ using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
 using osu.Game.Graphics.Backgrounds;
 using osu.Game.Rulesets.Sandbox.Configuration;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Circular
+namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 {
     public class UpdateableBeatmapBackground : CurrentBeatmapProvider
     {
