@@ -81,7 +81,8 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         TypeA,
 
         [Description("Type B")]
-        TypeB
+        TypeB,
+        Empty
     }
 
     public enum CircularBarType

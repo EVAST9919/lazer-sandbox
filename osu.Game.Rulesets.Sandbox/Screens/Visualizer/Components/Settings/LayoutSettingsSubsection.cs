@@ -30,17 +30,25 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 
         private void updateSubsection(ValueChangedEvent<VisualizerLayout> layout)
         {
+            Subsection s;
+
             switch (layout.NewValue)
             {
                 default:
                 case VisualizerLayout.TypeA:
-                    loadSubsection(new TypeASubsection());
+                    s = new TypeASubsection();
                     break;
 
                 case VisualizerLayout.TypeB:
-                    loadSubsection(new TypeBSubsection());
+                    s = new TypeBSubsection();
+                    break;
+
+                case VisualizerLayout.Empty:
+                    s = new EmptySubsection();
                     break;
             }
+
+            loadSubsection(s);
         }
 
         private void loadSubsection(Subsection s)
@@ -168,6 +176,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                     }
                 });
             }
+        }
+
+        private class EmptySubsection : Subsection
+        {
         }
     }
 }

@@ -26,17 +26,25 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
         private void updateLayout()
         {
+            DrawableVisualizerLayout l;
+
             switch(layoutBinable.Value)
             {
                 default:
                 case VisualizerLayout.TypeA:
-                    loadLayout(new CircularLayout());
+                    l = new CircularLayout();
                     break;
 
                 case VisualizerLayout.TypeB:
-                    loadLayout(new HorizontalLayout());
+                    l = new HorizontalLayout();
+                    break;
+
+                case VisualizerLayout.Empty:
+                    l = new EmptyLayout();
                     break;
             }
+
+            loadLayout(l);
         }
 
         private void loadLayout(DrawableVisualizerLayout layout)
