@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
@@ -28,39 +29,55 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.Horizo
         {
             Anchor = Anchor.BottomLeft;
             Origin = Anchor.BottomLeft;
-            Width = 500;
-            Height = 60;
+            AutoSizeAxes = Axes.Both;
             Margin = new MarginPadding(50);
-            Children = new Drawable[]
+            Child = new FillFlowContainer
             {
-                text = new OsuSpriteText
+                Anchor = Anchor.BottomLeft,
+                Origin = Anchor.BottomLeft,
+                Width = 500,
+                AutoSizeAxes = Axes.Y,
+                Direction = FillDirection.Vertical,
+                Children = new Drawable[]
                 {
-                    Margin = new MarginPadding { Top = 10 },
-                    Font = OsuFont.GetFont(size: 30)
-                },
-                new Box
-                {
-                    RelativeSizeAxes = Axes.X,
-                    Height = 7,
-                    Colour = Color4.White,
-                    Alpha = 0.3f
-                },
-                progress = new Box
-                {
-                    RelativeSizeAxes = Axes.X,
-                    Height = 7,
-                    Width = 0,
-                    Colour = Color4.White
-                },
-                visualizer = new LinearMusicVisualizerDrawable
-                {
-                    Origin = Anchor.BottomLeft,
-                    BarAnchorBindable = { Value = BarAnchor.Bottom },
-                    BarWidth = { BindTarget = barWidth },
-                    BarCount = { BindTarget = barCount },
-                    HeightMultiplier = { BindTarget = multiplier },
-                    Decay = { BindTarget = decay },
-                    Smoothness = { BindTarget = smoothness }
+                    new Container
+                    {
+                        RelativeSizeAxes = Axes.X,
+                        Height = 200,
+                        Child = visualizer = new LinearMusicVisualizerDrawable
+                        {
+                            BarAnchorBindable = { Value = BarAnchor.Bottom },
+                            BarWidth = { BindTarget = barWidth },
+                            BarCount = { BindTarget = barCount },
+                            HeightMultiplier = { BindTarget = multiplier },
+                            Decay = { BindTarget = decay },
+                            Smoothness = { BindTarget = smoothness }
+                        }
+                    },
+                    new Container
+                    {
+                        RelativeSizeAxes = Axes.X,
+                        Height = 5,
+                        Children = new Drawable[]
+                        {
+                            new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Colour = Color4.White,
+                                Alpha = 0.3f
+                            },
+                            progress = new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Width = 0,
+                                Colour = Color4.White
+                            }
+                        }
+                    },
+                    text = new OsuSpriteText
+                    {
+                        Font = OsuFont.GetFont(size: 30)
+                    }
                 }
             };
 
