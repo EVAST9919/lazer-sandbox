@@ -33,7 +33,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
                 origin = Source.BarAnchorBindable.Value;
             }
 
-            protected override float Spacing => Size.X / AudioData.Count;
+            protected override float Spacing => (float)((Size.X - BarWidth) / (AudioData.Count - 1));
 
             private float barY;
 
