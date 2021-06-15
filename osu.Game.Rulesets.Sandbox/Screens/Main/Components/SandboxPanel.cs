@@ -14,7 +14,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 {
-    public class SandboxSelectionButton : CompositeDrawable
+    public class SandboxPanel : CompositeDrawable
     {
         public static readonly float WIDTH = 300;
 
@@ -27,7 +27,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         private readonly string textureName;
         private readonly Creator creator;
 
-        public SandboxSelectionButton(string name, string textureName = "", Creator creator = null)
+        public SandboxPanel(string name, string textureName = "", Creator creator = null)
         {
             this.name = name;
             this.textureName = textureName;

@@ -18,9 +18,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
             {
                 Buttons = new[]
                 {
-                    new SandboxSelectionButton("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
-                    new SandboxSelectionButton("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
-                    new SandboxSelectionButton("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) }
+                    new SandboxPanel("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
+                    new SandboxPanel("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
+                    new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) }
                 }
             };
         }

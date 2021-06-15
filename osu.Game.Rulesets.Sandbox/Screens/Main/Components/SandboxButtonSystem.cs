@@ -7,12 +7,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 {
     public class SandboxButtonSystem : CompositeDrawable
     {
-        public SandboxSelectionButton[] Buttons
+        public SandboxPanel[] Buttons
         {
             set => buttonsFlow.Children = value;
         }
 
-        private readonly FillFlowContainer<SandboxSelectionButton> buttonsFlow;
+        private readonly FillFlowContainer<SandboxPanel> buttonsFlow;
 
         public SandboxButtonSystem()
         {
@@ -25,7 +25,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                 Origin = Anchor.Centre,
                 ScrollbarVisible = false,
                 Masking = false,
-                Child = buttonsFlow = new FillFlowContainer<SandboxSelectionButton>
+                Child = buttonsFlow = new FillFlowContainer<SandboxPanel>
                 {
                     RelativeSizeAxes = Axes.Y,
                     AutoSizeAxes = Axes.X,
@@ -38,7 +38,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         protected override void Update()
         {
             base.Update();
-            buttonsFlow.Margin = new MarginPadding { Horizontal = DrawWidth / 2 - SandboxSelectionButton.WIDTH / 2 };
+            buttonsFlow.Margin = new MarginPadding { Horizontal = DrawWidth / 2 - SandboxPanel.WIDTH / 2 };
         }
     }
 }

@@ -9,10 +9,10 @@ namespace osu.Game.Rulesets.Sandbox.Tests
 
         public TestSceneButtonSystem()
         {
-            var buttons = new SandboxSelectionButton[button_count];
+            var buttons = new SandboxPanel[button_count];
 
             for (int i = 0; i < button_count; i++)
-                buttons[i] = new SandboxSelectionButton((i + 1).ToString());
+                buttons[i] = new SandboxPanel((i + 1).ToString());
 
             Add(new SandboxButtonSystem { Buttons = buttons });
         }
