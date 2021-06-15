@@ -6,7 +6,7 @@ using osu.Game.Rulesets.Sandbox.UI;
 using osu.Game.Tests.Visual;
 using osuTK;
 
-namespace osu.Game.Rulesets.Sandbox.Tests
+namespace osu.Game.Rulesets.Sandbox.Tests.UI
 {
     public class TestSceneInnerShadowContainer : OsuTestScene
     {

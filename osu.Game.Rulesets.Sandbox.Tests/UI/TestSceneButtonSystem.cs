@@ -1,7 +1,7 @@
 ﻿using osu.Game.Rulesets.Sandbox.Screens.Main.Components;
 using osu.Game.Tests.Visual;
 
-namespace osu.Game.Rulesets.Sandbox.Tests
+namespace osu.Game.Rulesets.Sandbox.Tests.UI
 {
     public class TestSceneButtonSystem : OsuTestScene
     {
