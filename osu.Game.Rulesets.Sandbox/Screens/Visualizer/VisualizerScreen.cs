@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using osu.Game.Input.Bindings;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings;
+using osu.Game.Rulesets.Sandbox.UI;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer

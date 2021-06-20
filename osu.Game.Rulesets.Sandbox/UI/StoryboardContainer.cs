@@ -15,7 +15,7 @@ using osu.Framework.Timing;
 using osu.Game.Storyboards;
 using osuTK;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
+namespace osu.Game.Rulesets.Sandbox.UI
 {
     public class StoryboardContainer : CurrentBeatmapProvider
     {
