@@ -8,6 +8,7 @@ using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers;
+using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Linear;
 using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
@@ -20,7 +21,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
         private readonly Bindable<int> decay = new Bindable<int>();
         private readonly Bindable<int> smoothness = new Bindable<int>();
 
-        private LinearMusicVisualizerDrawable visualizer;
+        private BasicLinearMusicVisualizerDrawable visualizer;
         private OsuSpriteText text;
         private Box progress;
 
@@ -44,7 +45,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
                     {
                         RelativeSizeAxes = Axes.X,
                         Height = 200,
-                        Child = visualizer = new LinearMusicVisualizerDrawable
+                        Child = visualizer = new BasicLinearMusicVisualizerDrawable
                         {
                             BarAnchorBindable = { Value = BarAnchor.Bottom },
                             BarWidth = { BindTarget = barWidth },
