@@ -144,6 +144,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
             {
                 AddRange(new Drawable[]
                 {
+                    new SettingsEnumDropdown<LinearBarType>
+                    {
+                        LabelText = "Bar type",
+                        Current = config.GetBindable<LinearBarType>(SandboxRulesetSetting.LinearBarType)
+                    },
                     new SettingsSlider<double>
                     {
                         LabelText = "Bar width",

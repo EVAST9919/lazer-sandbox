@@ -43,6 +43,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.SmoothnessB, 1, 0, 50);
             SetDefault(SandboxRulesetSetting.BarWidthB, 3.0, 1, 20);
             SetDefault(SandboxRulesetSetting.BarCountB, 120, 10, 3500);
+            SetDefault(SandboxRulesetSetting.LinearBarType, LinearBarType.Basic);
         }
     }
 
@@ -72,7 +73,8 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         MultiplierB,
         SmoothnessB,
         BarWidthB,
-        BarCountB
+        BarCountB,
+        LinearBarType
     }
 
     public enum VisualizerLayout
@@ -91,5 +93,11 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         Rounded,
         Fall,
         Dots
+    }
+
+    public enum LinearBarType
+    {
+        Basic,
+        Rounded
     }
 }

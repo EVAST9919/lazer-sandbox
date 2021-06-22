@@ -20,10 +20,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
         private readonly Bindable<int> multiplier = new Bindable<int>();
         private readonly Bindable<int> decay = new Bindable<int>();
         private readonly Bindable<int> smoothness = new Bindable<int>();
+        private readonly Bindable<LinearBarType> type = new Bindable<LinearBarType>();
 
-        private BasicLinearMusicVisualizerDrawable visualizer;
         private OsuSpriteText text;
         private Box progress;
+        private Container<LinearMusicVisualizerDrawable> visualizerContainer;
 
         [BackgroundDependencyLoader]
         private void load(SandboxRulesetConfigManager config)
@@ -41,19 +42,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
                 Direction = FillDirection.Vertical,
                 Children = new Drawable[]
                 {
-                    new Container
+                    visualizerContainer = new Container<LinearMusicVisualizerDrawable>
                     {
                         RelativeSizeAxes = Axes.X,
-                        Height = 200,
-                        Child = visualizer = new BasicLinearMusicVisualizerDrawable
-                        {
-                            BarAnchorBindable = { Value = BarAnchor.Bottom },
-                            BarWidth = { BindTarget = barWidth },
-                            BarCount = { BindTarget = barCount },
-                            HeightMultiplier = { BindTarget = multiplier },
-                            Decay = { BindTarget = decay },
-                            Smoothness = { BindTarget = smoothness }
-                        }
+                        Height = 200
                     },
                     new Container
                     {
@@ -87,6 +79,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
             config.BindWith(SandboxRulesetSetting.MultiplierB, multiplier);
             config.BindWith(SandboxRulesetSetting.DecayB, decay);
             config.BindWith(SandboxRulesetSetting.SmoothnessB, smoothness);
+            config.BindWith(SandboxRulesetSetting.LinearBarType, type);
         }
 
         protected override void LoadComplete()
@@ -96,6 +89,33 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
             Beatmap.BindValueChanged(b =>
             {
                 text.Text = $"{b.NewValue.Metadata.Artist} - {b.NewValue.Metadata.Title}";
+            }, true);
+
+            type.BindValueChanged(t =>
+            {
+                LinearMusicVisualizerDrawable drawable;
+
+                switch (t.NewValue)
+                {
+                    default:
+                    case LinearBarType.Basic:
+                        drawable = new BasicLinearMusicVisualizerDrawable();
+                        break;
+
+                    case LinearBarType.Rounded:
+                        drawable = new RoundedLinearMusicVisualizerDrawable();
+                        break;
+                }
+
+                visualizerContainer.Child = drawable.With(d =>
+                {
+                    d.BarAnchorBindable.Value = BarAnchor.Bottom;
+                    d.BarWidth.BindTo(barWidth);
+                    d.BarCount.BindTo(barCount);
+                    d.HeightMultiplier.BindTo(multiplier);
+                    d.Decay.BindTo(decay);
+                    d.Smoothness.BindTo(smoothness);
+                });
             }, true);
         }
 
@@ -109,7 +129,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
 
         protected override void OnAmplitudesUpdate(float[] amplitudes)
         {
-            visualizer.SetAmplitudes(amplitudes);
+            visualizerContainer.Child?.SetAmplitudes(amplitudes);
         }
     }
 }
