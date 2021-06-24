@@ -1,4 +1,7 @@
-﻿using osu.Framework.Bindables;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
+using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
@@ -13,6 +16,9 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
     public class SandboxCheckbox : CompositeDrawable
     {
         public readonly BindableBool Current = new BindableBool();
+
+        private Sample sampleChecked;
+        private Sample sampleUnchecked;
 
         public SandboxCheckbox(string label)
         {
@@ -42,9 +48,22 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
             });
         }
 
+        [BackgroundDependencyLoader]
+        private void load(AudioManager audio)
+        {
+            sampleChecked = audio.Samples.Get(@"UI/check-on");
+            sampleUnchecked = audio.Samples.Get(@"UI/check-off");
+        }
+
         protected override bool OnClick(ClickEvent e)
         {
             Current.Toggle();
+
+            if (Current.Value)
+                sampleChecked?.Play();
+            else
+                sampleUnchecked?.Play();
+
             return true;
         }
 
