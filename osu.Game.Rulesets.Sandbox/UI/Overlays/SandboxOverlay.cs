@@ -48,19 +48,47 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
                                 new Container
                                 {
                                     RelativeSizeAxes = Axes.Both,
-                                    Padding = new MarginPadding { Top = 15, Horizontal = 15, Bottom = 30 },
-                                    Child = CreateContent()
+                                    Padding = new MarginPadding(15),
+                                    Child = new GridContainer
+                                    {
+                                        RelativeSizeAxes = Axes.Both,
+                                        RowDimensions = new[]
+                                        {
+                                            new Dimension(),
+                                            new Dimension(GridSizeMode.AutoSize)
+                                        },
+                                        ColumnDimensions = new[]
+                                        {
+                                            new Dimension()
+                                        },
+                                        Content = new[]
+                                        {
+                                            new Drawable[]
+                                            {
+                                                CreateContent()
+                                            },
+                                            new Drawable[]
+                                            {
+                                                new Container
+                                                {
+                                                    RelativeSizeAxes = Axes.X,
+                                                    AutoSizeAxes = Axes.Y,
+                                                    Padding = new MarginPadding { Top = 25 },
+                                                    Child = new FillFlowContainer<SandboxOverlayButton>
+                                                    {
+                                                        AutoSizeAxes = Axes.Both,
+                                                        Anchor = Anchor.Centre,
+                                                        Origin = Anchor.Centre,
+                                                        Direction = FillDirection.Horizontal,
+                                                        Spacing = new Vector2(40, 0),
+                                                        Children = CreateButtons()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                        },
-                        new FillFlowContainer<SandboxButton>
-                        {
-                            AutoSizeAxes = Axes.Both,
-                            Anchor = Anchor.BottomCentre,
-                            Origin = Anchor.Centre,
-                            Direction = FillDirection.Horizontal,
-                            Spacing = new Vector2(40, 0),
-                            Children = CreateButtons()
                         }
                     }
                 }
@@ -69,31 +97,34 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
 
         protected abstract Drawable CreateContent();
 
-        protected abstract SandboxButton[] CreateButtons();
+        protected abstract SandboxOverlayButton[] CreateButtons();
 
         protected override void PopIn() => this.FadeIn(250, Easing.OutQuint);
 
         protected override void PopOut() => this.FadeOut(250, Easing.OutQuint);
 
-        protected class SandboxButton : CompositeDrawable
+        public class SandboxOverlayButton : CompositeDrawable
         {
             public Action ClickAction;
 
             private readonly Box bg;
+            private readonly Container content;
 
-            public SandboxButton(string text)
+            public SandboxOverlayButton(string text)
             {
                 Size = new Vector2(100, 50);
-                AddInternal(new Container
+                AddInternal(content = new Container
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     Masking = true,
                     CornerRadius = 5,
                     EdgeEffect = new EdgeEffectParameters
                     {
                         Colour = Color4.Black.Opacity(0.4f),
-                        Offset = new Vector2(0, 5),
-                        Radius = 10,
+                        Offset = new Vector2(0, 3),
+                        Radius = 7,
                         Type = EdgeEffectType.Shadow
                     },
                     Children = new Drawable[]
@@ -118,12 +149,41 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
 
             private static Color4 baseColour => new Color4(20, 20, 20, 255);
 
-            private static Color4 hoverColour => new Color4(40, 40, 40, 255);
+            private static Color4 hoverColour => new Color4(60, 60, 60, 255);
 
-            protected override bool OnClick(ClickEvent e)
+            protected override bool OnMouseDown(MouseDownEvent e)
             {
-                ClickAction?.Invoke();
+                base.OnMouseDown(e);
+
+                content.ScaleTo(0.97f, 250, Easing.OutQuad);
+
+                content.TweenEdgeEffectTo(new EdgeEffectParameters
+                {
+                    Colour = Color4.Black.Opacity(0.4f),
+                    Radius = 3,
+                    Offset = Vector2.Zero,
+                    Type = EdgeEffectType.Shadow
+                }, 250, Easing.OutQuad);
+
                 return true;
+            }
+
+            protected override void OnMouseUp(MouseUpEvent e)
+            {
+                base.OnMouseUp(e);
+
+                content.ScaleTo(1, 500, Easing.OutElastic);
+
+                content.TweenEdgeEffectTo(new EdgeEffectParameters
+                {
+                    Colour = Color4.Black.Opacity(0.4f),
+                    Radius = 7,
+                    Offset = new Vector2(0, 3),
+                    Type = EdgeEffectType.Shadow
+                }, 500, Easing.OutElastic);
+
+                if (IsHovered)
+                    ClickAction?.Invoke();
             }
 
             protected override bool OnHover(HoverEvent e)

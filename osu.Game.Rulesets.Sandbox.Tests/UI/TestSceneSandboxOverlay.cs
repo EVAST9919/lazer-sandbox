@@ -24,10 +24,11 @@ namespace osu.Game.Rulesets.Sandbox.Tests.UI
 
         private class TestOverlay : SandboxOverlay
         {
-            protected override SandboxButton[] CreateButtons() => new[]
+            protected override SandboxOverlayButton[] CreateButtons() => new[]
             {
-                new SandboxButton("Test1"),
-                new SandboxButton("Test2")
+                new SandboxOverlayButton("Test1"),
+                new SandboxOverlayButton("Test2"),
+                new SandboxOverlayButton("Test3")
             };
 
             protected override Drawable CreateContent() => new FillFlowContainer

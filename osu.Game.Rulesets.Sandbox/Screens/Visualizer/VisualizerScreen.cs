@@ -81,9 +81,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
         {
             private readonly BindableBool showAgain = new BindableBool();
 
-            protected override SandboxButton[] CreateButtons() => new[]
+            protected override SandboxOverlayButton[] CreateButtons() => new[]
             {
-                new SandboxButton("Got it")
+                new SandboxOverlayButton("Got it")
                 {
                     ClickAction = onClick
                 }
