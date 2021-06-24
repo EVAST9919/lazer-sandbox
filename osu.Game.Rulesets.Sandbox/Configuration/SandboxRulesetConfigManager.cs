@@ -24,6 +24,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.ParticleCount, 500, 50, 1000);
             SetDefault(SandboxRulesetSetting.ShowStoryboard, false);
             SetDefault(SandboxRulesetSetting.VisualizerLayout, VisualizerLayout.TypeA);
+            SetDefault(SandboxRulesetSetting.ShowSettingsTip, true);
 
             // TypeA settings
             SetDefault(SandboxRulesetSetting.Radius, 350, 200, 500);
@@ -51,10 +52,13 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
     {
         NumbersGameBestScore,
         FlappyDonGameBestScore,
+
+        // Visualizer
         ShowParticles,
         ParticleCount,
         ShowStoryboard,
         VisualizerLayout,
+        ShowSettingsTip,
 
         // TypeA settings
         Radius,
