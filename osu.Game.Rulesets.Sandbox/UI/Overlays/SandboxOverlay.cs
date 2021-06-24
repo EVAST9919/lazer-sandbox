@@ -9,6 +9,7 @@ using System;
 using osu.Framework.Input.Events;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Extensions.Color4Extensions;
+using osu.Game.Graphics.UserInterface;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Overlays
 {
@@ -145,6 +146,8 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
                         }
                     }
                 });
+
+                AddInternal(new HoverClickSounds(HoverSampleSet.Button));
             }
 
             private static Color4 baseColour => new Color4(20, 20, 20, 255);
@@ -182,8 +185,12 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
                     Type = EdgeEffectType.Shadow
                 }, 500, Easing.OutElastic);
 
-                if (IsHovered)
-                    ClickAction?.Invoke();
+                // Delayed to fix cases when confirm sound can not be played. 
+                Scheduler.AddDelayed(() =>
+                {
+                    if (IsHovered)
+                        ClickAction?.Invoke();
+                }, 10);
             }
 
             protected override bool OnHover(HoverEvent e)
