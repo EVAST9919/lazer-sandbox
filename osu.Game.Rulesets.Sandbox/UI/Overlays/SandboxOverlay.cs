@@ -73,7 +73,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
                                                 {
                                                     RelativeSizeAxes = Axes.X,
                                                     AutoSizeAxes = Axes.Y,
-                                                    Padding = new MarginPadding { Top = 25 },
+                                                    Padding = new MarginPadding { Top = 15 },
                                                     Child = new FillFlowContainer<SandboxOverlayButton>
                                                     {
                                                         AutoSizeAxes = Axes.Both,
