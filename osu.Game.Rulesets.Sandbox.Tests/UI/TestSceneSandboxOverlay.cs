@@ -54,13 +54,10 @@ namespace osu.Game.Rulesets.Sandbox.Tests.UI
                         TextAnchor = Anchor.TopCentre,
                         Text = "This is a very important tip with useful information, you should read it!"
                     },
-                    new Container
+                    new SandboxCheckbox("Test")
                     {
                         Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        AutoSizeAxes = Axes.Y,
-                        Width = 80,
-                        Child = new SandboxCheckbox("Test")
+                        Origin = Anchor.Centre
                     }
                 }
             };

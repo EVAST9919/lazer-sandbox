@@ -16,39 +16,27 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
 
         public SandboxCheckbox(string label)
         {
-            RelativeSizeAxes = Axes.X;
-            AutoSizeAxes = Axes.Y;
-            AddInternal(new GridContainer
+            AutoSizeAxes = Axes.Both;
+            AddInternal(new FillFlowContainer
             {
-                RelativeSizeAxes = Axes.X,
-                AutoSizeAxes = Axes.Y,
-                RowDimensions = new[]
+                AutoSizeAxes = Axes.Both,
+                Direction = FillDirection.Horizontal,
+                Spacing = new Vector2(10, 0),
+                Children = new Drawable[]
                 {
-                    new Dimension(GridSizeMode.AutoSize)
-                },
-                ColumnDimensions = new[]
-                {
-                    new Dimension(GridSizeMode.AutoSize),
-                    new Dimension()
-                },
-                Content = new[]
-                {
-                    new Drawable[]
+                    new LocalBox
                     {
-                        new LocalBox
-                        {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            Current = { BindTarget = Current }
-                        },
-                        new SpriteText
-                        {
-                            Anchor = Anchor.CentreRight,
-                            Origin = Anchor.CentreRight,
-                            Colour = Color4.Black,
-                            Font = OsuFont.GetFont(size: 20),
-                            Text = label
-                        }
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
+                        Current = { BindTarget = Current }
+                    },
+                    new SpriteText
+                    {
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
+                        Colour = Color4.Black,
+                        Font = OsuFont.GetFont(size: 20),
+                        Text = label
                     }
                 }
             });
@@ -64,7 +52,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
         {
             public readonly BindableBool Current = new BindableBool();
 
-            private readonly Box fill;
+            private readonly Container fill;
 
             public LocalBox()
             {
@@ -72,12 +60,36 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
                 Masking = true;
                 BorderColour = Color4.Black;
                 BorderThickness = 3;
-                InternalChild = fill = new Box
+                CornerRadius = 3;
+                InternalChildren = new Drawable[]
                 {
-                    RelativeSizeAxes = Axes.Both,
-                    EdgeSmoothness = Vector2.One,
-                    Colour = Color4.Black,
-                    AlwaysPresent = true
+                    new Container
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Masking = true,
+                        BorderColour = Color4.Black,
+                        BorderThickness = 3,
+                        CornerRadius = 3,
+                        Child = new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Alpha = 0,
+                            AlwaysPresent = true
+                        }
+                    },
+                    fill = new Container
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Masking = true,
+                        CornerRadius = 3,
+                        Child = new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Black
+                        }
+                    }
                 };
             }
 
@@ -87,8 +99,10 @@ namespace osu.Game.Rulesets.Sandbox.UI.Overlays
 
                 Current.BindValueChanged(enabled =>
                 {
-                    fill.Alpha = enabled.NewValue ? 1 : 0;
+                    fill.ScaleTo(enabled.NewValue ? 0.5f : 0, 250, Easing.OutQuint);
                 }, true);
+
+                fill.FinishTransforms();
             }
         }
     }
