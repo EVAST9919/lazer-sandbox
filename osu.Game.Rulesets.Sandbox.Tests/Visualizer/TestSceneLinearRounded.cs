@@ -34,6 +34,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
             AddSliderStep("Anchor", 0, 2, 0, value => drawable.BarAnchorBindable.Value = (BarAnchor)value);
             AddSliderStep("Bar count", 0, 3000, 30, value => drawable.BarCount.Value = value);
             AddSliderStep("Bar width", 1f, 20f, 15, value => drawable.BarWidth.Value = value);
+            AddSliderStep("Smoothness", 0, 10, 0, value => drawable.Smoothness.Value = value);
         }
 
         private class Visualizer : MusicAmplitudesProvider

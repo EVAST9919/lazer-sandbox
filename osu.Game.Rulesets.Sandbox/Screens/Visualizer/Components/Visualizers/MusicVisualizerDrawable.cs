@@ -16,7 +16,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
     public abstract class MusicVisualizerDrawable : Drawable
     {
         // Total amplitude count is 256, however in most cases some of them are empty, let's not use them.
-        private const int used_amplitude_count = 200;
+        private const int used_amplitude_count = 160;
 
         public readonly Bindable<double> BarWidth = new Bindable<double>(5);
         public readonly Bindable<int> BarCount = new Bindable<int>(100);
