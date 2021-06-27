@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
         }
 
         private CancellationTokenSource cancellationToken;
-        private AudioContainer storyboard;
+        private StoryboardLayer storyboard;
 
         private void updateStoryboard(WorkingBeatmap beatmap)
         {
@@ -53,38 +53,10 @@ namespace osu.Game.Rulesets.Sandbox.UI
             storyboard?.FadeOut(250, Easing.OutQuint).Expire();
             storyboard = null;
 
-            if (!showStoryboard.Value)
+            if (!(showStoryboard.Value && beatmap.Storyboard.HasDrawable))
                 return;
 
-            if (!beatmap.Storyboard.HasDrawable)
-                return;
-
-            Drawable layer;
-
-            if (beatmap.Storyboard.ReplacesBackground)
-            {
-                layer = new Box
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = Color4.Black
-                };
-            }
-            else
-            {
-                layer = new BeatmapBackground(beatmap);
-            }
-
-            LoadComponentAsync(new AudioContainer
-            {
-                RelativeSizeAxes = Axes.Both,
-                Volume = { Value = 0 },
-                Alpha = 0,
-                Children = new Drawable[]
-                {
-                    layer,
-                    new LocalStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(beatmap.Track) }
-                }
-            }, loaded =>
+            LoadComponentAsync(new StoryboardLayer(beatmap), loaded =>
             {
                 Add(storyboard = loaded);
                 loaded.FadeIn(250, Easing.OutQuint);
@@ -93,19 +65,58 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
         private void updateStoryboardDim(float newDim) => Colour = new Color4(1 - newDim, 1 - newDim, 1 - newDim, 1);
 
-        private class LocalStoryboard : DrawableStoryboard
+        private class StoryboardLayer : AudioContainer
         {
-            protected override Vector2 DrawScale => Scale;
+            private readonly WorkingBeatmap beatmap;
 
-            public LocalStoryboard(Storyboard storyboard)
-                : base(storyboard)
+            public StoryboardLayer(WorkingBeatmap beatmap)
             {
+                this.beatmap = beatmap;
             }
 
-            protected override void Update()
+            [BackgroundDependencyLoader]
+            private void load()
             {
-                base.Update();
-                Scale = DrawWidth / DrawHeight > Parent.DrawWidth / Parent.DrawHeight ? new Vector2(Parent.DrawHeight / Height) : new Vector2(Parent.DrawWidth / Width);
+                RelativeSizeAxes = Axes.Both;
+                Volume.Value = 0;
+                Alpha = 0;
+
+                Drawable layer;
+
+                if (beatmap.Storyboard.ReplacesBackground)
+                {
+                    layer = new Box
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = Color4.Black
+                    };
+                }
+                else
+                {
+                    layer = new BeatmapBackground(beatmap);
+                }
+
+                Children = new Drawable[]
+                {
+                    layer,
+                    new FillStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(beatmap.Track) }
+                };
+            }
+
+            private class FillStoryboard : DrawableStoryboard
+            {
+                protected override Vector2 DrawScale => Scale;
+
+                public FillStoryboard(Storyboard storyboard)
+                    : base(storyboard)
+                {
+                }
+
+                protected override void Update()
+                {
+                    base.Update();
+                    Scale = DrawWidth / DrawHeight > Parent.DrawWidth / Parent.DrawHeight ? new Vector2(Parent.DrawHeight / Height) : new Vector2(Parent.DrawWidth / Width);
+                }
             }
         }
     }
