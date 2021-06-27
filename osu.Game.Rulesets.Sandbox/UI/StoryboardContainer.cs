@@ -14,6 +14,7 @@ using osu.Game.Storyboards.Drawables;
 using osu.Framework.Timing;
 using osu.Game.Storyboards;
 using osuTK;
+using osu.Game.Graphics.UserInterface;
 
 namespace osu.Game.Rulesets.Sandbox.UI
 {
@@ -22,10 +23,29 @@ namespace osu.Game.Rulesets.Sandbox.UI
         private readonly BindableDouble dim = new BindableDouble();
         private readonly BindableBool showStoryboard = new BindableBool();
 
+        private Container<StoryboardLayer> storyboardContainer;
+        private LoadingSpinner loading;
+
         [BackgroundDependencyLoader]
         private void load(OsuConfigManager osuConfig, SandboxRulesetConfigManager rulesetConfig)
         {
             RelativeSizeAxes = Axes.Both;
+            Children = new Drawable[]
+            {
+                new Container
+                {
+                    AutoSizeAxes = Axes.Both,
+                    Margin = new MarginPadding(20),
+                    Child = loading = new LoadingSpinner(true)
+                    {
+                        Scale = new Vector2(1.5f)
+                    },
+                },
+                storyboardContainer = new Container<StoryboardLayer>
+                {
+                    RelativeSizeAxes = Axes.Both
+                }
+            };
 
             osuConfig?.BindWith(OsuSetting.DimLevel, dim);
             rulesetConfig?.BindWith(SandboxRulesetSetting.ShowStoryboard, showStoryboard);
@@ -54,12 +74,18 @@ namespace osu.Game.Rulesets.Sandbox.UI
             storyboard = null;
 
             if (!(showStoryboard.Value && beatmap.Storyboard.HasDrawable))
+            {
+                loading.Hide();
                 return;
+            }
+
+            loading.Show();
 
             LoadComponentAsync(new StoryboardLayer(beatmap), loaded =>
             {
-                Add(storyboard = loaded);
+                storyboardContainer.Add(storyboard = loaded);
                 loaded.FadeIn(250, Easing.OutQuint);
+                loading.Hide();
             }, (cancellationToken = new CancellationTokenSource()).Token);
         }
 
