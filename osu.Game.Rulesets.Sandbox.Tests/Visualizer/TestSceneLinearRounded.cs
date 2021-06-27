@@ -1,9 +1,9 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
-using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Linear;
+using osu.Game.Rulesets.Sandbox.UI;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
 {

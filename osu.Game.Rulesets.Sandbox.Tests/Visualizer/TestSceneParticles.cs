@@ -1,9 +1,9 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osu.Game.Overlays;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
+using osu.Game.Rulesets.Sandbox.UI;
 using osuTK;
 using osuTK.Graphics;
 
@@ -12,7 +12,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
     public class TestSceneParticles : RulesetTestScene
     {
         private readonly ParticlesDrawable particles;
-        private readonly NowPlayingOverlay nowPlayingOverlay;
 
         public TestSceneParticles()
         {
@@ -37,10 +36,13 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
                         }
                     }
                 },
-                nowPlayingOverlay = new NowPlayingOverlay
+                new Container
                 {
-                    Origin = Anchor.TopRight,
                     Anchor = Anchor.TopRight,
+                    Origin = Anchor.TopRight,
+                    AutoSizeAxes = Axes.Y,
+                    Width = 400,
+                    Child = new TrackController()
                 }
             });
         }
@@ -48,7 +50,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            AddStep("Toggle visibility", nowPlayingOverlay.ToggleVisibility);
             AddSliderStep("Restart", 1, 30000, 1000, v => particles.Restart(v));
             AddStep("Toggle direction", particles.SetRandomDirection);
         }

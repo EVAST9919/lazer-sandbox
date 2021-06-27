@@ -15,7 +15,7 @@ using osu.Game.Beatmaps;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Bindables;
 
-namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
+namespace osu.Game.Rulesets.Sandbox.UI
 {
     public class TrackController : CompositeDrawable
     {

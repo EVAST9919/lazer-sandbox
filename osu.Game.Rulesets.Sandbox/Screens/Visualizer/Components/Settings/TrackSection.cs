@@ -3,6 +3,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Game.Beatmaps;
 using osu.Game.Overlays.Settings;
+using osu.Game.Rulesets.Sandbox.UI;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
