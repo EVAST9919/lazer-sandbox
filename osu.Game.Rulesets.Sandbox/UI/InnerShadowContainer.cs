@@ -37,6 +37,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                     BypassAutoSizeAxes = Axes.Both,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
+                    CacheDrawnFrameBuffer = true,
                     Children = new Drawable[]
                     {
                         outherShadow = new Container
@@ -73,6 +74,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
             outherShadow.BorderThickness = Depth.Value;
             blur.BlurSigma = new Vector2(Depth.Value);
+            blur.ForceRedraw();
             mainShadow.Alpha = Math.Clamp(Depth.Value / 200, 0, 0.8f);
         }
 

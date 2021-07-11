@@ -57,7 +57,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
                 RelativeSizeAxes = Axes.X;
                 AutoSizeAxes = Axes.Y;
                 CornerRadius.Value = 10;
-                Depth.Value = 7;
+                Depth.Value = 5;
             }
 
             protected override Container<Drawable> CreateContent() => new Container
