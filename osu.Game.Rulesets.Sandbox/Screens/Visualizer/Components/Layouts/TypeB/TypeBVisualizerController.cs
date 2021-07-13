@@ -21,6 +21,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
         private readonly Bindable<int> decay = new Bindable<int>();
         private readonly Bindable<int> smoothness = new Bindable<int>();
         private readonly Bindable<LinearBarType> type = new Bindable<LinearBarType>();
+        private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
+        private readonly Bindable<string> progressColour = new Bindable<string>("#ffffff");
+        private readonly Bindable<string> textColour = new Bindable<string>("#ffffff");
 
         private OsuSpriteText text;
         private Box progress;
@@ -62,8 +65,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
                             progress = new Box
                             {
                                 RelativeSizeAxes = Axes.Both,
-                                Width = 0,
-                                Colour = Color4.White
+                                Width = 0
                             }
                         }
                     },
@@ -80,6 +82,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
             config.BindWith(SandboxRulesetSetting.DecayB, decay);
             config.BindWith(SandboxRulesetSetting.SmoothnessB, smoothness);
             config.BindWith(SandboxRulesetSetting.LinearBarType, type);
+
+            config?.BindWith(SandboxRulesetSetting.TypeBColour, colour);
+            config?.BindWith(SandboxRulesetSetting.TypeBProgressColour, progressColour);
+            config?.BindWith(SandboxRulesetSetting.TypeBTextColour, textColour);
         }
 
         protected override void LoadComplete()
@@ -117,6 +123,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
                     d.Smoothness.BindTo(smoothness);
                 });
             }, true);
+
+            colour.BindValueChanged(c => visualizerContainer.Colour = Colour4.FromHex(c.NewValue), true);
+            progressColour.BindValueChanged(c => progress.Colour = Colour4.FromHex(c.NewValue), true);
+            textColour.BindValueChanged(c => text.Colour = Colour4.FromHex(c.NewValue), true);
         }
 
         protected override void Update()

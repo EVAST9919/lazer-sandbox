@@ -14,7 +14,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
     {
         private const int base_size = 350;
 
-        public new Color4 Colour
+        public Color4 ProgressColour
         {
             get => progress.Colour;
             set => progress.Colour = value;

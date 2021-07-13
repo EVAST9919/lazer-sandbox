@@ -10,8 +10,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
     public class TypeALayout : DrawableVisualizerLayout
     {
         private readonly Bindable<int> radius = new Bindable<int>(350);
+        private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
+        private readonly Bindable<string> progressColour = new Bindable<string>("#ffffff");
 
         private TypeAVisualizerController visualizerController;
+        private CircularBeatmapLogo logo;
 
         [BackgroundDependencyLoader]
         private void load(SandboxRulesetConfigManager config)
@@ -22,7 +25,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
                 {
                     Position = new Vector2(0.5f),
                 },
-                new CircularBeatmapLogo
+                logo = new CircularBeatmapLogo
                 {
                     Position = new Vector2(0.5f),
                     Size = { BindTarget = radius }
@@ -30,6 +33,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
             };
 
             config?.BindWith(SandboxRulesetSetting.Radius, radius);
+            config?.BindWith(SandboxRulesetSetting.TypeAColour, colour);
+            config?.BindWith(SandboxRulesetSetting.TypeAProgressColour, progressColour);
         }
 
         protected override void LoadComplete()
@@ -40,6 +45,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
             {
                 visualizerController.Size = new Vector2(r.NewValue - 2);
             }, true);
+
+            colour.BindValueChanged(c => visualizerController.Colour = Colour4.FromHex(c.NewValue), true);
+            progressColour.BindValueChanged(c => logo.ProgressColour = Colour4.FromHex(c.NewValue), true);
         }
     }
 }

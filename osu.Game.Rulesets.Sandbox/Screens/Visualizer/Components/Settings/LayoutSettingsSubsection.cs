@@ -5,6 +5,7 @@ using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Framework.Bindables;
 using osuTK;
 using osu.Game.Overlays.Settings;
+using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 {
@@ -132,7 +133,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                         LabelText = "Rotation",
                         KeyboardStep = 1,
                         Current = config.GetBindable<int>(SandboxRulesetSetting.Rotation)
-                    }
+                    },
+                    new ColourPickerDropdown("Visualizer colour", SandboxRulesetSetting.TypeAColour),
+                    new ColourPickerDropdown("Progress bar colour", SandboxRulesetSetting.TypeAProgressColour),
+                    new ColourPickerDropdown("Title colour", SandboxRulesetSetting.TypeATextColour)
                 });
             }
         }
@@ -178,7 +182,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                         LabelText = "Smoothness",
                         Current = config.GetBindable<int>(SandboxRulesetSetting.SmoothnessB),
                         KeyboardStep = 1
-                    }
+                    },
+                    new ColourPickerDropdown("Visualizer colour", SandboxRulesetSetting.TypeBColour),
+                    new ColourPickerDropdown("Progress bar colour", SandboxRulesetSetting.TypeBProgressColour),
+                    new ColourPickerDropdown("Title colour", SandboxRulesetSetting.TypeBTextColour)
                 });
             }
         }

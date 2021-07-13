@@ -117,8 +117,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             private SandboxRulesetConfigManager config { get; set; }
 
             private readonly Bindable<int> radius = new Bindable<int>(350);
+            private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
 
             private readonly WorkingBeatmap beatmap;
+            private SpriteText artist;
+            private SpriteText title;
 
             public BeatmapName(WorkingBeatmap beatmap = null)
             {
@@ -143,14 +146,14 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                     Spacing = new Vector2(0, 10),
                     Children = new Drawable[]
                     {
-                        new SpriteText
+                        artist = new SpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             Font = OsuFont.GetFont(size: 26, weight: FontWeight.SemiBold),
                             Text = beatmap.Metadata.Artist
                         },
-                        new SpriteText
+                        title = new SpriteText
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -167,6 +170,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                 }));
 
                 config?.BindWith(SandboxRulesetSetting.Radius, radius);
+                config?.BindWith(SandboxRulesetSetting.TypeATextColour, colour);
             }
 
             protected override void LoadComplete()
@@ -178,6 +182,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                     if (beatmap != null)
                         Scale = new Vector2(r.NewValue / 350f);
                 }, true);
+
+                colour.BindValueChanged(c => artist.Colour = title.Colour = Colour4.FromHex(c.NewValue), true);
             }
 
             /// <summary>

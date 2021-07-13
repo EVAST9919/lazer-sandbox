@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using osu.Framework.Graphics;
 using osu.Game.Configuration;
 using osu.Game.Rulesets.Configuration;
 
@@ -39,6 +38,9 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.BarWidthA, 3.0, 1, 20);
             SetDefault(SandboxRulesetSetting.BarsPerVisual, 120, 10, 3500);
             SetDefault(SandboxRulesetSetting.VisualizerAmount, 3, 1, 10);
+            SetDefault(SandboxRulesetSetting.TypeAColour, "#ffffff");
+            SetDefault(SandboxRulesetSetting.TypeAProgressColour, "#ffffff");
+            SetDefault(SandboxRulesetSetting.TypeATextColour, "#ffffff");
 
             // TypeB settings
             SetDefault(SandboxRulesetSetting.DecayB, 200, 100, 500);
@@ -47,6 +49,9 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.BarWidthB, 3.0, 1, 20);
             SetDefault(SandboxRulesetSetting.BarCountB, 120, 10, 3500);
             SetDefault(SandboxRulesetSetting.LinearBarType, LinearBarType.Basic);
+            SetDefault(SandboxRulesetSetting.TypeBColour, "#ffffff");
+            SetDefault(SandboxRulesetSetting.TypeBProgressColour, "#ffffff");
+            SetDefault(SandboxRulesetSetting.TypeBTextColour, "#ffffff");
         }
     }
 
@@ -74,6 +79,9 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         BarWidthA,
         BarsPerVisual,
         VisualizerAmount,
+        TypeAColour,
+        TypeAProgressColour,
+        TypeATextColour,
 
         // TypeB settings
         DecayB,
@@ -81,7 +89,10 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         SmoothnessB,
         BarWidthB,
         BarCountB,
-        LinearBarType
+        LinearBarType,
+        TypeBColour,
+        TypeBProgressColour,
+        TypeBTextColour
     }
 
     public enum VisualizerLayout
