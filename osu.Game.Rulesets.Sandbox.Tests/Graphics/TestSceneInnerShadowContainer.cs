@@ -3,11 +3,10 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Overlays;
 using osu.Game.Rulesets.Sandbox.Graphics;
-using osu.Game.Rulesets.Sandbox.UI;
 using osu.Game.Tests.Visual;
 using osuTK;
 
-namespace osu.Game.Rulesets.Sandbox.Tests.UI
+namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
 {
     public class TestSceneInnerShadowContainer : OsuTestScene
     {

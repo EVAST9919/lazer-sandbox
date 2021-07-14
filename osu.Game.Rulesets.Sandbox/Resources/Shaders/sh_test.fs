@@ -1,3 +1,5 @@
+#include "sh_RulesetUtils.h"
+
 varying mediump vec2 v_TexCoord;
 varying mediump vec4 v_TexRect;
 
@@ -20,7 +22,5 @@ void main(void) {
 		c[i]=.01/length(abs(mod(uv,1.)-.5));
 	}
 
-	vec3 col = vec3(c/l);
-	float alpha = col.r * col.g * col.b;
-	gl_FragColor = vec4(col,alpha < 0.01 ? 0 : alpha);
+	gl_FragColor = transparentBlack(vec3(c/l));
 }
