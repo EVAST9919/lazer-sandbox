@@ -7,7 +7,7 @@ using osu.Framework.Utils;
 using osuTK;
 using osuTK.Graphics;
 
-namespace osu.Game.Rulesets.Sandbox.UI
+namespace osu.Game.Rulesets.Sandbox.Graphics
 {
     public abstract class InnerShadowContainer : Container
     {
