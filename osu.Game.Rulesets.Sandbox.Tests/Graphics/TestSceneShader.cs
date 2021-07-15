@@ -9,12 +9,12 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
 {
     public class TestSceneShader : RulesetTestScene
     {
-        private readonly Container container;
-        private readonly ShaderContainer shader;
+        private readonly Container rotatingContainer;
+        private readonly Container placeholder;
 
         public TestSceneShader()
         {
-            Add(container = new Container
+            Add(rotatingContainer = new Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -30,7 +30,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
                         Alpha = 0,
                         AlwaysPresent = true
                     },
-                    shader = new ShaderContainer
+                    placeholder = new Container
                     {
                         RelativeSizeAxes = Axes.Both
                     }
@@ -42,15 +42,20 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
         {
             base.LoadComplete();
 
-            AddStep("Load test shader", () => shader.ShaderName.Value = "test");
-            AddStep("Load fractal shader", () => shader.ShaderName.Value = "fractal");
-            AddStep("Load empty shader", () => shader.ShaderName.Value = string.Empty);
+            AddStep("Load test shader", () => placeholder.Child = new ClockShaderContainer("test")
+            {
+                RelativeSizeAxes = Axes.Both
+            });
+            AddStep("Load fractal shader", () => placeholder.Child = new ClockShaderContainer("fractal")
+            {
+                RelativeSizeAxes = Axes.Both
+            });
 
-            AddStep("Spin", () => container.Spin(10000, RotationDirection.Clockwise));
+            AddStep("Spin", () => rotatingContainer.Spin(10000, RotationDirection.Clockwise));
             AddStep("Stop spin", () =>
             {
-                container.ClearTransforms();
-                container.Rotation = 0;
+                rotatingContainer.ClearTransforms();
+                rotatingContainer.Rotation = 0;
             });
         }
     }

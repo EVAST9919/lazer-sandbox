@@ -5,50 +5,42 @@ using System;
 using osu.Framework.Graphics.OpenGL.Vertices;
 using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Bindables;
 
 namespace osu.Game.Rulesets.Sandbox.Graphics
 {
     public class ShaderContainer : Drawable
     {
-        public readonly Bindable<string> ShaderName = new Bindable<string>();
-
-        [Resolved]
-        private ShaderManager shaders { get; set; }
-
         private IShader shader;
 
-        protected override void LoadComplete()
+        private readonly string shaderName;
+
+        public ShaderContainer(string shaderName)
         {
-            base.LoadComplete();
-            ShaderName.BindValueChanged(sh => updateShader(sh.NewValue), true);
+            this.shaderName = shaderName;
         }
 
-        private void updateShader(string shaderName)
+        [BackgroundDependencyLoader]
+        private void load(ShaderManager shaders)
         {
-            shader = string.IsNullOrEmpty(shaderName) ? null : shaders.Load(VertexShaderDescriptor.TEXTURE_2, shaderName);
-            shaderLoadTime = (float)Clock.CurrentTime;
-            Invalidate(Invalidation.DrawNode);
+            shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, shaderName);
         }
-
-        private float currentTime;
-        private float shaderLoadTime;
 
         protected override void Update()
         {
             base.Update();
-
-            currentTime = (float)(Clock.CurrentTime - shaderLoadTime) / 1000;
             Invalidate(Invalidation.DrawNode);
         }
 
-        protected override DrawNode CreateDrawNode() => new ShaderDrawNode(this);
+        protected override DrawNode CreateDrawNode() => CreateShaderDrawNode();
 
-        private class ShaderDrawNode : DrawNode
+        protected virtual ShaderDrawNode CreateShaderDrawNode() => new ShaderDrawNode(this);
+
+        protected class ShaderDrawNode : DrawNode
         {
-            private ShaderContainer source => (ShaderContainer)Source;
+            protected new ShaderContainer Source => (ShaderContainer)base.Source;
 
             private IShader shader;
+
             private Quad screenSpaceDrawQuad;
 
             public ShaderDrawNode(ShaderContainer source)
@@ -56,15 +48,12 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
             {
             }
 
-            private float time;
-
             public override void ApplyState()
             {
                 base.ApplyState();
 
-                shader = source.shader;
-                screenSpaceDrawQuad = source.ScreenSpaceDrawQuad;
-                time = source.currentTime;
+                shader = Source.shader;
+                screenSpaceDrawQuad = Source.ScreenSpaceDrawQuad;
             }
 
             public override void Draw(Action<TexturedVertex2D> vertexAction)
@@ -76,11 +65,15 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
 
                 shader.Bind();
 
-                shader.GetUniform<float>("time").UpdateValue(ref time);
+                UpdateUniforms(shader);
 
                 DrawQuad(Texture.WhitePixel, screenSpaceDrawQuad, DrawColourInfo.Colour);
 
                 shader.Unbind();
+            }
+
+            protected virtual void UpdateUniforms(IShader shader)
+            {
             }
         }
     }
