@@ -2,6 +2,7 @@
 using osu.Framework.Screens;
 using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.FlappyDon;
+using osu.Game.Rulesets.Sandbox.Screens.Fractal;
 using osu.Game.Rulesets.Sandbox.Screens.GameOfLife;
 using osu.Game.Rulesets.Sandbox.Screens.Main.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers;
@@ -22,6 +23,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
                     new SandboxPanel("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
                     new SandboxPanel("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
                     new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) },
+                    new SandboxPanel("Fractal") { Action = () => this.Push(new FractalScreen()) }
                     //new SandboxPanel("Game of Life") { Action = () => this.Push(new LifeGameScreen()) }
                 }
             };
