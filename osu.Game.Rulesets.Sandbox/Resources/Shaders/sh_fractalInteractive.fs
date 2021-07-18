@@ -56,5 +56,5 @@ void main(void) {
     //soft coloring based on distance
 	d = clamp(pow(4.0 * d * scale, 0.2), 0.0, 1.0);
     
-    gl_FragColor = vec4(vec3(d), v_Colour.w);
+    gl_FragColor = vec4(vec3(1.0 - d), v_Colour.w);
 }
