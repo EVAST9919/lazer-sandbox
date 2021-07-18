@@ -1,5 +1,4 @@
-﻿using osu.Game.Rulesets.Sandbox.Graphics;
-using osu.Game.Rulesets.Sandbox.Screens.Fractal.Components;
+﻿using osu.Game.Rulesets.Sandbox.Screens.Fractal.Components;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Fractal
 {
@@ -7,10 +6,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Fractal
     {
         public FractalScreen()
         {
-            AddInternal(new ContentFitContainer
-            {
-                Child = new InteractiveFractalDrawable()
-            });
+            AddInternal(new InteractiveFractalDrawable());
         }
     }
 }

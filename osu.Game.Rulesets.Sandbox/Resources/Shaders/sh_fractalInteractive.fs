@@ -3,6 +3,8 @@ varying mediump vec4 v_TexRect;
 varying mediump vec4 v_Colour;
 
 uniform mediump float scale;
+uniform vec2 cameraPosition;
+uniform vec2 drawSize;
 
 float distanceToMandelbrot(vec2 c)
 {
@@ -42,23 +44,17 @@ float distanceToMandelbrot(vec2 c)
 }
 
 void main(void) {
+    vec2 resolution = vec2(v_TexRect[2] - v_TexRect[0], v_TexRect[3] - v_TexRect[0]);
+    float x = v_TexCoord.x / resolution.x;
+    float y = v_TexCoord.y / resolution.y;
+    vec2 p = vec2(x, y) - 0.5;
 
-	vec2 r = vec2(v_TexRect[2] - v_TexRect[0], v_TexRect[3] - v_TexRect[0]);
+	vec2 c = cameraPosition + p / scale;
 
-	vec2 p = (2.0*v_TexCoord-r)/r.y;
-
-    // animation	
-	float tz = scale;
-    float zoo = pow( 0.5, 13.0*tz );
-	vec2 c = vec2(-0.05,.6805) + p*zoo;
-
-    // distance to Mandelbrot
-    float d = distanceToMandelbrot(c);
+    float d = distanceToMandelbrot(c * (drawSize / drawSize.y));
     
-    // do some soft coloring based on distance
-	d = clamp( pow(4.0*d/zoo,0.2), 0.0, 1.0 );
+    //soft coloring based on distance
+	d = clamp(pow(4.0 * d * scale, 0.2), 0.0, 1.0);
     
-    vec3 col = vec3(d);
-    
-    gl_FragColor = vec4( col, v_Colour.w );
+    gl_FragColor = vec4(vec3(d), v_Colour.w);
 }
