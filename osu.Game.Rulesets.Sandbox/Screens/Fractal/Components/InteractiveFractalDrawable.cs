@@ -3,11 +3,14 @@ using osu.Framework.Graphics;
 using osu.Framework.Input.Events;
 using osu.Framework.Graphics.Shaders;
 using osuTK;
+using osu.Framework.Bindables;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Fractal.Components
 {
     public class InteractiveFractalDrawable : ShaderContainer
     {
+        public readonly Bindable<float> ZoomLevel = new Bindable<float>(min_scale);
+
         private const float min_scale = 0.3f;
 
         public InteractiveFractalDrawable()
@@ -16,17 +19,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Fractal.Components
             RelativeSizeAxes = Axes.Both;
         }
 
-        private float scale = min_scale;
         private Vector2 cameraPosition = Vector2.Zero;
 
         protected override bool OnScroll(ScrollEvent e)
         {
             base.OnScroll(e);
 
-            scale += (e.ScrollDelta.Y > 0 ? 1 : -1) * scale * 0.1f;
+            ZoomLevel.Value += (e.ScrollDelta.Y > 0 ? 1 : -1) * ZoomLevel.Value * 0.1f;
 
-            if (scale < min_scale)
-                scale = min_scale;
+            if (ZoomLevel.Value < min_scale)
+                ZoomLevel.Value = min_scale;
 
             return true;
         }
@@ -36,7 +38,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Fractal.Components
         protected override void OnDrag(DragEvent e)
         {
             base.OnDrag(e);
-            cameraPosition -= Vector2.Divide(e.Delta, DrawSize) / scale;
+            cameraPosition -= Vector2.Divide(e.Delta, DrawSize) / ZoomLevel.Value;
         }
 
         protected override ShaderDrawNode CreateShaderDrawNode() => new FractalDrawNode(this);
@@ -58,7 +60,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Fractal.Components
             {
                 base.ApplyState();
 
-                scale = Source.scale;
+                scale = Source.ZoomLevel.Value;
                 cameraPosition = Source.cameraPosition;
                 drawSize = Source.DrawSize;
             }
