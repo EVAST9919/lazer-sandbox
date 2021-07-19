@@ -8,16 +8,6 @@ uniform vec2 drawSize;
 
 float distanceToMandelbrot(vec2 c)
 {
-    #if 1
-    {
-        float c2 = dot(c, c);
-        // skip computation inside M1 - http://iquilezles.org/www/articles/mset_1bulb/mset1bulb.htm
-        if( 256.0*c2*c2 - 96.0*c2 + 32.0*c.x - 3.0 < 0.0 ) return 0.0;
-        // skip computation inside M2 - http://iquilezles.org/www/articles/mset_2bulb/mset2bulb.htm
-        if( 16.0*(c2+2.0*c.x+1.0) - 1.0 < 0.0 ) return 0.0;
-    }
-    #endif
-
     float di = 1.0;
     vec2 z = vec2(0.0);
     float m2 = 0.0;
