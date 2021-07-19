@@ -1,5 +1,6 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Localisation;
 using osu.Game.Overlays;
 using osu.Game.Overlays.Notifications;
 using osu.Game.Overlays.Settings;
@@ -11,7 +12,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
 {
     public class SandboxSettingsSubsection : RulesetSettingsSubsection
     {
-        protected override string Header => "Sandbox";
+        protected override LocalisableString Header => "Sandbox";
 
         [Resolved]
         private OsuGame game { get; set; }
