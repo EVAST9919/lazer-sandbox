@@ -6,31 +6,27 @@ uniform mediump float scale;
 uniform vec2 cameraPosition;
 uniform vec2 drawSize;
 
-float distanceToMandelbrot(vec2 c)
-{
-    float di = 1.0;
-    vec2 z = vec2(0.0);
-    float m2 = 0.0;
-    vec2 dz = vec2(0.0);
-    for (int i=0; i<300; i++)
-    {
-        if (m2 > 1024.0)
-        {
-            di = 0.0;
-            break;
-        }
+const int maxIterations = 300;
 
-        dz = 2.0*vec2(z.x*dz.x-z.y*dz.y, z.x*dz.y + z.y*dz.x) + vec2(1.0,0.0);        
-        z = vec2( z.x*z.x - z.y*z.y, 2.0*z.x*z.y ) + c;
-        m2 = dot(z,z);
+int distanceToMandelbrot(vec2 c)
+{
+    float x = 0.0;
+    float y = 0.0;
+    float x2 = 0.0;
+    float y2 = 0.0;
+
+    int i = 0;
+
+    while (x2 + y2 < 4 && i < maxIterations)
+    {
+        y = 2 * x * y + c.y;
+        x = x2 - y2 + c.x;
+        x2 = x * x;
+        y2 = y * y;
+        i++;
     }
 
-	float d = 0.5*sqrt(dot(z,z)/dot(dz,dz))*log(dot(z,z));
-
-    if (di > 0.5)
-        d=0.0;
-        
-    return d;
+    return i;
 }
 
 void main(void) {
@@ -40,11 +36,7 @@ void main(void) {
     vec2 p = vec2(x, y) - 0.5;
 
 	vec2 c = cameraPosition + p / scale;
-
-    float d = distanceToMandelbrot(c * (drawSize / drawSize.y));
-    
-    //soft coloring based on distance
-	d = clamp(pow(4.0 * d * scale, 0.2), 0.0, 1.0);
-    
-    gl_FragColor = vec4(vec3(1.0 - d), v_Colour.w);
+    int d = distanceToMandelbrot(c * (drawSize / drawSize.y));    
+    float col = float(d) / maxIterations;
+    gl_FragColor = vec4(vec3(col), v_Colour.w);
 }

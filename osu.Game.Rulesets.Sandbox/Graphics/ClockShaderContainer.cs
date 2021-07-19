@@ -26,7 +26,7 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
 
         protected override ShaderDrawNode CreateShaderDrawNode() => new ClockShaderDrawNode(this);
 
-        private class ClockShaderDrawNode : ShaderDrawNode
+        protected class ClockShaderDrawNode : ShaderDrawNode
         {
             protected new ClockShaderContainer Source => (ClockShaderContainer)base.Source;
 
