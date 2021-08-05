@@ -12,6 +12,7 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.Sandbox.Configuration;
+using osu.Game.Rulesets.Yoso.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -48,66 +49,70 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             RelativeSizeAxes = Axes.Both;
             InternalChild = new FlappyDonScalingContainer(SIZE)
             {
-                Children = new Drawable[]
+                Child = new PostProcessingContainer("CRT")
                 {
-                    background = new Backdrop(() => new BackgroundSprite(), 20000),
-                    obstacles = new Obstacles(),
-                    bird = new Bird(),
-                    ground = new Backdrop(() => new GroundSprite(), 2250),
-                    new Container
+                    RelativeSizeAxes = Axes.Both,
+                    Children = new Drawable[]
                     {
-                        Anchor = Anchor.TopCentre,
-                        Origin = Anchor.TopCentre,
-                        Y = 150,
-                        AutoSizeAxes = Axes.Y,
-                        Width = 300,
-                        Children = new Drawable[]
+                        background = new Backdrop(() => new BackgroundSprite(), 20000),
+                        obstacles = new Obstacles(),
+                        bird = new Bird(),
+                        ground = new Backdrop(() => new GroundSprite(), 2250),
+                        new Container
                         {
-                            new Container
+                            Anchor = Anchor.TopCentre,
+                            Origin = Anchor.TopCentre,
+                            Y = 150,
+                            AutoSizeAxes = Axes.Y,
+                            Width = 300,
+                            Children = new Drawable[]
                             {
-                                RelativeSizeAxes = Axes.X,
-                                AutoSizeAxes = Axes.Y,
-                                Width = 0.5f,
-                                Child = drawableScore = new OsuSpriteText
+                                new Container
                                 {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
-                                }
-                            },
-                            new Container
-                            {
-                                Anchor = Anchor.TopRight,
-                                Origin = Anchor.TopRight,
-                                RelativeSizeAxes = Axes.X,
-                                AutoSizeAxes = Axes.Y,
-                                Width = 0.5f,
-                                Child = drawableHighScore = new OsuSpriteText
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Width = 0.5f,
+                                    Child = drawableScore = new OsuSpriteText
+                                    {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                                    }
+                                },
+                                new Container
                                 {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
-                                }
-                            },
+                                    Anchor = Anchor.TopRight,
+                                    Origin = Anchor.TopRight,
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    Width = 0.5f,
+                                    Child = drawableHighScore = new OsuSpriteText
+                                    {
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        Font = OsuFont.GetFont(size: 80, weight: FontWeight.SemiBold)
+                                    }
+                                },
+                            }
+                        },
+                        flash = new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.White,
+                            Alpha = 0
+                        },
+                        readySprite = new Sprite
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Alpha = 0
+                        },
+                        gameOverSprite = new Sprite
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Alpha = 0
                         }
-                    },
-                    flash = new Box
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Colour = Color4.White,
-                        Alpha = 0
-                    },
-                    readySprite = new Sprite
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Alpha = 0
-                    },
-                    gameOverSprite = new Sprite
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Alpha = 0
                     }
                 }
             };
