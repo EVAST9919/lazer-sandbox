@@ -52,12 +52,12 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             FinishTransforms(true);
         }
 
-        public bool OnPressed(GlobalAction action)
+        public bool OnPressed(KeyBindingPressEvent<GlobalAction> e)
         {
             if (!IsVisible.Value)
                 return false;
 
-            switch (action)
+            switch (e.Action)
             {
                 case GlobalAction.Back:
                     IsVisible.Value = false;
@@ -67,7 +67,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             return false;
         }
 
-        public void OnReleased(GlobalAction action)
+        public void OnReleased(KeyBindingReleaseEvent<GlobalAction> e)
         {
         }
 
