@@ -1,7 +1,9 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Platform;
 using osu.Game.Tests.Visual;
+using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Game
 {
@@ -10,13 +12,16 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Game
         [BackgroundDependencyLoader]
         private void load(GameHost host)
         {
-            OsuGame game = new OsuGame();
-            game.SetHost(host);
-
             Children = new Drawable[]
             {
-                game
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Color4.Black,
+                },
             };
+
+            AddGame(new OsuGame());
         }
     }
 }
