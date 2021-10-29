@@ -10,6 +10,7 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics.Containers;
 using osuTK;
+using osu.Framework.Allocation;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
@@ -82,7 +83,8 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
                 set => sectionsFlow.Children = value;
             }
 
-            private readonly OverlayColourProvider colourProvider = new OverlayColourProvider(OverlayColourScheme.Pink);
+            [Cached]
+            private readonly OverlayColourProvider colourProvider = new OverlayColourProvider(OverlayColourScheme.Purple);
             private readonly FillFlowContainer<SandboxSettingsSection> sectionsFlow;
 
             public SettingsContent()
