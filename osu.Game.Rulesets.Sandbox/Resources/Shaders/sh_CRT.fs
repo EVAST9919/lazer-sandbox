@@ -2,6 +2,7 @@
 
 varying mediump vec2 v_TexCoord;
 varying vec4 v_TexRect;
+varying vec4 v_Colour;
 
 const float gradient = 0.003f;
 
@@ -64,5 +65,5 @@ void main(void)
 		col = vec4(lensCol.rgb * smoothEdge, clamp(lensCol.a + 1.0 - smoothEdge, 0.0, 1.0));
 	}
 
-	gl_FragColor = col;
+	gl_FragColor = vec4(col.rgb, v_Colour.a);
 }

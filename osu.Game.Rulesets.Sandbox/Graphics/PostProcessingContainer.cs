@@ -189,7 +189,7 @@ namespace osu.Game.Rulesets.Yoso.Graphics
 
             protected override void DrawContents()
             {
-                DrawFrameBuffer(SharedData.CurrentEffectBuffer, DrawRectangle, Color4.White);
+                DrawFrameBuffer(SharedData.CurrentEffectBuffer, DrawRectangle, DrawColourInfo.Colour);
             }
 
             private void drawFrameBuffer()
