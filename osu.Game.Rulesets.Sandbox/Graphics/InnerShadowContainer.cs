@@ -32,12 +32,11 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
                     Colour = Color4.Black
                 },
                 content = CreateContent(),
-                blur = new BufferedContainer
+                blur = new BufferedContainer(cachedFrameBuffer: true)
                 {
                     BypassAutoSizeAxes = Axes.Both,
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    CacheDrawnFrameBuffer = true,
                     Children = new Drawable[]
                     {
                         outherShadow = new Container
