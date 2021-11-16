@@ -9,6 +9,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
     public class Particles : CurrentRateContainer
     {
         private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
+        private readonly Bindable<ParticlesDirection> direction = new Bindable<ParticlesDirection>();
 
         private ParticlesDrawable particles;
 
@@ -25,23 +26,32 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
         private void load()
         {
             config?.BindWith(SandboxRulesetSetting.ParticlesColour, colour);
+            config?.BindWith(SandboxRulesetSetting.ParticlesDirection, direction);
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
 
-            IsKiai.BindValueChanged(kiai =>
-            {
-                if (kiai.NewValue)
-                {
-                    particles.SetRandomDirection();
-                }
-                else
-                    particles.Direction.Value = MoveDirection.Forward;
-            });
+            direction.BindValueChanged(_ => updateDirection());
+            IsKiai.BindValueChanged(_ => updateDirection(), true);
 
             colour.BindValueChanged(c => particles.Colour = Colour4.FromHex(c.NewValue), true);
+        }
+
+        private void updateDirection()
+        {
+            if (direction.Value == ParticlesDirection.Random)
+            {
+                if (IsKiai.Value)
+                    particles.SetRandomDirection();
+                else
+                    particles.Direction.Value = ParticlesDirection.Forward;
+            }
+            else
+            {
+                particles.Direction.Value = direction.Value;
+            }
         }
     }
 }

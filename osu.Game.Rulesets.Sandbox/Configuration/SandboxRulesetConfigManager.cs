@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using osu.Game.Configuration;
 using osu.Game.Rulesets.Configuration;
+using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components;
 
 namespace osu.Game.Rulesets.Sandbox.Configuration
 {
@@ -26,6 +27,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.VisualizerLayout, VisualizerLayout.TypeA);
             SetDefault(SandboxRulesetSetting.ShowSettingsTip, true);
             SetDefault(SandboxRulesetSetting.ParticlesColour, "#ffffff");
+            SetDefault(SandboxRulesetSetting.ParticlesDirection, ParticlesDirection.Random);
 
             // TypeA settings
             SetDefault(SandboxRulesetSetting.Radius, 350, 200, 500);
@@ -67,6 +69,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         VisualizerLayout,
         ShowSettingsTip,
         ParticlesColour,
+        ParticlesDirection,
 
         // TypeA settings
         Radius,
