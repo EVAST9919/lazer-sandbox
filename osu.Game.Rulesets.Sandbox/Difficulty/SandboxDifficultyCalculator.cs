@@ -11,7 +11,7 @@ namespace osu.Game.Rulesets.Sandbox.Difficulty
 {
     public class SandboxDifficultyCalculator : DifficultyCalculator
     {
-        public SandboxDifficultyCalculator(Ruleset ruleset, WorkingBeatmap beatmap)
+        public SandboxDifficultyCalculator(IRulesetInfo ruleset, IWorkingBeatmap beatmap)
             : base(ruleset, beatmap)
         {
         }
