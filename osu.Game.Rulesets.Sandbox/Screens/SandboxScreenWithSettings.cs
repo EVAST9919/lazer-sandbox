@@ -1,4 +1,5 @@
-﻿using osu.Framework.Graphics;
+﻿using osu.Framework.Bindables;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
 using osu.Game.Rulesets.Sandbox.UI.Settings;
@@ -8,6 +9,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens
     public abstract class SandboxScreenWithSettings : SandboxScreen
     {
         private readonly SandboxSettings settings;
+        protected readonly BindableBool SettingsVisible = new BindableBool();
 
         public SandboxScreenWithSettings()
         {
@@ -43,6 +45,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens
                     }
                 }
             });
+
+            SettingsVisible.BindTo(settings.IsVisible);
         }
 
         protected abstract Drawable CreateContent();
@@ -55,14 +59,14 @@ namespace osu.Game.Rulesets.Sandbox.Screens
         {
             base.OnMouseMove(e);
 
-            if (settings.IsVisible.Value)
+            if (SettingsVisible.Value)
                 return false;
 
             var cursorPosition = ToLocalSpace(e.CurrentState.Mouse.Position);
 
             if (cursorPosition.X > DrawWidth - 5)
             {
-                settings.IsVisible.Value = true;
+                SettingsVisible.Value = true;
                 return true;
             }
 
@@ -71,11 +75,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens
 
         protected override bool OnClick(ClickEvent e)
         {
-            if (!settings.IsVisible.Value)
+            if (!SettingsVisible.Value)
                 return false;
 
-            settings.IsVisible.Value = false;
+            SettingsVisible.Value = false;
             return true;
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            SettingsVisible.UnbindFrom(settings.IsVisible);
+            base.Dispose(isDisposing);
         }
     }
 }
