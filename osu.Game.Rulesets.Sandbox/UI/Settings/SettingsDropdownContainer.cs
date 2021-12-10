@@ -13,7 +13,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
         {
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
-            Padding = new MarginPadding { Horizontal = 15 };
+            Padding = new MarginPadding { Horizontal = 20 };
             InternalChild = new FillFlowContainer
             {
                 RelativeSizeAxes = Axes.X,
