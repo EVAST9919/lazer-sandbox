@@ -7,7 +7,6 @@ using osu.Game.Graphics;
 using osuTK.Graphics;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics.Effects;
-using osu.Framework.Graphics.Sprites;
 using osu.Framework.Allocation;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
 using osu.Game.Graphics.Backgrounds;
@@ -81,7 +80,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 Alpha = 0,
-                Colour = Color4.LightGray
+                Colour = Color4.DarkGray
             }, newBackground =>
             {
                 background?.FadeOut(animation_duration, Easing.OutQuint);
@@ -120,8 +119,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
 
             private readonly WorkingBeatmap beatmap;
-            private SpriteText artist;
-            private SpriteText title;
+            private TextFlowContainer artist;
+            private TextFlowContainer title;
 
             public BeatmapName(WorkingBeatmap beatmap = null)
             {
@@ -131,8 +130,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             [BackgroundDependencyLoader]
             private void load()
             {
-                AutoSizeAxes = Axes.Both;
+                AutoSizeAxes = Axes.Y;
+                RelativeSizeAxes = Axes.X;
                 RelativePositionAxes = Axes.Y;
+                Padding = new MarginPadding { Horizontal = 30 };
 
                 if (beatmap == null)
                     return;
@@ -141,29 +142,40 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    AutoSizeAxes = Axes.Both,
+                    AutoSizeAxes = Axes.Y,
+                    RelativeSizeAxes = Axes.X,
                     Direction = FillDirection.Vertical,
                     Spacing = new Vector2(0, 10),
                     Children = new Drawable[]
                     {
-                        artist = new SpriteText
+                        artist = new TextFlowContainer(t =>
+                        {
+                            t.Font = OsuFont.GetFont(size: 28, weight: FontWeight.Bold);
+                        })
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            Font = OsuFont.GetFont(size: 26, weight: FontWeight.SemiBold),
+                            TextAnchor = Anchor.Centre,
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
                             Text = beatmap.Metadata.Artist
                         },
-                        title = new SpriteText
+                        title = new TextFlowContainer(t =>
+                        {
+                            t.Font = OsuFont.GetFont(size: 22, weight: FontWeight.SemiBold);
+                        })
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            Font = OsuFont.GetFont(size: 20, weight: FontWeight.SemiBold),
-                            Text = getShortTitle(beatmap.Metadata.Title)
+                            TextAnchor = Anchor.Centre,
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Text = beatmap.Metadata.Title
                         }
                     }
                 }.WithEffect(new BlurEffect
                 {
-                    Colour = Color4.Black.Opacity(0.8f),
+                    Colour = Color4.Black.Opacity(0.7f),
                     DrawOriginal = true,
                     PadExtent = true,
                     Sigma = new Vector2(5)
@@ -185,39 +197,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 
                 colour.BindValueChanged(c => artist.Colour = title.Colour = Colour4.FromHex(c.NewValue), true);
             }
-
-            /// <summary>
-            /// Trims additional info in brackets in beatmap title (if exists).
-            /// </summary>
-            /// <param name="longTitle">The title to trim.</param>
-            /// <returns></returns>
-            private static string getShortTitle(string longTitle)
-            {
-                var newTitle = longTitle;
-
-                for (int i = 0; i < title_chars.Length; i++)
-                {
-                    if (newTitle.Contains(title_chars[i]))
-                    {
-                        var charIndex = newTitle.IndexOf(title_chars[i]);
-
-                        if (charIndex != 0)
-                            newTitle = newTitle.Substring(0, charIndex);
-                    }
-                }
-
-                if (newTitle.EndsWith(" "))
-                    newTitle = newTitle[0..^1];
-
-                return newTitle;
-            }
-
-            private static readonly char[] title_chars = new[]
-            {
-                '(',
-                '-',
-                '~'
-            };
         }
     }
 }
