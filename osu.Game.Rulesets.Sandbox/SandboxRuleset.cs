@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Sandbox
 {
     public class SandboxRuleset : Ruleset
     {
-        public static readonly string VERSION = "2021.1211.1";
+        public static readonly string VERSION = "2021.1228.0";
 
         public override DrawableRuleset CreateDrawableRulesetWith(IBeatmap beatmap, IReadOnlyList<Mod> mods = null) => new DrawableSandboxRuleset(this, beatmap, mods);
 
