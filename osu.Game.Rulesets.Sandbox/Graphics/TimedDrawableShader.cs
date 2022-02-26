@@ -2,25 +2,18 @@
 
 namespace osu.Game.Rulesets.Sandbox.Graphics
 {
-    public class ClockShaderContainer : ShaderContainer
+    public class TimedDrawableShader : DrawableShader
     {
         private float currentTime;
-        private float loadTime;
 
-        public ClockShaderContainer(string shaderName)
+        public TimedDrawableShader(string shaderName)
             : base(shaderName)
         {
         }
 
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-            loadTime = (float)Clock.CurrentTime;
-        }
-
         protected override void Update()
         {
-            currentTime = (float)(Clock.CurrentTime - loadTime) / 1000;
+            currentTime = (float)Clock.CurrentTime / 1000;
             base.Update();
         }
 
@@ -28,9 +21,9 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
 
         protected class ClockShaderDrawNode : ShaderDrawNode
         {
-            protected new ClockShaderContainer Source => (ClockShaderContainer)base.Source;
+            protected new TimedDrawableShader Source => (TimedDrawableShader)base.Source;
 
-            public ClockShaderDrawNode(ClockShaderContainer source)
+            public ClockShaderDrawNode(TimedDrawableShader source)
                 : base(source)
             {
             }
@@ -40,7 +33,6 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
             public override void ApplyState()
             {
                 base.ApplyState();
-
                 currentTime = Source.currentTime;
             }
 

@@ -10,7 +10,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
     public class TestSceneShader : RulesetTestScene
     {
         private readonly Container rotatingContainer;
-        private readonly Container placeholder;
 
         public TestSceneShader()
         {
@@ -30,7 +29,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
                         Alpha = 0,
                         AlwaysPresent = true
                     },
-                    placeholder = new Container
+                    new TimedDrawableShader("test")
                     {
                         RelativeSizeAxes = Axes.Both
                     }
@@ -41,15 +40,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            AddStep("Load test shader", () => placeholder.Child = new ClockShaderContainer("test")
-            {
-                RelativeSizeAxes = Axes.Both
-            });
-            AddStep("Load fractal shader", () => placeholder.Child = new ClockShaderContainer("fractal")
-            {
-                RelativeSizeAxes = Axes.Both
-            });
 
             AddStep("Spin", () => rotatingContainer.Spin(10000, RotationDirection.Clockwise));
             AddStep("Stop spin", () =>

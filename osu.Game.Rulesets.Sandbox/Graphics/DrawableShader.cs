@@ -8,13 +8,15 @@ using osu.Framework.Graphics.Textures;
 
 namespace osu.Game.Rulesets.Sandbox.Graphics
 {
-    public class ShaderContainer : Drawable
+    public abstract class DrawableShader : Drawable
     {
-        private IShader shader;
+        [Resolved]
+        private Framework.Game game { get; set; }
 
         private readonly string shaderName;
+        private IShader shader;
 
-        public ShaderContainer(string shaderName)
+        protected DrawableShader(string shaderName)
         {
             this.shaderName = shaderName;
         }
@@ -37,13 +39,14 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
 
         protected class ShaderDrawNode : DrawNode
         {
-            protected new ShaderContainer Source => (ShaderContainer)base.Source;
+            protected new DrawableShader Source => (DrawableShader)base.Source;
 
             private IShader shader;
 
             private Quad screenSpaceDrawQuad;
+            private Quad gameQuad;
 
-            public ShaderDrawNode(ShaderContainer source)
+            public ShaderDrawNode(DrawableShader source)
                 : base(source)
             {
             }
@@ -54,23 +57,33 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
 
                 shader = Source.shader;
                 screenSpaceDrawQuad = Source.ScreenSpaceDrawQuad;
+                gameQuad = Source.game.ScreenSpaceDrawQuad;
             }
 
             public override void Draw(Action<TexturedVertex2D> vertexAction)
             {
                 base.Draw(vertexAction);
+                Draw(screenSpaceDrawQuad, vertexAction);
+            }
 
+            protected virtual void Draw(Quad screenSpaceDrawQuad, Action<TexturedVertex2D> vertexAction)
+            {
                 if (shader == null)
+                    return;
+
+                if (!gameQuad.AABBFloat.IntersectsWith(screenSpaceDrawQuad.AABBFloat))
                     return;
 
                 shader.Bind();
 
                 UpdateUniforms(shader);
 
-                DrawQuad(Texture.WhitePixel, screenSpaceDrawQuad, DrawColourInfo.Colour);
+                DrawQuad(TextureToDraw, screenSpaceDrawQuad, DrawColourInfo.Colour, vertexAction: vertexAction);
 
                 shader.Unbind();
             }
+
+            protected virtual Texture TextureToDraw => Texture.WhitePixel;
 
             protected virtual void UpdateUniforms(IShader shader)
             {
