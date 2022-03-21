@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
         public CheckSandboxUpdatesButton()
         {
-            RelativeSizeAxes = Axes.X;
+            Width = 300;
             AutoSizeAxes = Axes.Y;
             InternalChildren = new Drawable[]
             {

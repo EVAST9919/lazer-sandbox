@@ -28,17 +28,25 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
                         new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) }
                     }
                 },
-                new Container
+                new FillFlowContainer
                 {
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
-                    AutoSizeAxes = Axes.Y,
-                    Width = 400,
+                    AutoSizeAxes = Axes.Both,
+                    Direction = FillDirection.Horizontal,
                     Margin = new MarginPadding { Bottom = 30 },
-                    Child = new CheckSandboxUpdatesButton
+                    Children = new Drawable[]
                     {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre
+                        new CheckSandboxUpdatesButton
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre
+                        },
+                        new SupportButton
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre
+                        }
                     }
                 }
             };
