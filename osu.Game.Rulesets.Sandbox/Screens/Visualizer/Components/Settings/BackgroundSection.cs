@@ -26,18 +26,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
                     LabelText = "Show particles",
                     Current = rulesetConfig.GetBindable<bool>(SandboxRulesetSetting.ShowParticles)
                 },
-                new SettingsEnumDropdown<ParticlesDirection>
-                {
-                    LabelText = "Particles direction",
-                    Current = rulesetConfig.GetBindable<ParticlesDirection>(SandboxRulesetSetting.ParticlesDirection)
-                },
-                new ColourPickerDropdown("Particles colour", SandboxRulesetSetting.ParticlesColour),
-                new SettingsSlider<int>
-                {
-                    LabelText = "Particle count",
-                    Current = rulesetConfig.GetBindable<int>(SandboxRulesetSetting.ParticleCount),
-                    KeyboardStep = 1
-                },
+                new ParticleSettings(),
                 new SettingsSlider<double>
                 {
                     LabelText = "Background dim",
