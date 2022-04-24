@@ -18,7 +18,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
         private OsuGame game { get; set; }
 
         [Resolved]
-        private NotificationOverlay notifications { get; set; }
+        private INotificationOverlay notifications { get; set; }
 
         public SandboxSettingsSubsection(Ruleset ruleset)
             : base(ruleset)

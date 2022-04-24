@@ -14,28 +14,28 @@ namespace osu.Game.Rulesets.Sandbox.Screens
             Beatmap.BindValueChanged(b => updateComponentFromBeatmap(b.NewValue));
         }
 
-        public override void OnEntering(IScreen last)
+        public override void OnEntering(ScreenTransitionEvent e)
         {
-            base.OnEntering(last);
+            base.OnEntering(e);
             this.FadeInFromZero(250, Easing.OutQuint);
             updateComponentFromBeatmap(Beatmap.Value);
         }
 
-        public override bool OnExiting(IScreen next)
+        public override bool OnExiting(ScreenExitEvent e)
         {
             this.FadeOut(250, Easing.OutQuint);
-            return base.OnExiting(next);
+            return base.OnExiting(e);
         }
 
-        public override void OnResuming(IScreen last)
+        public override void OnResuming(ScreenTransitionEvent e)
         {
-            base.OnResuming(last);
+            base.OnResuming(e);
             this.FadeIn(250, Easing.OutQuint);
         }
 
-        public override void OnSuspending(IScreen next)
+        public override void OnSuspending(ScreenTransitionEvent e)
         {
-            base.OnSuspending(next);
+            base.OnSuspending(e);
             this.FadeOut(250, Easing.OutQuint);
         }
 
