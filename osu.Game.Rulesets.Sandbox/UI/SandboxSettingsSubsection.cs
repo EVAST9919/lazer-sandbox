@@ -1,8 +1,8 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Localisation;
-using osu.Game.Overlays;
-using osu.Game.Overlays.Notifications;
+using osu.Game.Graphics.Sprites;
 using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.Main;
@@ -16,9 +16,6 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
         [Resolved]
         private OsuGame game { get; set; }
-
-        [Resolved]
-        private INotificationOverlay notifications { get; set; }
 
         public SandboxSettingsSubsection(Ruleset ruleset)
             : base(ruleset)
@@ -39,13 +36,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                         {
                             var screenStack = game.GetScreenStack();
                             if (!(screenStack.CurrentScreen is MainMenu))
-                            {
-                                notifications.Post(new SimpleErrorNotification
-                                {
-                                    Text = "This feature can be used only in Main menu!"
-                                });
                                 return;
-                            }
 
                             var settingOverlay = game.GetSettingsOverlay();
                             screenStack?.Push(new MainRulesetScreen());
@@ -54,6 +45,17 @@ namespace osu.Game.Rulesets.Sandbox.UI
                         catch
                         {
                         }
+                    }
+                },
+                new Container
+                {
+                    RelativeSizeAxes = Axes.X,
+                    AutoSizeAxes = Axes.Y,
+                    Child = new OsuSpriteText
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Text = "(Available only in the Main Menu)"
                     }
                 }
             };
