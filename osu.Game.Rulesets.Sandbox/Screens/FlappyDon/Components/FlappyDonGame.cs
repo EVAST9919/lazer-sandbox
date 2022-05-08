@@ -12,7 +12,6 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.Sandbox.Configuration;
-using osu.Game.Rulesets.Yoso.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
@@ -49,7 +48,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             RelativeSizeAxes = Axes.Both;
             InternalChild = new FlappyDonScalingContainer(SIZE)
             {
-                Child = new PostProcessingContainer("CRT")
+                Child = new Container
                 {
                     RelativeSizeAxes = Axes.Both,
                     Children = new Drawable[]
