@@ -1,11 +1,11 @@
 ﻿using System;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.OpenGL.Vertices;
+using osu.Framework.Graphics.Rendering;
 using osu.Framework.Graphics.Shaders;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Platform;
 
 namespace osu.Game.Rulesets.Sandbox.Graphics
 {
@@ -40,16 +40,12 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
             }
         }
 
-        public SandboxProgressRing()
-        {
-            Texture = Texture.WhitePixel;
-        }
-
         [BackgroundDependencyLoader]
-        private void load(ShaderManager shaders)
+        private void load(ShaderManager shaders, GameHost host)
         {
             TextureShader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, "ring");
             RoundedTextureShader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, "ring");
+            Texture = host.Renderer.WhitePixel;
         }
 
         protected override DrawNode CreateDrawNode() => new CircularProgressDrawNode(this);
@@ -76,13 +72,15 @@ namespace osu.Game.Rulesets.Sandbox.Graphics
                 texel = 1f / Source.ScreenSpaceDrawQuad.Size.X;
             }
 
-            protected override void Blit(Action<TexturedVertex2D> vertexAction)
+            protected override void Blit(IRenderer renderer)
             {
-                Shader.GetUniform<float>("innerRadius").UpdateValue(ref innerRadius);
-                Shader.GetUniform<float>("progress").UpdateValue(ref progress);
-                Shader.GetUniform<float>("texel").UpdateValue(ref texel);
+                var shader = GetAppropriateShader(renderer);
 
-                base.Blit(vertexAction);
+                shader.GetUniform<float>("innerRadius").UpdateValue(ref innerRadius);
+                shader.GetUniform<float>("progress").UpdateValue(ref progress);
+                shader.GetUniform<float>("texel").UpdateValue(ref texel);
+
+                base.Blit(renderer);
             }
         }
     }

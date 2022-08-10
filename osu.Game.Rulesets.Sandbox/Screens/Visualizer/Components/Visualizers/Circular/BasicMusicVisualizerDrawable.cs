@@ -1,6 +1,7 @@
 ﻿using System;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Primitives;
+using osu.Framework.Graphics.Rendering;
 using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Circular
@@ -16,7 +17,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Ci
             {
             }
 
-            protected override void DrawBar(int index, float data, float spacing, Vector2 inflation)
+            protected override void DrawBar(int index, float data, float spacing, Vector2 inflation, IRenderer renderer)
             {
                 float rotation = MathHelper.DegreesToRadians(index * spacing - 90);
                 float rotationCos = MathF.Cos(rotation);
@@ -35,7 +36,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Ci
                         Vector2Extensions.Transform(barPosition + bottomOffset + amplitudeOffset, DrawInfo.Matrix)
                     );
 
-                DrawQuad(
+                renderer.DrawQuad(
                     Texture,
                     rectangle,
                     DrawColourInfo.Colour,
