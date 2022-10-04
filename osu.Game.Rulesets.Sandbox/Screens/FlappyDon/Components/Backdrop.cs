@@ -85,7 +85,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             {
                 // Update the number of sprites in the list to match the number we need to cover the whole container
                 while (Children.Count > spriteNum)
-                    Remove(Children[Children.Count - 1]);
+                    Remove(Children[Children.Count - 1], true);
 
                 while (Children.Count < spriteNum)
                     Add(createSprite());

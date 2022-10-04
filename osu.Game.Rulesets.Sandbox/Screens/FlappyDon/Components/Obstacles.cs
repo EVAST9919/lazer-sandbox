@@ -137,7 +137,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
             while (obstaclesToRemove.TryPop(out var obstacle))
             {
-                RemoveInternal(obstacle);
+                RemoveInternal(obstacle, true);
 
                 // Increase the obstacle count, which will reset threshold detection
                 // for the pipe after this one.
