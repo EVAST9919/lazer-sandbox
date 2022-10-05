@@ -59,30 +59,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                 parts.Add(new Particle());
         }
 
-        public void SetRandomDirection()
-        {
-            var count = Enum.GetValues(typeof(ParticlesDirection)).Length;
-            var newDirection = (ParticlesDirection)RNG.Next(1, count);
-
-            if (Direction.Value == newDirection)
-            {
-                SetRandomDirection();
-                return;
-            }
-
-            Direction.Value = newDirection;
-        }
-
         protected override void Update()
         {
             base.Update();
 
+            var currentTime = Clock.CurrentTime;
             var timeDiff = (float)Clock.ElapsedFrameTime * depth_speed_multiplier;
             var multiplier = Math.Max(DrawSize.Y, DrawSize.X) / Math.Min(DrawSize.Y, DrawSize.X);
             bool horizontalIsFaster = DrawSize.Y >= DrawSize.X;
 
             foreach (var p in parts)
-                p.UpdateCurrentPosition(timeDiff, Direction.Value, multiplier, horizontalIsFaster);
+                p.UpdateCurrentPosition(currentTime, timeDiff, Direction.Value, multiplier, horizontalIsFaster);
 
             Invalidate(Invalidation.DrawNode);
         }
@@ -167,6 +154,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             public bool Backwards { get; set; }
 
+            private OpenSimplexNoise noise;
+            private int seed;
+
             public Particle()
             {
                 reset(ParticlesDirection.Forward, false);
@@ -174,6 +164,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             private void reset(ParticlesDirection direction, bool maxDepth = true)
             {
+                seed = RNG.Next();
+                noise = new OpenSimplexNoise(seed);
+
                 switch (direction)
                 {
                     default:
@@ -214,7 +207,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                 updateProperties();
             }
 
-            public void UpdateCurrentPosition(float timeDifference, ParticlesDirection direction, float multiplier, bool horizontalIsFaster)
+            public void UpdateCurrentPosition(double time, float timeDifference, ParticlesDirection direction, float multiplier, bool horizontalIsFaster)
             {
                 switch (direction)
                 {
@@ -258,6 +251,22 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                         {
                             reset(direction);
                         }
+                        break;
+
+                    case ParticlesDirection.Random:
+                        initialPosition = null;
+
+                        Vector2 offset = new Vector2((float)noise.Evaluate(((float)time + seed) / 1000f, 0), (float)noise.Evaluate(((float)time + seed) / 1000f, 100));
+                        float baseComponent = max_depth / currentDepth * timeDifference;
+
+                        CurrentPosition += new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * offset.X / 5000, baseComponent * (horizontalIsFaster ? 1 : multiplier) * offset.Y / 5000);
+
+                        if (outOfBounds)
+                        {
+                            reset(direction);
+                            return;
+                        }
+
                         break;
 
                     case ParticlesDirection.Right:

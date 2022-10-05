@@ -41,17 +41,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
         private void updateDirection()
         {
-            if (direction.Value == ParticlesDirection.Random)
-            {
-                if (IsKiai.Value)
-                    particles.SetRandomDirection();
-                else
-                    particles.Direction.Value = ParticlesDirection.Forward;
-            }
-            else
-            {
-                particles.Direction.Value = direction.Value;
-            }
+            particles.Direction.Value = direction.Value;
         }
     }
 }

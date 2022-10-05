@@ -51,7 +51,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
         {
             base.LoadComplete();
             AddSliderStep("Restart", 1, 30000, 1000, v => particles.Restart(v));
-            AddStep("Toggle direction", particles.SetRandomDirection);
+            AddSliderStep("Direction", 0, 6, 0, d => particles.Direction.Value = (ParticlesDirection)d);
         }
     }
 }
