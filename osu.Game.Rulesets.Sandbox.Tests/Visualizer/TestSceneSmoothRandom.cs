@@ -4,12 +4,16 @@ using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Tests.Visual;
 using osu.Framework.Graphics;
 using osuTK;
+using System;
+using osu.Framework.Graphics.Containers;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
 {
     public class TestSceneSmoothRandom : OsuTestScene
     {
-        private readonly OsuSpriteText text;
+        private readonly OsuSpriteText valueText;
+        private readonly OsuSpriteText minText;
+        private readonly OsuSpriteText maxText;
         private readonly OpenSimplexNoise noise;
         private readonly Circle circle;
 
@@ -19,7 +23,18 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
 
             Children = new Drawable[]
             {
-                text = new OsuSpriteText(),
+                new FillFlowContainer
+                {
+                    Margin = new MarginPadding(10),
+                    Direction = FillDirection.Vertical,
+                    Spacing = new Vector2(0, 10),
+                    Children = new Drawable[]
+                    {
+                        valueText = new OsuSpriteText(),
+                        minText = new OsuSpriteText(),
+                        maxText = new OsuSpriteText()
+                    }
+                },
                 circle = new Circle
                 {
                     Anchor = Anchor.Centre,
@@ -29,13 +44,21 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
             };
         }
 
+        private double min, max;
+
         protected override void Update()
         {
             base.Update();
 
             var value = noise.Evaluate(Time.Current / 1000, 0.0);
 
-            text.Text = value.ToString();
+            min = Math.Min(value, min);
+            max = Math.Max(value, max);
+
+            valueText.Text = $"Current: {value}";
+            minText.Text = $"Min: {min}";
+            maxText.Text = $"Max: {max}";
+
             circle.Y = (float)value * 100;
         }
     }

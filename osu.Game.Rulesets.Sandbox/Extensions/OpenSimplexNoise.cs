@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace osu.Game.Rulesets.Sandbox.Extensions
 {
@@ -16,15 +15,15 @@ namespace osu.Game.Rulesets.Sandbox.Extensions
 
         private static double[] gradients2D = new double[]
         {
-             5,  2,    2,  5,
-            -5,  2,   -2,  5,
-             5, -2,    2, -5,
-            -5, -2,   -2, -5,
+             5, 2, 2, 5,
+            -5, 2, -2, 5,
+             5, -2, 2, -5,
+            -5, -2, -2, -5,
         };
 
-        private static Contribution2[] lookup2D;
+        private readonly Contribution[] lookup2D = new Contribution[64];
 
-        static OpenSimplexNoise()
+        public OpenSimplexNoise(long seed = 0)
         {
             var base2D = new int[][]
             {
@@ -34,14 +33,14 @@ namespace osu.Game.Rulesets.Sandbox.Extensions
             var p2D = new int[] { 0, 0, 1, -1, 0, 0, -1, 1, 0, 2, 1, 1, 1, 2, 2, 0, 1, 2, 0, 2, 1, 0, 0, 0 };
             var lookupPairs2D = new int[] { 0, 1, 1, 0, 4, 1, 17, 0, 20, 2, 21, 2, 22, 5, 23, 5, 26, 4, 39, 3, 42, 4, 43, 3 };
 
-            var contributions2D = new Contribution2[p2D.Length / 4];
+            var contributions2D = new Contribution[p2D.Length / 4];
             for (int i = 0; i < p2D.Length; i += 4)
             {
                 var baseSet = base2D[p2D[i]];
-                Contribution2 previous = null, current = null;
+                Contribution previous = null, current = null;
                 for (int k = 0; k < baseSet.Length; k += 3)
                 {
-                    current = new Contribution2(baseSet[k], baseSet[k + 1], baseSet[k + 2]);
+                    current = new Contribution(baseSet[k], baseSet[k + 1], baseSet[k + 2]);
                     if (previous == null)
                     {
                         contributions2D[i / 4] = current;
@@ -52,30 +51,12 @@ namespace osu.Game.Rulesets.Sandbox.Extensions
                     }
                     previous = current;
                 }
-                current.Next = new Contribution2(p2D[i + 1], p2D[i + 2], p2D[i + 3]);
+                current.Next = new Contribution(p2D[i + 1], p2D[i + 2], p2D[i + 3]);
             }
 
-            lookup2D = new Contribution2[64];
             for (var i = 0; i < lookupPairs2D.Length; i += 2)
-            {
                 lookup2D[lookupPairs2D[i]] = contributions2D[lookupPairs2D[i + 1]];
-            }
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int fastFloor(double x)
-        {
-            var xi = (int)x;
-            return x < xi ? xi - 1 : xi;
-        }
-
-        public OpenSimplexNoise()
-            : this(DateTime.Now.Ticks)
-        {
-        }
-
-        public OpenSimplexNoise(long seed)
-        {
             perm = new byte[256];
             perm2D = new byte[256];
             perm3D = new byte[256];
@@ -152,13 +133,20 @@ namespace osu.Game.Rulesets.Sandbox.Extensions
             return value * norm_2d;
         }
 
-        private class Contribution2
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int fastFloor(double x)
+        {
+            var xi = (int)x;
+            return x < xi ? xi - 1 : xi;
+        }
+
+        private class Contribution
         {
             public double Dx, Dy;
             public int Xsb, Ysb;
-            public Contribution2 Next;
+            public Contribution Next;
 
-            public Contribution2(double multiplier, int xsb, int ysb)
+            public Contribution(double multiplier, int xsb, int ysb)
             {
                 Dx = -xsb - multiplier * squish_2d;
                 Dy = -ysb - multiplier * squish_2d;

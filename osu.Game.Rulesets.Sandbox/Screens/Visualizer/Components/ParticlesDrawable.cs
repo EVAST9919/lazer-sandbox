@@ -209,6 +209,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             public void UpdateCurrentPosition(double time, float timeDifference, ParticlesDirection direction, float multiplier, bool horizontalIsFaster)
             {
+                float baseComponent = max_depth / currentDepth * timeDifference;
+
                 switch (direction)
                 {
                     default:
@@ -245,11 +247,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
                     case ParticlesDirection.Left:
                         initialPosition = null;
-                        CurrentPosition += new Vector2(max_depth / currentDepth * timeDifference * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
+                        CurrentPosition += new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
 
-                        if (CurrentPosition.X > 0.5f)
+                        if (outOfBounds)
                         {
                             reset(direction);
+                            return;
                         }
                         break;
 
@@ -257,7 +260,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                         initialPosition = null;
 
                         Vector2 offset = new Vector2((float)noise.Evaluate(((float)time + seed) / 1000f, 0), (float)noise.Evaluate(((float)time + seed) / 1000f, 100));
-                        float baseComponent = max_depth / currentDepth * timeDifference;
 
                         CurrentPosition += new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * offset.X / 5000, baseComponent * (horizontalIsFaster ? 1 : multiplier) * offset.Y / 5000);
 
@@ -266,36 +268,38 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                             reset(direction);
                             return;
                         }
-
                         break;
 
                     case ParticlesDirection.Right:
                         initialPosition = null;
-                        CurrentPosition -= new Vector2(max_depth / currentDepth * timeDifference * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
+                        CurrentPosition -= new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
 
-                        if (CurrentPosition.X < -0.5f)
+                        if (outOfBounds)
                         {
                             reset(direction);
+                            return;
                         }
                         break;
 
                     case ParticlesDirection.Up:
                         initialPosition = null;
-                        CurrentPosition += new Vector2(0, max_depth / currentDepth * timeDifference * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
+                        CurrentPosition += new Vector2(0, baseComponent * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
 
-                        if (CurrentPosition.Y > 0.5f)
+                        if (outOfBounds)
                         {
                             reset(direction);
+                            return;
                         }
                         break;
 
                     case ParticlesDirection.Down:
                         initialPosition = null;
-                        CurrentPosition -= new Vector2(0, max_depth / currentDepth * timeDifference * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
+                        CurrentPosition -= new Vector2(0, baseComponent * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
 
-                        if (CurrentPosition.Y < -0.5f)
+                        if (outOfBounds)
                         {
                             reset(direction);
+                            return;
                         }
                         break;
                 }
