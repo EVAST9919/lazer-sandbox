@@ -28,6 +28,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
             SetDefault(SandboxRulesetSetting.ShowSettingsTip, true);
             SetDefault(SandboxRulesetSetting.ParticlesColour, "#ffffff");
             SetDefault(SandboxRulesetSetting.ParticlesDirection, ParticlesDirection.Random);
+            SetDefault(SandboxRulesetSetting.GlobalSpeed, 100, 1, 200);
 
             // TypeA settings
             SetDefault(SandboxRulesetSetting.Radius, 350, 200, 500);
@@ -70,6 +71,7 @@ namespace osu.Game.Rulesets.Sandbox.Configuration
         ShowSettingsTip,
         ParticlesColour,
         ParticlesDirection,
+        GlobalSpeed,
 
         // TypeA settings
         Radius,

@@ -22,18 +22,24 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
             Spacing = new Vector2(0, 5);
             Children = new Drawable[]
             {
-                new SettingsEnumDropdown<ParticlesDirection>
-                {
-                    LabelText = "Particles direction",
-                    Current = rulesetConfig.GetBindable<ParticlesDirection>(SandboxRulesetSetting.ParticlesDirection)
-                },
-                new ColourPickerDropdown("Particles colour", SandboxRulesetSetting.ParticlesColour),
                 new SettingsSlider<int>
                 {
                     LabelText = "Particle count",
                     Current = rulesetConfig.GetBindable<int>(SandboxRulesetSetting.ParticleCount),
                     KeyboardStep = 1
-                }
+                },
+                new SettingsSlider<int>
+                {
+                    LabelText = "Global Speed",
+                    Current = rulesetConfig.GetBindable<int>(SandboxRulesetSetting.GlobalSpeed),
+                    KeyboardStep = 1
+                },
+                new SettingsEnumDropdown<ParticlesDirection>
+                {
+                    LabelText = "Direction",
+                    Current = rulesetConfig.GetBindable<ParticlesDirection>(SandboxRulesetSetting.ParticlesDirection)
+                },
+                new ColourPickerDropdown("Colour", SandboxRulesetSetting.ParticlesColour)
             };
 
             rulesetConfig.BindWith(SandboxRulesetSetting.ShowParticles, showParticles);

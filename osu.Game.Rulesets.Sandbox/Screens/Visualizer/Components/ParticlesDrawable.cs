@@ -29,6 +29,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
         private SandboxRulesetConfigManager config { get; set; }
 
         private readonly Bindable<int> count = new Bindable<int>(1000);
+        private readonly Bindable<int> globalSpeed = new Bindable<int>(100);
         private readonly BindableBool isVisible = new BindableBool(true);
 
         private readonly List<Particle> parts = new List<Particle>();
@@ -41,6 +42,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             config?.BindWith(SandboxRulesetSetting.ParticleCount, count);
             config?.BindWith(SandboxRulesetSetting.ShowParticles, isVisible);
+            config?.BindWith(SandboxRulesetSetting.GlobalSpeed, globalSpeed);
         }
 
         protected override void LoadComplete()
@@ -69,7 +71,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
             bool horizontalIsFaster = DrawSize.Y >= DrawSize.X;
 
             foreach (var p in parts)
-                p.UpdateCurrentPosition(currentTime, timeDiff, Direction.Value, multiplier, horizontalIsFaster);
+                p.UpdateCurrentPosition(currentTime, timeDiff, Direction.Value, multiplier, horizontalIsFaster, globalSpeed.Value);
 
             Invalidate(Invalidation.DrawNode);
         }
@@ -207,15 +209,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                 updateProperties();
             }
 
-            public void UpdateCurrentPosition(double time, float timeDifference, ParticlesDirection direction, float multiplier, bool horizontalIsFaster)
+            public void UpdateCurrentPosition(double time, float timeDifference, ParticlesDirection direction, float multiplier, bool horizontalIsFaster, int globalSpeed)
             {
-                float baseComponent = max_depth / currentDepth * timeDifference;
+                float globalSpeedMultiplier = globalSpeed / 100f;
+                float baseComponent = max_depth / currentDepth * timeDifference * globalSpeedMultiplier;
 
                 switch (direction)
                 {
                     default:
                     case ParticlesDirection.Forward:
-                        currentDepth -= timeDifference;
+                        currentDepth -= timeDifference * globalSpeedMultiplier;
 
                         if (currentDepth < min_depth)
                         {
@@ -234,7 +237,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                         break;
 
                     case ParticlesDirection.Backwards:
-                        currentDepth += timeDifference;
+                        currentDepth += timeDifference * globalSpeedMultiplier;
 
                         if (currentDepth > max_depth)
                         {
