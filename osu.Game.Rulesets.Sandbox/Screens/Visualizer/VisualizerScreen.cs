@@ -107,7 +107,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer
 
             public bool ProvidingUserCursor => true;
 
-            public CursorContainer MenuCursor => new EmptyCursor();
+            public CursorContainer Cursor => new EmptyCursor();
 
             protected override bool OnHover(HoverEvent e)
             {
