@@ -63,7 +63,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
 
         private class Shape : Drawable, ITexturedShaderDrawable
         {
-            public IShader RoundedTextureShader { get; private set; }
             public IShader TextureShader { get; private set; }
 
             public Shape()
@@ -74,7 +73,6 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
             [BackgroundDependencyLoader]
             private void load(ShaderManager shaders)
             {
-                RoundedTextureShader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE_ROUNDED);
                 TextureShader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE);
             }
 
@@ -118,9 +116,8 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
                     base.Draw(renderer);
 
                     var texture = renderer.WhitePixel;
-                    var shader = GetAppropriateShader(renderer);
 
-                    shader.Bind();
+                    TextureShader.Bind();
 
                     texture.Bind();
 
@@ -130,7 +127,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
                         Vector2Extensions.Transform(bottomLeft, DrawInfo.Matrix),
                         Vector2Extensions.Transform(bottomRight, DrawInfo.Matrix)), DrawColourInfo.Colour);
 
-                    shader.Unbind();
+                    TextureShader.Unbind();
                 }
             }
         }
