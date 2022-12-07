@@ -2,17 +2,17 @@
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Utils;
+using osu.Framework.Graphics.UserInterface;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
-using osu.Game.Screens.Ranking.Expanded.Accuracy;
 using osuTK;
 using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 {
-    public class CircularBeatmapLogo : CurrentBeatmapProvider
+    public partial class CircularBeatmapLogo : CurrentBeatmapProvider
     {
         private const int base_size = 350;
+        private const int progress_padding = 10;
 
         public Color4 ProgressColour
         {
@@ -22,7 +22,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 
         public new Bindable<int> Size = new Bindable<int>(base_size);
 
-        private Progress progress;
+        private CircularProgress progress;
+        private Container progressWrapper;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -38,12 +39,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                 },
-                progress = new Progress
+                progressWrapper = new Container
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
-                    InnerRadius = 0.03f,
+                    Child = progress = new CircularProgress
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        InnerRadius = 0.03f,
+                    }
                 }
             };
         }
@@ -55,7 +60,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             Size.BindValueChanged(s =>
             {
                 base.Size = new Vector2(s.NewValue);
-                progress.UpdateSize(s.NewValue);
+                progressWrapper.Padding = new MarginPadding(progress_padding * s.NewValue / base_size);
             }, true);
         }
 
@@ -65,33 +70,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 
             var track = Beatmap.Value?.Track;
             progress.Current.Value = (track == null || track.Length == 0) ? 0 : (track.CurrentTime / track.Length);
-        }
-
-        private class Progress : SmoothCircularProgress
-        {
-            private static readonly float sigma = 5;
-
-            private BufferedContainer bufferedContainer => (BufferedContainer)InternalChild;
-
-            public new Color4 Colour
-            {
-                get => bufferedContainer.Colour;
-                set => bufferedContainer.Colour = bufferedContainer.EffectColour = value;
-            }
-
-            public Progress()
-            {
-                bufferedContainer.DrawOriginal = true;
-            }
-
-            public void UpdateSize(float size)
-            {
-                var newSigma = sigma * size / base_size;
-                var padding = Blur.KernelSize(newSigma);
-
-                bufferedContainer.BlurSigma = new Vector2(newSigma);
-                bufferedContainer.Padding = new MarginPadding(padding);
-            }
         }
     }
 }
