@@ -12,7 +12,7 @@ using osu.Framework.Audio.Track;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 {
-    public class DrawableNumber : BeatSyncedContainer
+    public partial class DrawableNumber : BeatSyncedContainer
     {
         public const int SIZE = 100;
 

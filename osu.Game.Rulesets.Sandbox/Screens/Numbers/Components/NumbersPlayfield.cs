@@ -17,10 +17,10 @@ using osuTK.Input;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 {
-    public class NumbersPlayfield : CompositeDrawable
+    public partial class NumbersPlayfield : CompositeDrawable
     {
         private const int spacing = 10;
-        private const int move_duration = 175;
+        private const int move_duration = 150;
 
         public BindableInt Score = new BindableInt();
 
@@ -510,7 +510,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             Right
         }
 
-        private class PlayfieldBackground : CompositeDrawable
+        private partial class PlayfieldBackground : CompositeDrawable
         {
             public PlayfieldBackground(int rowCount, int columnCount)
             {

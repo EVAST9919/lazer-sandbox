@@ -13,7 +13,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
 {
-    public class NumbersScreen : SandboxScreen
+    public partial class NumbersScreen : SandboxScreen
     {
         private readonly BindableInt bestScore = new BindableInt();
 
@@ -129,7 +129,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
             scoresContainer.Width = playfield.DrawWidth;
         }
 
-        private class ScoreContainer : CompositeDrawable
+        private partial class ScoreContainer : CompositeDrawable
         {
             public readonly BindableInt Score = new BindableInt();
 
