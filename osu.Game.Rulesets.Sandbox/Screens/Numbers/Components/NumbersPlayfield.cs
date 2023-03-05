@@ -245,7 +245,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
             if (moveInProgress)
             {
-                numbersLayer.ForEach(n => n.FinishTransforms());
+                numbersLayer.ForEach(n => n.FinishTransforms(true));
                 Scheduler.Update();
             }
 
@@ -480,7 +480,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             setNewIndex(horizontal, getNumberIndex(horizontal, target), current, true);
 
             target.IsBlocked = true;
-            target.Increment(move_duration);
+            Scheduler.AddDelayed(() => target.Increment(), move_duration);
 
             Score.Value += target.NumericValue;
 

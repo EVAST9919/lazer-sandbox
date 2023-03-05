@@ -90,19 +90,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             content.ScaleTo(1, 200, Easing.OutQuint);
         }
 
-        public void Increment(int animationDelay = 0)
+        public void Increment()
         {
-            Scheduler.Update();
-
             Power++;
-
-            if (animationDelay == 0)
-            {
-                animate();
-                return;
-            }
-
-            Scheduler.AddDelayed(animate, animationDelay);
+            animate();
         }
 
         protected override void OnNewBeat(int beatIndex, TimingControlPoint timingPoint, EffectControlPoint effectPoint, ChannelAmplitudes amplitudes)
