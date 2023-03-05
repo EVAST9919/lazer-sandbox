@@ -95,7 +95,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
         private void onFailChanged(ValueChangedEvent<bool> failed)
         {
             failOverlay.FadeTo(failed.NewValue ? 1 : 0, 500, Easing.OutQuint);
-            inputIsBlocked = failed.NewValue;
+            moveInProgress = failed.NewValue;
         }
 
         public void Restart()
@@ -236,14 +236,20 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             return base.OnKeyDown(e);
         }
 
-        private bool inputIsBlocked;
+        private bool moveInProgress;
 
         private void tryMove(MoveDirection direction)
         {
-            if (inputIsBlocked || hasFailed.Value)
+            if (hasFailed.Value)
                 return;
 
-            inputIsBlocked = true;
+            if (moveInProgress)
+            {
+                numbersLayer.ForEach(n => n.FinishTransforms());
+                Scheduler.Update();
+            }
+
+            moveInProgress = true;
 
             bool moveIsValid = false;
 
@@ -277,7 +283,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             Scheduler.AddDelayed(() =>
             {
                 numbersLayer.ForEach(n => n.IsBlocked = false);
-                inputIsBlocked = false;
+                moveInProgress = false;
 
                 if (moveIsValid)
                     tryAddNumber();
