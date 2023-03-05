@@ -22,7 +22,7 @@ namespace osu.Game.Rulesets.Sandbox
 {
     public class SandboxRuleset : Ruleset
     {
-        public static readonly string VERSION = "2023.305.0";
+        public static readonly string VERSION = "2023.305.1";
 
         public override DrawableRuleset CreateDrawableRulesetWith(IBeatmap beatmap, IReadOnlyList<Mod> mods = null) => new DrawableSandboxRuleset(this, beatmap, mods);
 
@@ -49,7 +49,7 @@ namespace osu.Game.Rulesets.Sandbox
 
         public override DifficultyCalculator CreateDifficultyCalculator(IWorkingBeatmap beatmap) => new SandboxDifficultyCalculator(RulesetInfo, beatmap);
 
-        private class SandboxIcon : Sprite
+        private partial class SandboxIcon : Sprite
         {
             private readonly SandboxRuleset ruleset;
 

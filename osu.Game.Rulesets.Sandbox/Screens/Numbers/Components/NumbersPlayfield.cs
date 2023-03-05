@@ -212,6 +212,38 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
         #region Move logic
 
+        private bool dragHandled;
+
+        protected override bool OnDragStart(DragStartEvent e)
+        {
+            dragHandled = false;
+            return true;
+        }
+
+        protected override void OnDrag(DragEvent e)
+        {
+            if (dragHandled)
+                return;
+
+            var delta = e.Delta;
+
+            if (Math.Abs(delta.X) > Math.Abs(delta.Y))
+            {
+                tryMove(delta.X < 0 ? MoveDirection.Left : MoveDirection.Right);
+            }
+            else
+            {
+                tryMove(delta.Y < 0 ? MoveDirection.Up : MoveDirection.Down);
+            }
+
+            dragHandled = true;
+        }
+
+        protected override void OnDragEnd(DragEndEvent e)
+        {
+            dragHandled = false;
+        }
+
         protected override bool OnKeyDown(KeyDownEvent e)
         {
             if (!e.Repeat)
