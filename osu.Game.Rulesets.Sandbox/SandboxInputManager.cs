@@ -1,4 +1,5 @@
-﻿using osu.Framework.Input.Bindings;
+﻿using System.ComponentModel;
+using osu.Framework.Input.Bindings;
 using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.Sandbox
@@ -13,9 +14,19 @@ namespace osu.Game.Rulesets.Sandbox
 
     public enum SandboxAction
     {
+        [Description("2048 Up")]
         NumbersUp,
+
+        [Description("2048 Down")]
         NumbersDown,
+
+        [Description("2048 Left")]
         NumbersLeft,
-        NumbersRight
+
+        [Description("2048 Right")]
+        NumbersRight,
+
+        [Description("FlappyDon Jump")]
+        FlappyJump
     }
 }

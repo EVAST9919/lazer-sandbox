@@ -48,7 +48,9 @@ namespace osu.Game.Rulesets.Sandbox
             new KeyBinding(InputKey.Up, SandboxAction.NumbersUp),
             new KeyBinding(InputKey.Down, SandboxAction.NumbersDown),
             new KeyBinding(InputKey.Left, SandboxAction.NumbersLeft),
-            new KeyBinding(InputKey.Right, SandboxAction.NumbersRight)
+            new KeyBinding(InputKey.Right, SandboxAction.NumbersRight),
+            new KeyBinding(InputKey.Z, SandboxAction.FlappyJump),
+            new KeyBinding(InputKey.X, SandboxAction.FlappyJump)
         };
 
         protected override IEnumerable<HitResult> GetValidHitResults() => new[]

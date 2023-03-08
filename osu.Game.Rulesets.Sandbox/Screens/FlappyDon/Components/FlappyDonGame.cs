@@ -12,10 +12,11 @@ using osuTK.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Game.Rulesets.Sandbox.Configuration;
+using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
-    public class FlappyDonGame : CompositeDrawable
+    public partial class FlappyDonGame : CompositeDrawable, IKeyBindingHandler<SandboxAction>
     {
         public static readonly Vector2 SIZE = new Vector2(1920, 1080);
         public static readonly int GROUND_HEIGHT = 200;
@@ -192,10 +193,30 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 
         protected override bool OnClick(ClickEvent e)
         {
+            return handleClick();
+        }
+
+        public bool OnPressed(KeyBindingPressEvent<SandboxAction> e)
+        {
+            switch(e.Action)
+            {
+                case SandboxAction.FlappyJump:
+                    return handleClick();
+            }
+
+            return false;
+        }
+
+        public void OnReleased(KeyBindingReleaseEvent<SandboxAction> e)
+        {
+        }
+
+        private bool handleClick()
+        {
             if (clickIsBlocked)
                 return true;
 
-            switch(gameState.Value)
+            switch (gameState.Value)
             {
                 case GameState.GameOver:
                     gameState.Value = GameState.Ready;

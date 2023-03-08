@@ -1,12 +1,20 @@
-﻿using osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Graphics;
+using osu.Game.Rulesets.Sandbox.Extensions;
+using osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon
 {
-    public class FlappyDonScreen : SandboxScreen
+    public partial class FlappyDonScreen : SandboxScreen
     {
-        public FlappyDonScreen()
+        [BackgroundDependencyLoader]
+        private void load(RulesetStore rulesetStore)
         {
-            AddInternal(new FlappyDonGame());
+            AddInternal(new SandboxInputManager(rulesetStore.GetThisRuleset().RulesetInfo)
+            {
+                RelativeSizeAxes = Axes.Both,
+                Child = new FlappyDonGame()
+            });
         }
     }
 }
