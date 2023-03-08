@@ -7,17 +7,17 @@ using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Framework.Utils;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osuTK;
 using osuTK.Graphics;
-using osuTK.Input;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 {
-    public partial class NumbersPlayfield : CompositeDrawable
+    public partial class NumbersPlayfield : CompositeDrawable, IKeyBindingHandler<SandboxAction>
     {
         private const int spacing = 10;
         private const int move_duration = 150;
@@ -229,11 +229,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
             if (Math.Abs(delta.X) > Math.Abs(delta.Y))
             {
-                tryMove(delta.X < 0 ? MoveDirection.Left : MoveDirection.Right);
+                tryMove(delta.X < 0 ? SandboxAction.NumbersLeft : SandboxAction.NumbersRight);
             }
             else
             {
-                tryMove(delta.Y < 0 ? MoveDirection.Up : MoveDirection.Down);
+                tryMove(delta.Y < 0 ? SandboxAction.NumbersUp : SandboxAction.NumbersDown);
             }
 
             dragHandled = true;
@@ -244,33 +244,28 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             dragHandled = false;
         }
 
-        protected override bool OnKeyDown(KeyDownEvent e)
+        public bool OnPressed(KeyBindingPressEvent<SandboxAction> e)
         {
-            if (!e.Repeat)
+            switch (e.Action)
             {
-                switch (e.Key)
-                {
-                    case Key.Right:
-                        tryMove(MoveDirection.Right);
-                        return true;
-                    case Key.Left:
-                        tryMove(MoveDirection.Left);
-                        return true;
-                    case Key.Up:
-                        tryMove(MoveDirection.Up);
-                        return true;
-                    case Key.Down:
-                        tryMove(MoveDirection.Down);
-                        return true;
-                }
+                case SandboxAction.NumbersUp:
+                case SandboxAction.NumbersDown:
+                case SandboxAction.NumbersLeft:
+                case SandboxAction.NumbersRight:
+                    tryMove(e.Action);
+                    return true;
             }
 
-            return base.OnKeyDown(e);
+            return false;
+        }
+
+        public void OnReleased(KeyBindingReleaseEvent<SandboxAction> e)
+        {
         }
 
         private bool moveInProgress;
 
-        private void tryMove(MoveDirection direction)
+        private void tryMove(SandboxAction direction)
         {
             if (hasFailed.Value)
                 return;
@@ -287,19 +282,19 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
 
             switch (direction)
             {
-                case MoveDirection.Up:
+                case SandboxAction.NumbersUp:
                     moveIsValid = moveUp();
                     break;
 
-                case MoveDirection.Down:
+                case SandboxAction.NumbersDown:
                     moveIsValid = moveDown();
                     break;
 
-                case MoveDirection.Left:
+                case SandboxAction.NumbersLeft:
                     moveIsValid = moveLeft();
                     break;
 
-                case MoveDirection.Right:
+                case SandboxAction.NumbersRight:
                     moveIsValid = moveRight();
                     break;
             }
@@ -349,7 +344,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
                         }
                     }
 
-                    if (!tryTargetInteraction(MoveDirection.Up, currentNumber, closest))
+                    if (!tryTargetInteraction(SandboxAction.NumbersUp, currentNumber, closest))
                         continue;
 
                     moveHasBeenMade = true;
@@ -384,7 +379,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
                         }
                     }
 
-                    if (!tryTargetInteraction(MoveDirection.Down, currentNumber, closest))
+                    if (!tryTargetInteraction(SandboxAction.NumbersDown, currentNumber, closest))
                         continue;
 
                     moveHasBeenMade = true;
@@ -419,7 +414,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
                         }
                     }
 
-                    if (!tryTargetInteraction(MoveDirection.Left, currentNumber, closest))
+                    if (!tryTargetInteraction(SandboxAction.NumbersLeft, currentNumber, closest))
                         continue;
 
                     moveHasBeenMade = true;
@@ -454,7 +449,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
                         }
                     }
 
-                    if (!tryTargetInteraction(MoveDirection.Right, currentNumber, closest))
+                    if (!tryTargetInteraction(SandboxAction.NumbersRight, currentNumber, closest))
                         continue;
 
                     moveHasBeenMade = true;
@@ -467,16 +462,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
         /// <summary>
         /// Returns true if move has been made.
         /// </summary>
-        private bool tryTargetInteraction(MoveDirection direction, DrawableNumber current, DrawableNumber target)
+        private bool tryTargetInteraction(SandboxAction direction, DrawableNumber current, DrawableNumber target)
         {
-            bool horizontal = direction == MoveDirection.Left || direction == MoveDirection.Right;
+            bool horizontal = direction == SandboxAction.NumbersLeft || direction == SandboxAction.NumbersRight;
 
             if (target == null)
             {
                 var newIndex = direction switch
                 {
-                    MoveDirection.Right => columnCount - 1,
-                    MoveDirection.Down => rowCount - 1,
+                    SandboxAction.NumbersRight => columnCount - 1,
+                    SandboxAction.NumbersDown=> rowCount - 1,
                     _ => 0
                 };
 
@@ -492,10 +487,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
             {
                 var newIndex = direction switch
                 {
-                    MoveDirection.Left => target.XIndex + 1,
-                    MoveDirection.Right => target.XIndex - 1,
-                    MoveDirection.Down => target.YIndex - 1,
-                    MoveDirection.Up => target.YIndex + 1,
+                    SandboxAction.NumbersLeft => target.XIndex + 1,
+                    SandboxAction.NumbersRight => target.XIndex - 1,
+                    SandboxAction.NumbersDown => target.YIndex - 1,
+                    SandboxAction.NumbersUp => target.YIndex + 1,
                     _ => 0
                 };
 
@@ -539,14 +534,6 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers.Components
         private int getNumberIndex(bool horizontal, DrawableNumber number) => horizontal ? number.XIndex : number.YIndex;
 
         #endregion
-
-        private enum MoveDirection
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
 
         private partial class PlayfieldBackground : CompositeDrawable
         {

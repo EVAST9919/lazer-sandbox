@@ -8,6 +8,7 @@ using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Sandbox.Configuration;
+using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers.Components;
 using osuTK;
 using osuTK.Graphics;
@@ -18,106 +19,110 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Numbers
     {
         private readonly BindableInt bestScore = new BindableInt();
 
-        private readonly NumbersPlayfield playfield;
-        private readonly Container scoresContainer;
+        private NumbersPlayfield playfield;
+        private Container scoresContainer;
 
-        public NumbersScreen()
+        [BackgroundDependencyLoader]
+        private void load(SandboxRulesetConfigManager config, RulesetStore rulesetStore)
         {
             ScoreContainer currentScore;
 
-            AddInternal(new DrawSizePreservingFillContainer
+            AddInternal(new SandboxInputManager(rulesetStore.GetThisRuleset().RulesetInfo)
             {
-                TargetDrawSize = new Vector2(1366, 768),
+                RelativeSizeAxes = Axes.Both,
                 Children = new Drawable[]
                 {
-                    new OsuClickableContainer
+                    new DrawSizePreservingFillContainer
                     {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.TopCentre,
-                        AutoSizeAxes = Axes.Both,
-                        CornerRadius = 6,
-                        Masking = true,
-                        Margin = new MarginPadding { Top = 240 },
-                        Action = () => playfield?.Restart(),
+                        TargetDrawSize = new Vector2(1366, 768),
                         Children = new Drawable[]
                         {
-                            new Box
-                            {
-                                RelativeSizeAxes = Axes.Both,
-                                Colour = new Color4(187, 173, 160, 255)
-                            },
-                            new OsuSpriteText
+                            new OsuClickableContainer
                             {
                                 Anchor = Anchor.Centre,
-                                Origin = Anchor.Centre,
-                                Text = @"Restart".ToUpper(),
-                                Font = OsuFont.GetFont(size: 25, weight: FontWeight.Bold),
-                                Colour = new Color4(119, 110, 101, 255),
-                                Shadow = false,
-                                Margin = new MarginPadding { Horizontal = 10, Vertical = 10 },
-                            }
-                        }
-                    },
-                    scoresContainer = new Container
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.BottomCentre,
-                        AutoSizeAxes = Axes.Y,
-                        Margin = new MarginPadding { Bottom = 240 },
-                        Child = new GridContainer
-                        {
-                            RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            ColumnDimensions = new[]
-                            {
-                                new Dimension(GridSizeMode.Relative, size: 0.5f),
-                                new Dimension()
-                            },
-                            RowDimensions = new[]
-                            {
-                                new Dimension(GridSizeMode.AutoSize)
-                            },
-                            Content = new[]
-                            {
-                                new Drawable[]
+                                Origin = Anchor.TopCentre,
+                                AutoSizeAxes = Axes.Both,
+                                CornerRadius = 6,
+                                Masking = true,
+                                Margin = new MarginPadding { Top = 240 },
+                                Action = () => playfield?.Restart(),
+                                Children = new Drawable[]
                                 {
-                                    new Container
+                                    new Box
                                     {
-                                        RelativeSizeAxes = Axes.X,
-                                        AutoSizeAxes = Axes.Y,
-                                        Padding = new MarginPadding { Right = 10 },
-                                        Child = currentScore = new ScoreContainer("Current Score"),
+                                        RelativeSizeAxes = Axes.Both,
+                                        Colour = new Color4(187, 173, 160, 255)
                                     },
-                                    new Container
+                                    new OsuSpriteText
                                     {
-                                        RelativeSizeAxes = Axes.X,
-                                        AutoSizeAxes = Axes.Y,
-                                        Padding = new MarginPadding { Left = 10 },
-                                        Child = new ScoreContainer("Best Score")
+                                        Anchor = Anchor.Centre,
+                                        Origin = Anchor.Centre,
+                                        Text = @"Restart".ToUpper(),
+                                        Font = OsuFont.GetFont(size: 25, weight: FontWeight.Bold),
+                                        Colour = new Color4(119, 110, 101, 255),
+                                        Shadow = false,
+                                        Margin = new MarginPadding { Horizontal = 10, Vertical = 10 },
+                                    }
+                                }
+                            },
+                            scoresContainer = new Container
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.BottomCentre,
+                                AutoSizeAxes = Axes.Y,
+                                Margin = new MarginPadding { Bottom = 240 },
+                                Child = new GridContainer
+                                {
+                                    RelativeSizeAxes = Axes.X,
+                                    AutoSizeAxes = Axes.Y,
+                                    ColumnDimensions = new[]
+                                    {
+                                        new Dimension(GridSizeMode.Relative, size: 0.5f),
+                                        new Dimension()
+                                    },
+                                    RowDimensions = new[]
+                                    {
+                                        new Dimension(GridSizeMode.AutoSize)
+                                    },
+                                    Content = new[]
+                                    {
+                                        new Drawable[]
                                         {
-                                            Anchor = Anchor.TopRight,
-                                            Origin = Anchor.TopRight,
-                                            Score = { BindTarget = bestScore }
+                                            new Container
+                                            {
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                Padding = new MarginPadding { Right = 10 },
+                                                Child = currentScore = new ScoreContainer("Current Score"),
+                                            },
+                                            new Container
+                                            {
+                                                RelativeSizeAxes = Axes.X,
+                                                AutoSizeAxes = Axes.Y,
+                                                Padding = new MarginPadding { Left = 10 },
+                                                Child = new ScoreContainer("Best Score")
+                                                {
+                                                    Anchor = Anchor.TopRight,
+                                                    Origin = Anchor.TopRight,
+                                                    Score = { BindTarget = bestScore }
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                            },
+                            playfield = new NumbersPlayfield
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
                             }
                         }
-                    },
-                    playfield = new NumbersPlayfield
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
                     }
                 }
             });
 
             currentScore.Score.BindTo(playfield.Score);
-        }
 
-        [BackgroundDependencyLoader]
-        private void load(SandboxRulesetConfigManager config)
-        {
             config?.BindWith(SandboxRulesetSetting.NumbersGameBestScore, bestScore);
         }
 

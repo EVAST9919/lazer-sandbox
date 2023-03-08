@@ -17,6 +17,7 @@ using osu.Game.Rulesets.Sandbox.Configuration;
 using osu.Game.Overlays.Settings;
 using osu.Framework.Allocation;
 using osu.Framework.Platform;
+using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Rulesets.Sandbox
 {
@@ -41,6 +42,14 @@ namespace osu.Game.Rulesets.Sandbox
         public override Drawable CreateIcon() => new SandboxIcon(this);
 
         public override IEnumerable<Mod> GetModsFor(ModType type) => Array.Empty<Mod>();
+
+        public override IEnumerable<KeyBinding> GetDefaultKeyBindings(int variant = 0) => new[]
+        {
+            new KeyBinding(InputKey.Up, SandboxAction.NumbersUp),
+            new KeyBinding(InputKey.Down, SandboxAction.NumbersDown),
+            new KeyBinding(InputKey.Left, SandboxAction.NumbersLeft),
+            new KeyBinding(InputKey.Right, SandboxAction.NumbersRight)
+        };
 
         protected override IEnumerable<HitResult> GetValidHitResults() => new[]
         {

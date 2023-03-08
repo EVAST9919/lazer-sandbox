@@ -9,7 +9,7 @@ using osu.Game.Rulesets.UI;
 
 namespace osu.Game.Rulesets.Sandbox.UI
 {
-    public class DrawableSandboxRuleset : DrawableRuleset<SandboxHitObject>
+    public partial class DrawableSandboxRuleset : DrawableRuleset<SandboxHitObject>
     {
         public DrawableSandboxRuleset(Ruleset ruleset, IBeatmap beatmap, IReadOnlyList<Mod> mods = null)
             : base(ruleset, beatmap, mods)

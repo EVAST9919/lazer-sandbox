@@ -14,7 +14,7 @@ using osu.Framework.Allocation;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
-    public class SandboxSettings : CompositeDrawable, IKeyBindingHandler<GlobalAction>
+    public partial class SandboxSettings : CompositeDrawable, IKeyBindingHandler<GlobalAction>
     {
         private const int width = 400;
         private const float duration = 250f;
@@ -74,7 +74,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
 
         protected override bool OnClick(ClickEvent e) => true;
 
-        private class SettingsContent : CompositeDrawable
+        private partial class SettingsContent : CompositeDrawable
         {
             public readonly BindableBool IsVisible = new BindableBool();
 
