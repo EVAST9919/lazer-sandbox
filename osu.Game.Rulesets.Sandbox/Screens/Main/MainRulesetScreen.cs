@@ -1,53 +1,28 @@
 ﻿using osu.Framework.Allocation;
-using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 using osu.Framework.Screens;
 using osu.Game.Rulesets.Sandbox.Extensions;
 using osu.Game.Rulesets.Sandbox.Screens.FlappyDon;
 using osu.Game.Rulesets.Sandbox.Screens.Main.Components;
 using osu.Game.Rulesets.Sandbox.Screens.Numbers;
+using osu.Game.Rulesets.Sandbox.Screens.Rulesets;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer;
-using osu.Game.Rulesets.Sandbox.UI;
 using osu.Game.Rulesets.UI;
 using osu.Game.Screens;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Main
 {
-    public class MainRulesetScreen : SandboxScreen
+    public partial class MainRulesetScreen : SandboxScreen
     {
         public MainRulesetScreen()
         {
-            InternalChildren = new Drawable[]
+            InternalChild = new SandboxButtonSystem
             {
-                new SandboxButtonSystem
+                Buttons = new[]
                 {
-                    Buttons = new[]
-                    {
-                        new SandboxPanel("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
-                        new SandboxPanel("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
-                        new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) }
-                    }
-                },
-                new FillFlowContainer
-                {
-                    Anchor = Anchor.BottomCentre,
-                    Origin = Anchor.BottomCentre,
-                    AutoSizeAxes = Axes.Both,
-                    Direction = FillDirection.Horizontal,
-                    Margin = new MarginPadding { Bottom = 30 },
-                    Children = new Drawable[]
-                    {
-                        new CheckSandboxUpdatesButton
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre
-                        },
-                        new SupportButton
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre
-                        }
-                    }
+                    new SandboxPanel("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
+                    new SandboxPanel("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
+                    new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) },
+                    new SandboxPanel("Rulesets", "") { Action = () => this.Push(new RulesetsScreen()) }
                 }
             };
         }

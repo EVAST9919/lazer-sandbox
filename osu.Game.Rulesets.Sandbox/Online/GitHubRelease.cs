@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace osu.Game.Rulesets.Sandbox.Online
 {
@@ -9,5 +10,8 @@ namespace osu.Game.Rulesets.Sandbox.Online
 
         [JsonProperty("body")]
         public string Body { get; set; }
+
+        [JsonProperty("published_at")]
+        public DateTime PublishedAt { get; set; }
     }
 }
