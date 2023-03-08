@@ -1,10 +1,12 @@
 ﻿using System;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Utils;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Sandbox.Online;
+using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
 {
@@ -62,11 +64,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
             {
                 button.Hide();
 
+                TimeSpan timeSpan = DateTimeOffset.Now.Subtract(request.ResponseObject.PublishedAt);
+
+                int days = Math.Clamp(timeSpan.Days, 0, 7);
+                Color4 color = Interpolation.ValueAt(days, Color4.Red, Color4.DeepSkyBlue, 0, 7);
+
                 flow.Add(new DrawableDate(request.ResponseObject.PublishedAt)
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
-                    Font = OsuFont.GetFont(weight: FontWeight.Bold)
+                    Font = OsuFont.GetFont(weight: FontWeight.Bold),
+                    Colour = color
                 });
 
                 flow.Show();

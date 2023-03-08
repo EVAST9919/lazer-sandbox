@@ -30,7 +30,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
                 new Container
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding { Horizontal = 10 },
+                    Padding = new MarginPadding { Horizontal = 20 },
                     Children = new Drawable[]
                     {
                         new OsuSpriteText
