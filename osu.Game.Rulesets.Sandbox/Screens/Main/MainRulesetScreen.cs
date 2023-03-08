@@ -19,10 +19,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
             {
                 Buttons = new[]
                 {
-                    new SandboxPanel("Visualizer", "Vis") { Action = () => this.Push(new VisualizerScreen()) },
-                    new SandboxPanel("2048", "Numbers") { Action = () => this.Push(new NumbersScreen()) },
-                    new SandboxPanel("FlappyDon", "Flappy", new Creator("https://github.com/TimOliver", "Tim Oliver")) { Action = () => this.Push(new FlappyDonScreen()) },
-                    new SandboxPanel("Rulesets", "") { Action = () => this.Push(new RulesetsScreen()) }
+                    new SandboxPanel("Visualizer") { Action = () => this.Push(new VisualizerScreen()) },
+                    new SandboxPanel("2048") { Action = () => this.Push(new NumbersScreen()) },
+                    new SandboxPanel("FlappyDon", new Creator { Name = "Tim Oliver", URL = "https://github.com/TimOliver"}) { Action = () => this.Push(new FlappyDonScreen()) },
+                    new SandboxPanel("Rulesets") { Action = () => this.Push(new RulesetsScreen()) }
                 }
             };
         }

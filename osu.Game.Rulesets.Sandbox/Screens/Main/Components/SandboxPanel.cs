@@ -14,7 +14,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 {
-    public class SandboxPanel : CompositeDrawable
+    public partial class SandboxPanel : CompositeDrawable
     {
         public static readonly float WIDTH = 300;
 
@@ -24,13 +24,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         private OsuColour colours { get; set; }
 
         private readonly string name;
-        private readonly string textureName;
-        private readonly Creator creator;
+        private readonly Creator? creator;
 
-        public SandboxPanel(string name, string textureName = "", Creator creator = null)
+        public SandboxPanel(string name, Creator? creator = null)
         {
             this.name = name;
-            this.textureName = textureName;
             this.creator = creator;
         }
 
@@ -66,7 +64,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                 },
                 spriteHolder = new Container
                 {
-                    RelativeSizeAxes = Axes.Both
+                    RelativeSizeAxes = Axes.Both,
+                    Child = texture = new Sprite
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        FillMode = FillMode.Fill,
+                        Texture = textures.Get(name),
+                        Colour = Color4.Gray
+                    }
                 },
                 new OsuSpriteText
                 {
@@ -78,7 +85,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                 }
             };
 
-            if (creator != null)
+            if (creator.HasValue)
             {
                 var linkFlow = new LinkFlowContainer(t =>
                 {
@@ -92,29 +99,15 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                 };
 
                 linkFlow.AddText("Created by ");
-                linkFlow.AddLink(creator.Name, creator.URL);
+                linkFlow.AddLink(creator.Value.Name, creator.Value.URL);
 
                 AddInternal(linkFlow);
-            }
-
-            if (!string.IsNullOrEmpty(textureName))
-            {
-                spriteHolder.Add(texture = new Sprite
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    FillMode = FillMode.Fill,
-                    Texture = textures.Get(textureName),
-                    Colour = Color4.Gray
-                });
             }
         }
 
         protected override bool OnHover(HoverEvent e)
         {
-            if (texture != null)
-                texture.FadeColour(Color4.DarkGray, 250, Easing.OutQuint);
+            texture?.FadeColour(Color4.DarkGray, 250, Easing.OutQuint);
 
             TweenEdgeEffectTo(new EdgeEffectParameters
             {
@@ -128,8 +121,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 
         protected override void OnHoverLost(HoverLostEvent e)
         {
-            if (texture != null)
-                texture.FadeColour(Color4.Gray, 250, Easing.OutQuint);
+            texture?.FadeColour(Color4.Gray, 250, Easing.OutQuint);
 
             TweenEdgeEffectTo(new EdgeEffectParameters
             {
@@ -147,16 +139,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
         }
     }
 
-    public class Creator
+    public struct Creator
     {
-        public string URL { get; private set; }
+        public string URL { get; set; }
 
-        public string Name { get; private set; }
-
-        public Creator(string url, string name)
-        {
-            URL = url;
-            Name = name;
-        }
+        public string Name { get; set; }
     }
 }
