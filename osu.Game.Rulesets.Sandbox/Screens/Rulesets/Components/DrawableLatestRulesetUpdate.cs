@@ -1,7 +1,9 @@
-﻿using osu.Framework.Graphics;
+﻿using System;
+using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
+using osu.Game.Overlays.Settings;
 using osu.Game.Rulesets.Sandbox.Online;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
@@ -12,49 +14,62 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
 
         private GetLatestReleaseRequest request;
         private readonly FillFlowContainer flow;
+        private readonly UpdateButton button;
 
         public DrawableLatestRulesetUpdate(string url)
         {
             this.url = url;
 
-            AutoSizeAxes = Axes.Both;
-            AddInternal(flow = new FillFlowContainer
+            AutoSizeAxes = Axes.Y;
+            RelativeSizeAxes = Axes.X;
+            AddRangeInternal(new Drawable[]
             {
-                AutoSizeAxes = Axes.Both,
-                Direction = FillDirection.Horizontal,
-                Children = new Drawable[]
+                button = new UpdateButton
                 {
-                    new OsuSpriteText
+                    Clicked = checkUpdate,
+                    Text = "Check latest update"
+                },
+                flow = new FillFlowContainer
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    AutoSizeAxes = Axes.Both,
+                    Direction = FillDirection.Horizontal,
+                    Alpha = 0f,
+                    Children = new Drawable[]
                     {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Font = OsuFont.GetFont(weight: FontWeight.Bold),
-                        Text = "Latest update: "
+                        new OsuSpriteText
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            Font = OsuFont.GetFont(weight: FontWeight.Bold),
+                            Text = "Latest update: "
+                        }
                     }
                 }
             });
         }
 
-        protected override void LoadComplete()
-        {
-            base.LoadComplete();
-
-            checkUpdate();
-        }
-
         private void checkUpdate()
         {
+            button.Enabled.Value = false;
+            button.Text = "Checking...";
+
             request?.Abort();
 
             request = new GetLatestReleaseRequest(url);
             request.Finished += () => Schedule(() =>
             {
+                button.Hide();
+
                 flow.Add(new DrawableDate(request.ResponseObject.PublishedAt)
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Font = OsuFont.GetFont(weight: FontWeight.Bold)
                 });
+
+                flow.Show();
             });
 
             request.Failed += (_) => onFail();
@@ -65,6 +80,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
         {
             Schedule(() =>
             {
+                button.Hide();
+
                 flow.Add(new OsuSpriteText
                 {
                     Anchor = Anchor.Centre,
@@ -72,6 +89,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
                     Font = OsuFont.GetFont(weight: FontWeight.Bold),
                     Text = "Check failed."
                 });
+
+                flow.Show();
             });
         }
 
@@ -79,6 +98,17 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
         {
             request?.Abort();
             base.Dispose(isDisposing);
+        }
+
+        private partial class UpdateButton : SettingsButton
+        {
+            public Action Clicked;
+
+            public UpdateButton()
+            {
+                Padding = new MarginPadding(0);
+                Action = () => Clicked?.Invoke();
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
         public RulesetPanel(string name, string updateURL, string downloadURL = "", RulesetDownloadType type = RulesetDownloadType.Github)
         {
             RelativeSizeAxes = Axes.X;
-            Height = 100;
+            Height = 120;
             Masking = true;
             CornerRadius = 10;
             InternalChildren = new Drawable[]
@@ -30,7 +30,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
                 new Container
                 {
                     RelativeSizeAxes = Axes.Both,
-                    Padding = new MarginPadding(10),
+                    Padding = new MarginPadding { Horizontal = 10 },
                     Children = new Drawable[]
                     {
                         new OsuSpriteText
@@ -50,15 +50,15 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
                             Spacing = new Vector2(0, 10),
                             Children = new Drawable[]
                             {
-                                //new DrawableLatestRulesetUpdate(updateURL)
-                                //{
-                                //    Anchor = Anchor.Centre,
-                                //    Origin = Anchor.Centre
-                                //},
+                                new DrawableLatestRulesetUpdate(updateURL)
+                                {
+                                    Anchor = Anchor.CentreRight,
+                                    Origin = Anchor.CentreRight
+                                },
                                 new RulesetDownloadButton(string.IsNullOrEmpty(downloadURL) ? updateURL : downloadURL, type)
                                 {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
+                                    Anchor = Anchor.CentreRight,
+                                    Origin = Anchor.CentreRight,
                                     Text = "Download"
                                 }
                             }
