@@ -3,6 +3,8 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
@@ -33,12 +35,29 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
                     Padding = new MarginPadding { Horizontal = 20 },
                     Children = new Drawable[]
                     {
-                        new OsuSpriteText
+                        new FillFlowContainer
                         {
+                            AutoSizeAxes = Axes.Both,
+                            Direction = FillDirection.Horizontal,
+                            Spacing = new Vector2(15),
                             Anchor = Anchor.CentreLeft,
                             Origin = Anchor.CentreLeft,
-                            Text = name,
-                            Font = OsuFont.GetFont(size: 30, weight: FontWeight.Bold)
+                            Children = new Drawable[]
+                            {
+                                new RulesetIcon(name)
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    Size = new Vector2(50)
+                                },
+                                new OsuSpriteText
+                                {
+                                    Anchor = Anchor.Centre,
+                                    Origin = Anchor.Centre,
+                                    Text = name,
+                                    Font = OsuFont.GetFont(size: 30, weight: FontWeight.Bold)
+                                }
+                            }
                         },
                         new FillFlowContainer
                         {
@@ -85,6 +104,24 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets.Components
             private void load(GameHost host)
             {
                 Action = () => host.OpenUrlExternally(type == RulesetDownloadType.Github ? $"https://github.com/{downloadURL}/releases/latest" : downloadURL);
+            }
+        }
+
+        private partial class RulesetIcon : Sprite
+        {
+            private readonly string name;
+
+            public RulesetIcon(string name)
+            {
+                this.name = name;
+            }
+
+            [BackgroundDependencyLoader]
+            private void load(TextureStore textures)
+            {
+                Texture = textures.Get($"Icons/{name}");
+                if (Texture == null)
+                    Alpha = 0;
             }
         }
     }

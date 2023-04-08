@@ -70,7 +70,7 @@ namespace osu.Game.Rulesets.Sandbox
             [BackgroundDependencyLoader]
             private void load(GameHost host)
             {
-                Texture = new TextureStore(host.Renderer, new TextureLoaderStore(ruleset.CreateResourceStore()), false).Get("Textures/ruleset");
+                Texture = new TextureStore(host.Renderer, new TextureLoaderStore(ruleset.CreateResourceStore()), false).Get("Textures/Icons/Sandbox");
             }
         }
     }

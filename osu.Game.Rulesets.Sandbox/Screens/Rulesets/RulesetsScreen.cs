@@ -39,7 +39,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Rulesets
                             new RulesetPanel("sentakki", "LumpBloom7/sentakki"),
                             new RulesetPanel("osu!DIVA", "Artemis-chan/osu-DIVA"),
                             new RulesetPanel("Hitokori", "Flutterish/Hitokori"),
-                            new RulesetPanel("gamebosu", "Game4all/gamebosu")
+                            new RulesetPanel("gamebosu", "Game4all/gamebosu"),
+                            new RulesetPanel("Hishigata", "LumpBloom7/hishigata")
                         }
                     }
                 }
