@@ -1,13 +1,12 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.OpenGL.Textures;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
 {
-    public class BackgroundSprite : Sprite
+    public partial class BackgroundSprite : Sprite
     {
         private Vector2 textureSize;
 
@@ -18,6 +17,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.FlappyDon.Components
             textureSize = Texture.Size;
             RelativeSizeAxes = Axes.Y;
             Height = 1.0f;
+            EdgeSmoothness = Vector2.One;
         }
 
         protected override void Update()
