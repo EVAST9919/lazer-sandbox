@@ -11,10 +11,11 @@ using osu.Framework.Allocation;
 using osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers;
 using osu.Game.Graphics.Backgrounds;
 using osu.Game.Rulesets.Sandbox.Configuration;
+using osu.Framework.Localisation;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 {
-    public class UpdateableBeatmapBackground : CurrentBeatmapProvider
+    public partial class UpdateableBeatmapBackground : CurrentBeatmapProvider
     {
         private const int animation_duration = 500;
 
@@ -110,7 +111,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             });
         }
 
-        private class BeatmapName : CompositeDrawable
+        private partial class BeatmapName : CompositeDrawable
         {
             [Resolved(canBeNull: true)]
             private SandboxRulesetConfigManager config { get; set; }
@@ -122,13 +123,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             private TextFlowContainer artist;
             private TextFlowContainer title;
 
+            private ILocalisedBindableString titleBinding;
+            private ILocalisedBindableString artistBinding;
+
             public BeatmapName(WorkingBeatmap beatmap = null)
             {
                 this.beatmap = beatmap;
             }
 
             [BackgroundDependencyLoader]
-            private void load()
+            private void load(LocalisationManager localisation)
             {
                 AutoSizeAxes = Axes.Y;
                 RelativeSizeAxes = Axes.X;
@@ -137,6 +141,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
 
                 if (beatmap == null)
                     return;
+
+                var metadata = beatmap.Metadata;
+
+                titleBinding = localisation.GetLocalisedBindableString(new RomanisableString(metadata.TitleUnicode, metadata.Title));
+                artistBinding = localisation.GetLocalisedBindableString(new RomanisableString(metadata.ArtistUnicode, metadata.Artist));
 
                 AddInternal(new FillFlowContainer
                 {
@@ -157,8 +166,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                             Origin = Anchor.Centre,
                             TextAnchor = Anchor.Centre,
                             RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            Text = beatmap.Metadata.Artist
+                            AutoSizeAxes = Axes.Y
                         },
                         title = new TextFlowContainer(t =>
                         {
@@ -169,16 +177,15 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
                             Origin = Anchor.Centre,
                             TextAnchor = Anchor.Centre,
                             RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            Text = beatmap.Metadata.Title
+                            AutoSizeAxes = Axes.Y
                         }
                     }
                 }.WithEffect(new BlurEffect
                 {
-                    Colour = Color4.Black.Opacity(0.7f),
+                    Colour = Color4.Black.Opacity(0.5f),
                     DrawOriginal = true,
                     PadExtent = true,
-                    Sigma = new Vector2(5)
+                    Sigma = new Vector2(3)
                 }));
 
                 config?.BindWith(SandboxRulesetSetting.Radius, radius);
@@ -188,6 +195,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeA
             protected override void LoadComplete()
             {
                 base.LoadComplete();
+
+                titleBinding?.BindValueChanged(t => title.Text = t.NewValue, true);
+                artistBinding?.BindValueChanged(t => artist.Text = t.NewValue, true);
 
                 radius.BindValueChanged(r =>
                 {

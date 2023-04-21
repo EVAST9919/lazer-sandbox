@@ -3,6 +3,8 @@ using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Localisation;
+using osu.Game.Beatmaps;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Sprites;
 using osu.Game.Rulesets.Sandbox.Configuration;
@@ -13,7 +15,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
 {
-    public class TypeBVisualizerController : MusicAmplitudesProvider
+    public partial class TypeBVisualizerController : MusicAmplitudesProvider
     {
         private readonly Bindable<double> barWidth = new Bindable<double>();
         private readonly Bindable<int> barCount = new Bindable<int>();
@@ -25,7 +27,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
         private readonly Bindable<string> progressColour = new Bindable<string>("#ffffff");
         private readonly Bindable<string> textColour = new Bindable<string>("#ffffff");
 
-        private OsuSpriteText text;
+        private Container textContainer;
         private Box progress;
         private Container<LinearMusicVisualizerDrawable> visualizerContainer;
 
@@ -69,9 +71,9 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
                             }
                         }
                     },
-                    text = new OsuSpriteText
+                    textContainer = new Container
                     {
-                        Font = OsuFont.GetFont(size: 30)
+                        AutoSizeAxes = Axes.Both
                     }
                 }
             };
@@ -94,7 +96,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
 
             Beatmap.BindValueChanged(b =>
             {
-                text.Text = $"{b.NewValue.Metadata.Artist} - {b.NewValue.Metadata.Title}";
+                textContainer.Child = new LinearBeatmapName(b.NewValue.Metadata);
             }, true);
 
             type.BindValueChanged(t =>
@@ -126,7 +128,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
 
             colour.BindValueChanged(c => visualizerContainer.Colour = Colour4.FromHex(c.NewValue), true);
             progressColour.BindValueChanged(c => progress.Colour = Colour4.FromHex(c.NewValue), true);
-            textColour.BindValueChanged(c => text.Colour = Colour4.FromHex(c.NewValue), true);
+            textColour.BindValueChanged(c => textContainer.Colour = Colour4.FromHex(c.NewValue), true);
         }
 
         protected override void Update()
@@ -140,6 +142,38 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts.TypeB
         protected override void OnAmplitudesUpdate(float[] amplitudes)
         {
             visualizerContainer.Child?.SetAmplitudes(amplitudes);
+        }
+
+        private partial class LinearBeatmapName : OsuSpriteText
+        {
+            private readonly BeatmapMetadata metadata;
+
+            private ILocalisedBindableString titleBinding;
+            private ILocalisedBindableString artistBinding;
+
+            public LinearBeatmapName(BeatmapMetadata metadata)
+            {
+                this.metadata = metadata;
+
+                Font = OsuFont.GetFont(size: 30);
+            }
+
+            [BackgroundDependencyLoader]
+            private void load(LocalisationManager localisation)
+            {
+                titleBinding = localisation.GetLocalisedBindableString(new RomanisableString(metadata.TitleUnicode, metadata.Title));
+                artistBinding = localisation.GetLocalisedBindableString(new RomanisableString(metadata.ArtistUnicode, metadata.Artist));
+            }
+
+            protected override void LoadComplete()
+            {
+                base.LoadComplete();
+
+                titleBinding.BindValueChanged(_ => updateText());
+                artistBinding.BindValueChanged(_ => updateText(), true);
+            }
+
+            private void updateText() => Text = $"{artistBinding.Value} - {titleBinding.Value}";
         }
     }
 }

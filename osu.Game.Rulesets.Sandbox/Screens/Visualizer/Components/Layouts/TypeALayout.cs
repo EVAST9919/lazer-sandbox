@@ -7,7 +7,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Layouts
 {
-    public class TypeALayout : DrawableVisualizerLayout
+    public partial class TypeALayout : DrawableVisualizerLayout
     {
         private readonly Bindable<int> radius = new Bindable<int>(350);
         private readonly Bindable<string> colour = new Bindable<string>("#ffffff");
