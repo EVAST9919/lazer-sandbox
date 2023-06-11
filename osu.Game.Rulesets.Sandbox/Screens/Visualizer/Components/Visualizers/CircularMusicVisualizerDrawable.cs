@@ -3,7 +3,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 {
-    public abstract class CircularMusicVisualizerDrawable : MusicVisualizerDrawable
+    public abstract partial class CircularMusicVisualizerDrawable : MusicVisualizerDrawable
     {
         public readonly Bindable<float> DegreeValue = new Bindable<float>();
 

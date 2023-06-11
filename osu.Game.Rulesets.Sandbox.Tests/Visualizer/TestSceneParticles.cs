@@ -9,7 +9,7 @@ using osuTK.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
 {
-    public class TestSceneParticles : RulesetTestScene
+    public partial class TestSceneParticles : RulesetTestScene
     {
         private readonly ParticlesDrawable particles;
 
@@ -50,7 +50,7 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
         protected override void LoadComplete()
         {
             base.LoadComplete();
-            AddSliderStep("Restart", 1, 30000, 1000, v => particles.Restart(v));
+            AddSliderStep("Restart", 1, 30000, 1000, c => particles.TargetCount = c);
             AddSliderStep("Direction", 0, 6, 0, d => particles.Direction.Value = (ParticlesDirection)d);
         }
     }

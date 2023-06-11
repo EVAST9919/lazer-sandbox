@@ -9,7 +9,7 @@ using osu.Game.Rulesets.Sandbox.UI.Settings;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Settings
 {
-    public class ParticleSettings : FillFlowContainer
+    public partial class ParticleSettings : FillFlowContainer
     {
         private readonly BindableBool showParticles = new BindableBool();
 

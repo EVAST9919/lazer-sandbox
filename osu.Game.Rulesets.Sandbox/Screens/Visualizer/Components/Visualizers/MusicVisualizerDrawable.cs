@@ -14,7 +14,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 {
-    public abstract class MusicVisualizerDrawable : Drawable
+    public abstract partial class MusicVisualizerDrawable : Drawable
     {
         // Total amplitude count is 256, however in most cases some of them are empty, let's not use them.
         private const int used_amplitude_count = 160;

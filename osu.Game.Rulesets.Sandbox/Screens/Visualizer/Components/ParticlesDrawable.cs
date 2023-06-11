@@ -14,7 +14,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 {
-    public class ParticlesDrawable : Sprite
+    public partial class ParticlesDrawable : Sprite
     {
         private const float min_depth = 1f;
         private const float max_depth = 1000f;
@@ -24,6 +24,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
         private const float side_speed_multiplier = 0.0005f;
 
         public readonly Bindable<ParticlesDirection> Direction = new Bindable<ParticlesDirection>();
+
+        public int TargetCount { get; set; }
 
         [Resolved(canBeNull: true)]
         private SandboxRulesetConfigManager config { get; set; }
@@ -50,20 +52,18 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
             base.LoadComplete();
 
             isVisible.BindValueChanged(visible => Alpha = visible.NewValue ? 1 : 0, true);
-            count.BindValueChanged(c => Restart(c.NewValue), true);
-        }
-
-        public void Restart(int particleCount)
-        {
-            parts.Clear();
-
-            for (int i = 0; i < particleCount; i++)
-                parts.Add(new Particle());
+            count.BindValueChanged(c => TargetCount = c.NewValue, true);
         }
 
         protected override void Update()
         {
             base.Update();
+
+            if (parts.Count < TargetCount)
+                parts.Add(new Particle());
+
+            if (parts.Count > TargetCount)
+                parts.RemoveAt(0);
 
             var currentTime = Clock.CurrentTime;
             var timeDiff = (float)Clock.ElapsedFrameTime * depth_speed_multiplier;
@@ -120,9 +120,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             private void drawPart(Quad quad, float alpha, IRenderer renderer)
             {
-                renderer.DrawQuad(Texture, quad, DrawColourInfo.Colour.MultiplyAlpha(alpha), null,
-                        inflationPercentage: new Vector2(InflationAmount.X / DrawRectangle.Width, InflationAmount.Y / DrawRectangle.Height),
-                        textureCoords: TextureCoords);
+                renderer.DrawQuad(Texture, quad, DrawColourInfo.Colour.MultiplyAlpha(alpha));
             }
 
             private Quad getQuad(RectangleF rect) => new Quad(
