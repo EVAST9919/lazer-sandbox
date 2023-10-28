@@ -18,7 +18,7 @@ using osu.Game.Graphics.UserInterface;
 
 namespace osu.Game.Rulesets.Sandbox.UI
 {
-    public class StoryboardContainer : CurrentBeatmapProvider
+    public partial class StoryboardContainer : CurrentBeatmapProvider
     {
         private readonly BindableDouble dim = new BindableDouble();
         private readonly BindableBool showStoryboard = new BindableBool();
@@ -91,13 +91,18 @@ namespace osu.Game.Rulesets.Sandbox.UI
 
         private void updateStoryboardDim(float newDim) => Colour = new Color4(1 - newDim, 1 - newDim, 1 - newDim, 1);
 
-        private class StoryboardLayer : AudioContainer
+        private partial class StoryboardLayer : AudioContainer
         {
             private readonly WorkingBeatmap beatmap;
+            private readonly InterpolatingFramedClock storyboardClock;
 
             public StoryboardLayer(WorkingBeatmap beatmap)
             {
                 this.beatmap = beatmap;
+
+                storyboardClock = new InterpolatingFramedClock();
+                storyboardClock.ChangeSource(beatmap.Track);
+                storyboardClock.ProcessFrame();
             }
 
             [BackgroundDependencyLoader]
@@ -125,11 +130,11 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 Children = new Drawable[]
                 {
                     layer,
-                    new FillStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(beatmap.Track) }
+                    new FillStoryboard(beatmap.Storyboard) { Clock = new InterpolatingFramedClock(storyboardClock) }
                 };
             }
 
-            private class FillStoryboard : DrawableStoryboard
+            private partial class FillStoryboard : DrawableStoryboard
             {
                 protected override Vector2 DrawScale => Scale;
 
