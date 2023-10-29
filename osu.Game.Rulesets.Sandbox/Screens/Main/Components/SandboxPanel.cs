@@ -2,6 +2,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
@@ -19,8 +20,8 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
     public partial class SandboxPanel : CompositeDrawable
     {
         public static readonly float WIDTH = 300;
-        private const float reflection_idle = -200;
-        private const float reflection_active = -100;
+        private const float reflection_idle = -120;
+        private const float reflection_active = 0;
 
         public Action Action;
 
@@ -81,12 +82,14 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
                 reflection = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
+                    Width = 0.5f,
                     Rotation = 80,
                     Origin = Anchor.Centre,
                     Anchor = Anchor.TopCentre,
                     Y = reflection_idle,
-                    Alpha = 0.2f,
-                    EdgeSmoothness = Vector2.One
+                    Alpha = 0.15f,
+                    EdgeSmoothness = Vector2.One,
+                    Colour = ColourInfo.GradientHorizontal(Color4.White.Opacity(0f), Color4.White)
                 }
             };
 
@@ -133,7 +136,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
 
         private static readonly EdgeEffectParameters idle_edge_effect = new EdgeEffectParameters
         {
-            Radius = 1,
+            Radius = 10,
             Colour = Color4.Black.Opacity(0.5f),
             Type = EdgeEffectType.Shadow,
             Offset = Vector2.Zero
@@ -144,7 +147,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main.Components
             Radius = 20,
             Colour = Color4.Black.Opacity(0.5f),
             Type = EdgeEffectType.Shadow,
-            Offset = new Vector2(0, 5)
+            Offset = new Vector2(0, 3)
         };
     }
 
