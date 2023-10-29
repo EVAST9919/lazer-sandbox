@@ -8,7 +8,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
-    public abstract class SandboxSettingsSection : Container
+    public abstract partial class SandboxSettingsSection : Container
     {
         protected abstract string HeaderName { get; }
 
@@ -17,7 +17,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
         private readonly OsuSpriteText header;
         private readonly LocalShadowContainer content;
 
-        public SandboxSettingsSection()
+        protected SandboxSettingsSection()
         {
             RelativeSizeAxes = Axes.X;
             AutoSizeAxes = Axes.Y;
@@ -47,7 +47,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             header.Colour = colours.Yellow;
         }
 
-        private class LocalShadowContainer : InnerShadowContainer
+        private partial class LocalShadowContainer : InnerShadowContainer
         {
             protected override Container<Drawable> Content => content;
 
@@ -57,8 +57,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             {
                 RelativeSizeAxes = Axes.X;
                 AutoSizeAxes = Axes.Y;
-                CornerRadius.Value = 10;
-                Depth.Value = 5;
+                CornerRadius = 10;
             }
 
             protected override Container<Drawable> CreateContent() => new Container

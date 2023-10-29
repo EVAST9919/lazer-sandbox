@@ -3,7 +3,7 @@ using osu.Framework.Graphics;
 
 namespace osu.Game.Rulesets.Sandbox.Graphics
 {
-    public class ContentFitContainer : Container
+    public partial class ContentFitContainer : Container
     {
         protected override Container<Drawable> Content => content;
 

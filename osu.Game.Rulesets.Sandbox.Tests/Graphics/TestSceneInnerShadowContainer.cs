@@ -1,28 +1,18 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Game.Overlays;
 using osu.Game.Rulesets.Sandbox.Graphics;
-using osu.Game.Tests.Visual;
 using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
 {
-    public class TestSceneInnerShadowContainer : OsuTestScene
+    public partial class TestSceneInnerShadowContainer : RulesetTestScene
     {
-        private readonly OverlayColourProvider colourProvider = new OverlayColourProvider(OverlayColourScheme.Pink);
-
-        private TestContainer testContainer;
+        private readonly TestContainer testContainer;
 
         public TestSceneInnerShadowContainer()
         {
             AddRange(new Drawable[]
             {
-                new Box
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Colour = colourProvider.Background3
-                },
                 testContainer = new TestContainer()
                 {
                     Anchor = Anchor.Centre,
@@ -36,11 +26,10 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Graphics
         {
             base.LoadComplete();
 
-            AddSliderStep("Depth", 0, 100, 10, d => testContainer.Depth.Value = d);
-            AddSliderStep("Corner radius", 0, 200, 10, c => testContainer.CornerRadius.Value = c);
+            AddSliderStep("Corner radius", 0, 200, 10, c => testContainer.CornerRadius = c);
         }
 
-        private class TestContainer : InnerShadowContainer
+        private partial class TestContainer : InnerShadowContainer
         {
             protected override Container<Drawable> CreateContent() => new Container();
         }
