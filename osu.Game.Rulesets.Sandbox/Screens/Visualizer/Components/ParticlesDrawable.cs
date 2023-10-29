@@ -124,17 +124,18 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
             }
 
             private Quad getQuad(RectangleF rect) => new Quad(
-                        Vector2Extensions.Transform(rect.TopLeft, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(rect.TopRight, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(rect.BottomLeft, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(rect.BottomRight, DrawInfo.Matrix)
-                    );
+                Vector2Extensions.Transform(rect.TopLeft, DrawInfo.Matrix),
+                Vector2Extensions.Transform(rect.TopRight, DrawInfo.Matrix),
+                Vector2Extensions.Transform(rect.BottomLeft, DrawInfo.Matrix),
+                Vector2Extensions.Transform(rect.BottomRight, DrawInfo.Matrix)
+            );
 
             private RectangleF getPartRectangle(Vector2 pos, float size) => new RectangleF(
-                        pos.X * sourceSize.X + sourceSize.X / 2 - size / 2,
-                        pos.Y * sourceSize.Y + sourceSize.Y / 2 - size / 2,
-                        size,
-                        size);
+                pos.X * sourceSize.X + sourceSize.X / 2 - size / 2,
+                pos.Y * sourceSize.Y + sourceSize.Y / 2 - size / 2,
+                size,
+                size
+            );
         }
 
         private class Particle
@@ -152,14 +153,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
             public float CurrentAlpha { get; private set; }
 
-            public bool Backwards { get; set; }
-
             private OpenSimplexNoise noise;
             private int seed;
 
             public Particle()
             {
-                reset(ParticlesDirection.Forward, false);
+                reset(ParticlesDirection.Backwards, false);
             }
 
             private void reset(ParticlesDirection direction, bool maxDepth = true)
@@ -171,36 +170,39 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                 {
                     default:
                     case ParticlesDirection.Backwards:
-                        initialPosition = new Vector2(RNG.NextSingle(-0.5f, 0.5f), RNG.NextSingle(-0.5f, 0.5f)) * max_depth;
-                        CurrentPosition = getPositionOnTheEdge(Vector2.Divide(initialPosition.Value, max_depth));
-                        currentDepth = initialPosition.Value.X / CurrentPosition.X;
-                        break;
-
-                    case ParticlesDirection.Forward:
                         currentDepth = maxDepth ? max_depth : RNG.NextSingle(min_depth, max_depth);
                         initialPosition = new Vector2(RNG.NextSingle(-0.5f, 0.5f), RNG.NextSingle(-0.5f, 0.5f)) * max_depth;
                         CurrentPosition = getCurrentPosition(direction);
+
                         if (outOfBounds)
                         {
                             reset(direction, maxDepth);
                             return;
                         }
+
+                        break;
+
+                    case ParticlesDirection.Forward:
+                        initialPosition = new Vector2(RNG.NextSingle(-0.5f, 0.5f), RNG.NextSingle(-0.5f, 0.5f)) * max_depth;
+                        CurrentPosition = getPositionOnTheEdge(Vector2.Divide(initialPosition.Value, max_depth));
+                        currentDepth = initialPosition.Value.X / CurrentPosition.X;
+
                         break;
 
                     case ParticlesDirection.Left:
-                        CurrentPosition = getRandomPositionAtTheLeft();
-                        break;
-
-                    case ParticlesDirection.Right:
                         CurrentPosition = getRandomPositionAtTheRight();
                         break;
 
+                    case ParticlesDirection.Right:
+                        CurrentPosition = getRandomPositionAtTheLeft();
+                        break;
+
                     case ParticlesDirection.Up:
-                        CurrentPosition = getRandomPositionAtTheTop();
+                        CurrentPosition = getRandomPositionAtTheBottom();
                         break;
 
                     case ParticlesDirection.Down:
-                        CurrentPosition = getRandomPositionAtTheBottom();
+                        CurrentPosition = getRandomPositionAtTheTop();
                         break;
                 }
 
@@ -216,6 +218,18 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                 {
                     default:
                     case ParticlesDirection.Forward:
+                        currentDepth += timeDifference * globalSpeedMultiplier;
+
+                        if (currentDepth > max_depth)
+                        {
+                            reset(direction);
+                            return;
+                        }
+
+                        CurrentPosition = getCurrentPosition(direction);
+                        break;
+
+                    case ParticlesDirection.Backwards:
                         currentDepth -= timeDifference * globalSpeedMultiplier;
 
                         if (currentDepth < min_depth)
@@ -234,27 +248,16 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
 
                         break;
 
-                    case ParticlesDirection.Backwards:
-                        currentDepth += timeDifference * globalSpeedMultiplier;
-
-                        if (currentDepth > max_depth)
-                        {
-                            reset(direction);
-                            return;
-                        }
-
-                        CurrentPosition = getCurrentPosition(direction);
-                        break;
-
                     case ParticlesDirection.Left:
                         initialPosition = null;
-                        CurrentPosition += new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
+                        CurrentPosition -= new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
 
                         if (outOfBounds)
                         {
                             reset(direction);
                             return;
                         }
+
                         break;
 
                     case ParticlesDirection.Random:
@@ -269,31 +272,22 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                             reset(direction);
                             return;
                         }
+
                         break;
 
                     case ParticlesDirection.Right:
                         initialPosition = null;
-                        CurrentPosition -= new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
+                        CurrentPosition += new Vector2(baseComponent * (horizontalIsFaster ? multiplier : 1) * side_speed_multiplier, 0);
 
                         if (outOfBounds)
                         {
                             reset(direction);
                             return;
                         }
+
                         break;
 
                     case ParticlesDirection.Up:
-                        initialPosition = null;
-                        CurrentPosition += new Vector2(0, baseComponent * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
-
-                        if (outOfBounds)
-                        {
-                            reset(direction);
-                            return;
-                        }
-                        break;
-
-                    case ParticlesDirection.Down:
                         initialPosition = null;
                         CurrentPosition -= new Vector2(0, baseComponent * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
 
@@ -302,6 +296,19 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                             reset(direction);
                             return;
                         }
+
+                        break;
+
+                    case ParticlesDirection.Down:
+                        initialPosition = null;
+                        CurrentPosition += new Vector2(0, baseComponent * (horizontalIsFaster ? 1 : multiplier) * side_speed_multiplier);
+
+                        if (outOfBounds)
+                        {
+                            reset(direction);
+                            return;
+                        }
+
                         break;
                 }
 
@@ -322,14 +329,10 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components
                     case ParticlesDirection.Forward:
                     case ParticlesDirection.Backwards:
                         if (initialPosition.HasValue)
-                        {
                             return Vector2.Divide(initialPosition.Value, currentDepth);
-                        }
-                        else
-                        {
-                            initialPosition = CurrentPosition * currentDepth;
-                            return Vector2.Divide(initialPosition.Value, currentDepth);
-                        }
+
+                        initialPosition = CurrentPosition * currentDepth;
+                        return Vector2.Divide(initialPosition.Value, currentDepth);
                 }
             }
 
