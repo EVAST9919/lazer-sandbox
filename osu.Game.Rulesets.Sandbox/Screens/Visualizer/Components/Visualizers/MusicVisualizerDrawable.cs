@@ -28,12 +28,12 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 
         protected Texture Texture { get; private set; }
 
-        private IShader shader;
+        protected IShader Shader { get; set; }
 
         [BackgroundDependencyLoader]
         private void load(ShaderManager shaders, GameHost host, TextureStore textures)
         {
-            shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE);
+            Shader = shaders.Load(VertexShaderDescriptor.TEXTURE_2, FragmentShaderDescriptor.TEXTURE);
             Texture = GetTexture(host.Renderer, textures);
         }
 
@@ -161,7 +161,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
             protected double BarWidth;
             protected bool Reversed;
 
-            public VisualizerDrawNode(MusicVisualizerDrawable source)
+            protected VisualizerDrawNode(MusicVisualizerDrawable source)
                 : base(source)
             {
             }
@@ -170,7 +170,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
             {
                 base.ApplyState();
 
-                shader = Source.shader;
+                shader = Source.Shader;
                 Texture = Source.Texture;
                 Size = Source.DrawSize;
                 BarWidth = Source.BarWidth.Value;

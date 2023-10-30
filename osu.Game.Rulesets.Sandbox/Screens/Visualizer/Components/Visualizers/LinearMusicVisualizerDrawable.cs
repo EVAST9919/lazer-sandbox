@@ -1,11 +1,12 @@
 ﻿using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Primitives;
 using osu.Framework.Graphics.Rendering;
 using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 {
-    public abstract class LinearMusicVisualizerDrawable : MusicVisualizerDrawable
+    public abstract partial class LinearMusicVisualizerDrawable : MusicVisualizerDrawable
     {
         public readonly Bindable<BarAnchor> BarAnchorBindable = new Bindable<BarAnchor>(BarAnchor.Centre);
 
@@ -24,7 +25,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 
             protected BarAnchor Origin;
 
-            public LinearVisualizerDrawNode(LinearMusicVisualizerDrawable source)
+            protected LinearVisualizerDrawNode(LinearMusicVisualizerDrawable source)
                 : base(source)
             {
             }
@@ -68,6 +69,37 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
 
                     case BarAnchor.Top:
                         return 0;
+                }
+            }
+
+            protected Quad GetDrawQuad(Vector2 barPosition, Vector2 barSize)
+            {
+                switch (Origin)
+                {
+                    default:
+                    case BarAnchor.Bottom:
+                        return new Quad(
+                            Vector2Extensions.Transform(barPosition, DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(0, -barSize.Y), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, 0), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, -barSize.Y), DrawInfo.Matrix)
+                        );
+
+                    case BarAnchor.Centre:
+                        return new Quad(
+                            Vector2Extensions.Transform(barPosition + new Vector2(0, -barSize.Y / 2), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(0, barSize.Y / 2), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, -barSize.Y / 2), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, barSize.Y / 2), DrawInfo.Matrix)
+                        );
+
+                    case BarAnchor.Top:
+                        return new Quad(
+                            Vector2Extensions.Transform(barPosition, DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(0, barSize.Y), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, 0), DrawInfo.Matrix),
+                            Vector2Extensions.Transform(barPosition + new Vector2(barSize.X, barSize.Y), DrawInfo.Matrix)
+                        );
                 }
             }
         }

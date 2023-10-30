@@ -23,11 +23,16 @@ vec2 rotateAround(vec2 point, vec2 origin, float angle)
     return vec2(point.x * c - point.y * s, point.x * s + point.y * c) + origin;
 }
 
-float distanceToLine(vec2 pt1, vec2 pt2, vec2 point)
+highp float dstToLine(highp vec2 start, highp vec2 end, highp vec2 pixelPos)
 {
-    vec2 a = (pt2 - pt1) / distance(pt2, pt1);
-    vec2 closest = clamp(dot(a, point - pt1), 0.0, distance(pt2, pt1)) * a + pt1;
-    return distance(closest, point);
+    highp float lineLength = distance(end, start);
+
+    if (lineLength < 0.001)
+        return distance(pixelPos, start);
+
+    highp vec2 a = (end - start) / lineLength;
+    highp vec2 closest = clamp(dot(a, pixelPos - start), 0.0, distance(end, start)) * a + start; // closest point on a line from given position
+    return distance(closest, pixelPos);
 }
 
 float map(float value, float minValue, float maxValue, float minEndValue, float maxEndValue)

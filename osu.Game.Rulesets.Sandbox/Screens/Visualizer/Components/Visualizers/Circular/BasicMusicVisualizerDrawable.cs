@@ -6,7 +6,7 @@ using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Circular
 {
-    public class BasicMusicVisualizerDrawable : CircularMusicVisualizerDrawable
+    public partial class BasicMusicVisualizerDrawable : CircularMusicVisualizerDrawable
     {
         protected override CircularVisualizerDrawNode CreateCircularVisualizerDrawNode() => new BasicVisualizerDrawNode(this);
 
@@ -30,11 +30,11 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers.Ci
                 var amplitudeOffset = new Vector2(rotationCos * barSize.Y, rotationSin * barSize.Y);
 
                 var rectangle = new Quad(
-                        Vector2Extensions.Transform(barPosition - bottomOffset, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(barPosition - bottomOffset + amplitudeOffset, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(barPosition + bottomOffset, DrawInfo.Matrix),
-                        Vector2Extensions.Transform(barPosition + bottomOffset + amplitudeOffset, DrawInfo.Matrix)
-                    );
+                    Vector2Extensions.Transform(barPosition - bottomOffset, DrawInfo.Matrix),
+                    Vector2Extensions.Transform(barPosition - bottomOffset + amplitudeOffset, DrawInfo.Matrix),
+                    Vector2Extensions.Transform(barPosition + bottomOffset, DrawInfo.Matrix),
+                    Vector2Extensions.Transform(barPosition + bottomOffset + amplitudeOffset, DrawInfo.Matrix)
+                );
 
                 renderer.DrawQuad(
                     Texture,

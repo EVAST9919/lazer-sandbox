@@ -7,7 +7,7 @@ using osu.Game.Rulesets.Sandbox.UI;
 
 namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
 {
-    public class TestSceneLinearRounded : RulesetTestScene
+    public partial class TestSceneLinearRounded : RulesetTestScene
     {
         private readonly Visualizer visualizer;
         private RoundedLinearMusicVisualizerDrawable drawable => visualizer.Drawable;
@@ -33,11 +33,11 @@ namespace osu.Game.Rulesets.Sandbox.Tests.Visualizer
             base.LoadComplete();
             AddSliderStep("Anchor", 0, 2, 0, value => drawable.BarAnchorBindable.Value = (BarAnchor)value);
             AddSliderStep("Bar count", 0, 3000, 30, value => drawable.BarCount.Value = value);
-            AddSliderStep("Bar width", 1f, 20f, 15, value => drawable.BarWidth.Value = value);
+            AddSliderStep("Bar width", 1f, 100f, 15, value => drawable.BarWidth.Value = value);
             AddSliderStep("Smoothness", 0, 10, 0, value => drawable.Smoothness.Value = value);
         }
 
-        private class Visualizer : MusicAmplitudesProvider
+        private partial class Visualizer : MusicAmplitudesProvider
         {
             public readonly RoundedLinearMusicVisualizerDrawable Drawable;
 
