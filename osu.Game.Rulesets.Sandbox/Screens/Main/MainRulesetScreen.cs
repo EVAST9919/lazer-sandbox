@@ -22,7 +22,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Main
                     new SandboxPanel("Visualizer") { Action = () => this.Push(new VisualizerScreen()) },
                     new SandboxPanel("2048") { Action = () => this.Push(new NumbersScreen()) },
                     new SandboxPanel("FlappyDon", new Creator { Name = "Tim Oliver", URL = "https://github.com/TimOliver"}) { Action = () => this.Push(new FlappyDonScreen()) },
-                    new SandboxPanel("Rulesets") { Action = () => this.Push(new RulesetsScreen()) }
+                    new SandboxPanel("Ruleset Updates") { Action = () => this.Push(new RulesetsScreen()) }
                 }
             };
         }
