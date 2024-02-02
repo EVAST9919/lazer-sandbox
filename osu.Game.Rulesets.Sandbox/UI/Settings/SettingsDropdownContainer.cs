@@ -5,7 +5,7 @@ using osu.Framework.Bindables;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
-    public abstract class SettingsDropdownContainer : CompositeDrawable
+    public abstract partial class SettingsDropdownContainer : CompositeDrawable
     {
         private readonly BindableBool expanded = new BindableBool();
 
@@ -23,7 +23,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
                 {
                     new Header(label)
                     {
-                        Action = expanded.Toggle
+                        ToggleMenu = expanded.Toggle
                     },
                     new DropdownContent
                     {
@@ -40,7 +40,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
 
         protected abstract Drawable CreateContent();
 
-        private class Header : OsuDropdownHeader
+        private partial class Header : OsuDropdownHeader
         {
             public Header(string label)
             {
@@ -49,7 +49,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             }
         }
 
-        private class DropdownContent : Container
+        private partial class DropdownContent : Container
         {
             private const int animation_duration = 250;
 

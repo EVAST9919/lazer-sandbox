@@ -183,7 +183,7 @@ namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.Visualizers
             protected abstract float Spacing { get; }
             protected virtual Vector2 Inflation => Vector2.One;
 
-            public override void Draw(IRenderer renderer)
+            protected override void Draw(IRenderer renderer)
             {
                 base.Draw(renderer);
 

@@ -21,7 +21,7 @@ using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Rulesets.Sandbox
 {
-    public class SandboxRuleset : Ruleset
+    public partial class SandboxRuleset : Ruleset
     {
         public override DrawableRuleset CreateDrawableRulesetWith(IBeatmap beatmap, IReadOnlyList<Mod> mods = null) => new DrawableSandboxRuleset(this, beatmap, mods);
 
