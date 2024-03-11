@@ -35,7 +35,7 @@ namespace osu.Game.Rulesets.Sandbox
 
         public override string ShortName => "sandbox";
 
-        public override string PlayingVerb => "Doing random stuff";
+        public override string PlayingVerb => "Sandboxing";
 
         public override Drawable CreateIcon() => new SandboxIcon(this);
 
