@@ -4,11 +4,11 @@ using osu.Game.Beatmaps;
 
 namespace osu.Game.Rulesets.Sandbox.Screens.Visualizer.Components.MusicHelpers
 {
-    public abstract class MusicAmplitudesProvider : CurrentBeatmapProvider
+    public abstract partial class MusicAmplitudesProvider : CurrentBeatmapProvider
     {
         public readonly BindableBool IsKiai = new BindableBool();
 
-        private Track track;
+        private ITrack track;
 
         protected override void OnBeatmapChanged(ValueChangedEvent<WorkingBeatmap> beatmap)
         {
