@@ -1,12 +1,15 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Game.Graphics.Sprites;
 using osu.Game.Graphics.UserInterfaceV2;
 using osu.Game.Rulesets.Sandbox.Configuration;
+using osuTK;
 
 namespace osu.Game.Rulesets.Sandbox.UI.Settings
 {
-    public class ColourPickerDropdown : SettingsDropdownContainer
+    public partial class ColourPickerDropdown : FillFlowContainer
     {
         private readonly Bindable<string> hexColour = new Bindable<string>();
 
@@ -14,12 +17,28 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
         private readonly SandboxRulesetSetting lookup;
 
         public ColourPickerDropdown(string name, SandboxRulesetSetting lookup)
-            : base(name)
         {
             this.lookup = lookup;
-        }
 
-        protected override Drawable CreateContent() => picker = new OsuColourPicker();
+            RelativeSizeAxes = Axes.X;
+            AutoSizeAxes = Axes.Y;
+            Direction = FillDirection.Vertical;
+            Spacing = new Vector2(5);
+            Children = new Drawable[]
+            {
+                new OsuSpriteText
+                {
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre,
+                    Text = name
+                },
+                picker = new OsuColourPicker
+                {
+                    Anchor = Anchor.TopCentre,
+                    Origin = Anchor.TopCentre
+                }
+            };
+        }
 
         [BackgroundDependencyLoader]
         private void load(SandboxRulesetConfigManager rulesetConfig)

@@ -21,10 +21,7 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
                 Direction = FillDirection.Vertical,
                 Children = new Drawable[]
                 {
-                    new Header(label)
-                    {
-                        ToggleMenu = expanded.Toggle
-                    },
+                    new Header(label),
                     new DropdownContent
                     {
                         Expanded = { BindTarget = expanded },
@@ -45,7 +42,6 @@ namespace osu.Game.Rulesets.Sandbox.UI.Settings
             public Header(string label)
             {
                 Label = label;
-                Enabled.Value = true;
             }
         }
 
