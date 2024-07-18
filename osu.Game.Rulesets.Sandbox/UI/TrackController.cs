@@ -17,7 +17,7 @@ using osu.Framework.Bindables;
 
 namespace osu.Game.Rulesets.Sandbox.UI
 {
-    public class TrackController : CompositeDrawable
+    public partial class TrackController : CompositeDrawable
     {
         private const float progress_height = 10;
         private const float height = 60;
@@ -146,7 +146,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
             base.Dispose(isDisposing);
         }
 
-        private class MusicIconButton : IconButton
+        private partial class MusicIconButton : IconButton
         {
             public MusicIconButton()
             {
@@ -170,7 +170,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
             }
         }
 
-        private class DragContainer : Container
+        private partial class DragContainer : Container
         {
             protected override bool OnDragStart(DragStartEvent e)
             {
@@ -194,7 +194,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
             }
         }
 
-        private class HoverableProgressBar : ProgressBar
+        private partial class HoverableProgressBar : ProgressBar
         {
             public HoverableProgressBar()
                 : base(true)
@@ -214,7 +214,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
             }
         }
 
-        private class BeatmapSprite : Sprite
+        private partial class BeatmapSprite : Sprite
         {
             private readonly WorkingBeatmap beatmap;
 
