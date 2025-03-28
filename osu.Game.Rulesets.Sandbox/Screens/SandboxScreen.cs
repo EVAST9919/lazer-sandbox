@@ -5,7 +5,7 @@ using osu.Game.Screens.Play;
 
 namespace osu.Game.Rulesets.Sandbox.Screens
 {
-    public abstract class SandboxScreen : ScreenWithBeatmapBackground
+    public abstract partial class SandboxScreen : ScreenWithBeatmapBackground
     {
         protected override void LoadComplete()
         {
