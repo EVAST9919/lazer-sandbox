@@ -51,7 +51,7 @@ namespace osu.Game.Rulesets.Sandbox
             new KeyBinding(InputKey.X, SandboxAction.FlappyJump)
         };
 
-        protected override IEnumerable<HitResult> GetValidHitResults() => new[]
+        public override IEnumerable<HitResult> GetValidHitResults() => new[]
         {
             HitResult.Perfect
         };
