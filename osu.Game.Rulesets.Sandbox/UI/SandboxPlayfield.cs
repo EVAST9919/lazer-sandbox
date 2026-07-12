@@ -13,12 +13,12 @@ namespace osu.Game.Rulesets.Sandbox.UI
         [BackgroundDependencyLoader]
         private void load(OsuColour colours)
         {
-            TextFlowContainer flow;
+            FillFlowContainer flow;
 
             InternalChildren = new Drawable[]
             {
                 HitObjectContainer,
-                flow = new TextFlowContainer
+                flow = new FillFlowContainer
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
@@ -28,7 +28,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 }
             };
 
-            flow.AddText(new OsuSpriteText
+            flow.Add(new OsuSpriteText
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -37,7 +37,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 Font = OsuFont.GetFont(size: 30, weight: FontWeight.Bold)
             });
 
-            flow.AddText(new OsuSpriteText
+            flow.Add(new OsuSpriteText
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -45,7 +45,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 Font = OsuFont.GetFont(size: 20)
             });
 
-            flow.AddText(new OsuSpriteText
+            flow.Add(new OsuSpriteText
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -53,7 +53,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 Font = OsuFont.GetFont(size: 20)
             });
 
-            flow.AddText(new OsuSpriteText
+            flow.Add(new OsuSpriteText
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -61,7 +61,7 @@ namespace osu.Game.Rulesets.Sandbox.UI
                 Font = OsuFont.GetFont(size: 20)
             });
 
-            flow.AddText(new OsuSpriteText
+            flow.Add(new OsuSpriteText
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
